@@ -1,0 +1,28 @@
+{
+  "name": "xrpl-accountlib",
+  "version": "0.1.0",
+  "description": "XRPL Account helper: generation, derivation and signing",
+  "dependencies": {
+    "bip39": "^2.5.0",
+    "bn.js": "^4.11.8",
+    "elliptic": "^6.4.1",
+    "ripple-address-codec": "^2.0.1",
+    "ripple-bip32": "0.0.3",
+    "ripple-keypairs": "^0.11.0"
+  },
+  "main": "src/index.js",
+  "files": [
+    "src"
+  ],
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/WietseWind/xrpl-accountlib.git"
+  },
+  "bugs": {
+    "url": "https://github.com/WietseWind/xrpl-accountlib/issues"
+  },
+  "homepage": "https://github.com/WietseWind/xrpl-accountlib#readme",
+  "license": "MIT",
+  "readmeFilename": "README.md"
+}

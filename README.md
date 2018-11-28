@@ -30,11 +30,11 @@ Both the `generate` and the `derive` methods will return an `XRPL_Account` objec
 
 ## Methods
 
-### Generate account `lib.generate`
+## Generate account `lib.generate`
 
 All `generate` methods return an `XRPL_Account` object.
 
-##### Family Seed `lib.generate.familySeed(options)`
+### Family Seed `lib.generate.familySeed(options)`
 
 Options:
 	
@@ -42,7 +42,7 @@ Options:
   Default: 'secp256k1', alternatively: 'ed25519'
 
 
-##### Mnemonic `lib.generate.mnemonic(options)`
+### Mnemonic `lib.generate.mnemonic(options)`
 
 Options:
 
@@ -67,11 +67,11 @@ Options:
     - spanish
     - english
 
-### Derive account `lib.derive`
+## Derive account `lib.derive`
 
 All `derive` methods return an `XRPL_Account` object.
 
-##### Family Seed `lib.derive.familySeed(options)`
+### Family Seed `lib.derive.familySeed(options)`
 
 	Options:
 	
@@ -79,7 +79,7 @@ All `derive` methods return an `XRPL_Account` object.
 	- XXXX. Default: `XX`, some info on this option
 
 
-##### Mnemonic `lib.derive.mnemonic(options)`
+### Mnemonic `lib.derive.mnemonic(options)`
 
 	Options:
 	
@@ -87,7 +87,7 @@ All `derive` methods return an `XRPL_Account` object.
 	- XXXX. Default: `XX`, some info on this option
 
 
-##### Passphrase `lib.derive.passphrase(options)`
+### Passphrase `lib.derive.passphrase(options)`
 
 	Options:
 	
@@ -95,7 +95,7 @@ All `derive` methods return an `XRPL_Account` object.
 	- XXXX. Default: `XX`, some info on this option
 
 
-### Sign `lib.sign(XRPL_Account{}, options)`
+## Sign `lib.sign(XRPL_Account{}, options)`
 
 The first argument of the `sign`-method should be an `XRPL_Account` object, returned by either 
 the `generate` or `derive` methods.

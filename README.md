@@ -2,10 +2,6 @@
 
 > XRPL Account helper: generation, derivation and signing.
 
-#### Todo
-
-  - RegularKey + MultiSign (_signAs_)
-
 ## The XRPL_Account object
 
 Both the `generate` and the `derive` methods will return an `XRPL_Account` object, containing all information to sign:
@@ -24,6 +20,14 @@ Both the `generate` and the `derive` methods will return an `XRPL_Account` objec
      publicKey: 'AABBCC001122...',
      privateKey: 'CCDDEE332211...' } }
 
+```
+
+All `XRPL_Account` objects allow calling the `signAs` method to set the `signAs` user for MultiSign transactions (when a MultiSign user also uses a RegularKey);
+
+```
+derive
+  .familySeed('snYHBZDJ51PPSuzWYVhEh1kb9zvEU')
+  .signAs('rPEPPER7kfTD9w2To4CQk6UCfuHM9c6GDY')
 ```
 
 ## Methods

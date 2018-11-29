@@ -97,11 +97,16 @@ class XRPL_Account {
       this.address = Keypairs.deriveAddress(this.keypair.publicKey)
     }
 
-    // Object.assign(this, {
-    //   SomeMethod () {
-    //     return false
-    //   }
-    // })
+    Object.assign(this, {
+      signAs (address) {
+        if (AddressCodec.isValidAddress(address)) {
+          this.signAs = address
+        } else {
+          throw new Error('Invalid signAs address (should contain account address, rXXX...)')
+        }
+        return this
+      }
+    })
   }
   toString () {
     return 'XPRL Account' + (this.address ? ': ' + this.address : '')

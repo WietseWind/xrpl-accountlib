@@ -30,7 +30,7 @@ const sign = (Transaction, Account) => {
       id: tx.id,
       signedTransaction: tx.signedTransaction,
       txJson: tx.txJson,
-      signers: [ accounts[0].address ]
+      signers: [ typeof accounts[0].signAs === 'string' ? accounts[0].signAs : accounts[0].address ]
     }
   } else {
     const RippleLibApi = require('ripple-lib').RippleAPI
@@ -38,7 +38,7 @@ const sign = (Transaction, Account) => {
     const Codec = require('ripple-binary-codec')
 
     const MultiSignedTransactionBinary = RippleApi.combine(accounts.map(account => {
-      return Sign(JSON.stringify(Transaction), account.keypair, { signAs: account.address }).signedTransaction
+      return Sign(JSON.stringify(Transaction), account.keypair, { signAs: typeof account.signAs === 'string' ? account.signAs : account.address }).signedTransaction
     }))
 
     return {
@@ -47,7 +47,7 @@ const sign = (Transaction, Account) => {
       signedTransaction: MultiSignedTransactionBinary.signedTransaction,
       txJson: Codec.decode(MultiSignedTransactionBinary.signedTransaction),
       signers: accounts.map(a => { 
-        return a.address
+        return typeof a.signAs === 'string' ? a.signAs : a.address
       })
     }
   }

@@ -93,9 +93,9 @@ Derive from a passphrase, like `masterpassphrase`
 
 Derive from a 66 char HEX private key, like `001ACAAEDECE405B2A958212629E16F2EB46B153EEE94CDD350FDEFF52795525B7`
 
-## Sign `lib.sign(XRPL_Account{}, options{})`
+## Sign `lib.sign(Transaction{}, XRPL_Account{}/[{}])`
 
-The first argument of the `sign`-method should be an `XRPL_Account` object, returned by either 
-the `generate` or `derive` methods.
+The first argument of the `sign`-method should be a Transaction object, the second argument can either contain one `XRPL_Account` object (returned by either 
+the `generate` or `derive` methods) or an array with multiple `XRPL_Account` object**s** (multiSign).
 
 > TODO

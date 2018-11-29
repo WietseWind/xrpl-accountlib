@@ -63,6 +63,10 @@ class XRPL_Account {
           prefix = '00'
         }
         this.keypair.privateKey = prefix + options.keypair.privateKey
+        
+        if (this.accountType === null) {
+          this.accountType = 'hex'
+        }
       }
       if (options.keypair.publicKey) {
         this.keypair.publicKey = options.keypair.publicKey

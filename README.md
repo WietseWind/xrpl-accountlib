@@ -4,9 +4,7 @@
 
 #### Todo
 
-  - MultiSig
-  - Possible: 
-    - TX decoding (sign output to object)
+  - RegularKey + MultiSign (_signAs_)
 
 ## The XRPL_Account object
 
@@ -33,6 +31,8 @@ Both the `generate` and the `derive` methods will return an `XRPL_Account` objec
 ## Generate account `lib.generate`
 
 All `generate` methods return an `XRPL_Account` object.
+
+Samples: https://github.com/WietseWind/xrpl-accountlib/blob/master/samples/generate.js
 
 ### Family Seed `lib.generate.familySeed(options{})`
 
@@ -71,6 +71,8 @@ Options:
 
 All `derive` methods return an `XRPL_Account` object.
 
+Samples: https://github.com/WietseWind/xrpl-accountlib/blob/master/samples/derive.js
+
 ### Family Seed `lib.derive.familySeed(familyseed'')`
 
 The _familyseed_ argument is required, and should contain a string, like: `sXXXXXXXXX...`
@@ -98,4 +100,21 @@ Derive from a 66 char HEX private key, like `001ACAAEDECE405B2A958212629E16F2EB4
 The first argument of the `sign`-method should be a Transaction object, the second argument can either contain one `XRPL_Account` object (returned by either 
 the `generate` or `derive` methods) or an array with multiple `XRPL_Account` object**s** (multiSign).
 
-> TODO
+### Samples
+
+https://github.com/WietseWind/xrpl-accountlib/blob/master/samples/sign.js
+
+#### Signing with one account:
+
+```
+lib.sign(Tx, lib.derive.familySeed('shqNUmrgnkBmK9iCijrtid2Ua4uHd'))
+```
+
+### MultiSign
+
+```
+lib.sign(Tx, [
+  lib.derive.familySeed('sp5mkm12oJj3t8fFRiaMNrDbc73N2'),
+  lib.derive.familySeed('snYHBZDJ51PPSuzWYVhEh1kb9zvEU')
+])
+```

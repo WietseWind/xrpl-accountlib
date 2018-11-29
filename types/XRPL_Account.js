@@ -1,6 +1,6 @@
 'use strict'
 
-const Utils = require('../utils')
+const Utils = require('../src/utils')
 const Keypairs = require('ripple-keypairs')
 const AddressCodec = require('ripple-address-codec')
 const Elliptic = require('elliptic')

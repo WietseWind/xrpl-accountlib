@@ -34,7 +34,7 @@ Both the `generate` and the `derive` methods will return an `XRPL_Account` objec
 
 All `generate` methods return an `XRPL_Account` object.
 
-### Family Seed `lib.generate.familySeed(options)`
+### Family Seed `lib.generate.familySeed(options{})`
 
 Options:
 	
@@ -42,7 +42,7 @@ Options:
   Default: 'secp256k1', alternatively: 'ed25519'
 
 
-### Mnemonic `lib.generate.mnemonic(options)`
+### Mnemonic `lib.generate.mnemonic(options{})`
 
 Options:
 
@@ -71,36 +71,31 @@ Options:
 
 All `derive` methods return an `XRPL_Account` object.
 
-### Family Seed `lib.derive.familySeed(options)`
+### Family Seed `lib.derive.familySeed(familyseed'')`
 
-	Options:
+The _familyseed_ argument is required, and should contain a string, like: `sXXXXXXXXX...`
+
+### Mnemonic `lib.derive.mnemonic(mnemonic'', options{})`
+
+The _ mnemonic_ argument is required, and should contain a string with a valid word list, like: `state green stem tower...`
+
+Options:
 	
-	- XXXX. Default: `XX`, some info on this option
-	- XXXX. Default: `XX`, some info on this option
+- **passphrase**  
+  Default: (none), alternatively: 'my secret passsword'
 
 
-### Mnemonic `lib.derive.mnemonic(options)`
+### Passphrase `lib.derive.passphrase(passphrase'')`
 
-	Options:
-	
-	- XXXX. Default: `XX`, some info on this option
-	- XXXX. Default: `XX`, some info on this option
+Derive from a passphrase, like `masterpassphrase`
 
+### Private Key `lib.derive.privatekey(hex'')`
 
-### Passphrase `lib.derive.passphrase(options)`
+Derive from a 66 char HEX private key, like `001ACAAEDECE405B2A958212629E16F2EB46B153EEE94CDD350FDEFF52795525B7`
 
-	Options:
-	
-	- XXXX. Default: `XX`, some info on this option
-	- XXXX. Default: `XX`, some info on this option
-
-
-## Sign `lib.sign(XRPL_Account{}, options)`
+## Sign `lib.sign(XRPL_Account{}, options{})`
 
 The first argument of the `sign`-method should be an `XRPL_Account` object, returned by either 
 the `generate` or `derive` methods.
 
-	Options:
-	
-	- XXXX. Default: `XX`, some info on this option
-	- XXXX. Default: `XX`, some info on this option
+> TODO

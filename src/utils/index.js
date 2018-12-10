@@ -1,6 +1,8 @@
-'use strict'
+'use strict';
 
-const BN = require('bn.js')
+const BN = require('bn.js');
+const AddressCodec = require('ripple-address-codec');
+const Bip39 = require("bip39")
 
 function bytesToHex(a) {
   return a.map(function(byteValue) {
@@ -19,8 +21,25 @@ function getAlgorithmFromKey(key) {
     'ed25519' : 'secp256k1'
 }
 
+function isValidAddress(address){
+  return AddressCodec.isValidAddress(address)
+}
+
+
+function isValidSeed(seed){
+    return AddressCodec.isValidSeed(seed)
+}
+
+function isValidMnemnic(words){
+  return Bip39.validateMnemonic(words)
+}
+
+
 module.exports = {
   bytesToHex,
   hexToBytes,
-  getAlgorithmFromKey
-}
+  getAlgorithmFromKey,
+  isValidAddress,
+  isValidSeed,
+  isValidMnemnic
+};

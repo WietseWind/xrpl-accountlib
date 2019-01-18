@@ -104,6 +104,8 @@ Derive from a 66 char HEX private key, like `001ACAAEDECE405B2A958212629E16F2EB4
 The first argument of the `sign`-method should be a Transaction object, the second argument can either contain one `XRPL_Account` object (returned by either 
 the `generate` or `derive` methods) or an array with multiple `XRPL_Account` object**s** (multiSign).
 
+When combining previously signed MultiSign transactions as HEX blob, the second argument can also be an array with `{ signedTransaction: '...' }` objects (or an array of strings with the HEX blob).
+
 ### Samples
 
 https://github.com/WietseWind/xrpl-accountlib/blob/master/samples/sign.js
@@ -122,3 +124,26 @@ lib.sign(Tx, [
   lib.derive.familySeed('snYHBZDJ51PPSuzWYVhEh1kb9zvEU')
 ])
 ```
+
+If you want to sign a single transaction that will be part of a MultiSigned transaction (combined later on) it's mandatory to specify the `signFor` account (with the chained (`signFor( .. )` method). The output (signed transaction blob, hex) signed by multiple accounts can then be combined later on:
+
+#### Sign a MultiSign transaction to combine later
+
+```
+lib.sign(
+  Tx, 
+  lib.derive.familySeed('sp5mkm12oJj3t8XXXXXXXXXXXXXXX')
+  	 .signAs('r9yzFismdTTWzc6Ea3mJr9by26QaFrFHP7')
+)
+```
+
+#### Combine multiple signed HEX MultiSign transactions
+
+```
+const Tx = lib.sign([
+   { signedTransaction: '120000240000000B2E000001EF614000000002FAF0806840000000000003E873008114723F34B08C70F3EF8759B1A2CD4934D434A3C2518314628891E80B72684CF065A0AE8EC3482472C1C0DCF3E010732103AC651208BDA639C7AEC10873771A5B5F1A2008CAB3B2155871EE16A966D5860774473045022100CD9BC97047BF8EE0AF2D7631540FFF4C5FFE863AFAA9E2DE7AD98156F3323CF9022031D0454947833536028029FB9B61B224F4C2BFC1D1F670C49880AD004A76315C8114723F34B08C70F3EF8759B1A2CD4934D434A3C251E1F1' },
+   { signedTransaction: '12000024000000042E000001EF614000000007F81ED96840000000000003E873008114F84E8A80D08854F3621F9214D58F04D41A07EE108314F40B468D5AC0DBA36E2941877AC2E9BBD48262A1F3E010732103CA9799516799A1139BED8958A9FDD0033389396422B888A7E56FB9991B0A179E74473045022100B22D6874CC4ECC92D32E657A1F863245A4DB1B425260052A9427616BE397D244022023CA82B76ADD26909549381C5CCB7BB09084936B294577299F5796A22F5AC39E8114F40B468D5AC0DBA36E2941877AC2E9BBD48262A1E1F1' }
+])
+```
+
+You can also pass the signed HEX blob as an array with strings.

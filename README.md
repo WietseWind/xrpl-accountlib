@@ -125,7 +125,7 @@ lib.sign(Tx, [
 ])
 ```
 
-If you want to sign a single transaction that will be part of a MultiSigned transaction (combined later on) it's mandatory to specify the `signFor` account (with the chained (`signFor( .. )` method). The output (signed transaction blob, hex) signed by multiple accounts can then be combined later on:
+If you want to sign a single transaction that will be part of a MultiSigned transaction (combined later on) it's mandatory to specify the `signAs` account (with the chained (`signAs( .. )` method). The output (signed transaction blob, hex) signed by multiple accounts can then be combined later on:
 
 #### Sign a MultiSign transaction to combine later
 

@@ -10,12 +10,12 @@ Both the `generate` and the `derive` methods will return an `XRPL_Account` objec
 {
   accountType: '...',
   address: 'rXXXXXXXXX...',
-  secret: 
+  secret:
    { familySeed: 'rYYYYYYYYY...',
      mnemonic: 'word word word...',
      passphrase: 'Hello World! ...',
      path: 'm/44'/144'/X'/Y/Z' },
-  keypair: 
+  keypair:
    { algorithm: 'xxxxxxxx',
      publicKey: 'AABBCC001122...',
      privateKey: 'CCDDEE332211...' } }
@@ -41,10 +41,9 @@ Samples: https://github.com/WietseWind/xrpl-accountlib/blob/master/samples/gener
 ### Family Seed `lib.generate.familySeed(options{})`
 
 Options:
-	
+
 - **algorithm**  
   Default: 'secp256k1', alternatively: 'ed25519'
-
 
 ### Mnemonic `lib.generate.mnemonic(options{})`
 
@@ -57,19 +56,19 @@ Options:
 - **accountPath**  
   Default: 0, alternatively: X in the derivation path: m/44'/144'/X'/Y/Z
 - **changePath**  
-  Default: 0, alternatively: Y in the derivation path: m/44'/144'/X'/Y/Z 
+  Default: 0, alternatively: Y in the derivation path: m/44'/144'/X'/Y/Z
 - **addressIndex**  
   Default: 0, alternatively: Z in the derivation path: m/44'/144'/X'/Y/Z
 - **wordlist**  
-  Default: 'english', alternatively one of:  
-    - chinese_simplified
-    - chinese_traditional
-    - french
-    - italian
-    - japanese
-    - korean
-    - spanish
-    - english
+  Default: 'english', alternatively one of:
+  - chinese_simplified
+  - chinese_traditional
+  - french
+  - italian
+  - japanese
+  - korean
+  - spanish
+  - english
 
 ## Derive account `lib.derive`
 
@@ -86,10 +85,9 @@ The _familyseed_ argument is required, and should contain a string, like: `sXXXX
 The _ mnemonic_ argument is required, and should contain a string with a valid word list, like: `state green stem tower...`
 
 Options:
-	
+
 - **passphrase**  
   Default: (none), alternatively: 'my secret passsword'
-
 
 ### Passphrase `lib.derive.passphrase(passphrase'')`
 
@@ -101,7 +99,7 @@ Derive from a 66 char HEX private key, like `001ACAAEDECE405B2A958212629E16F2EB4
 
 ## Sign `lib.sign(Transaction{}, XRPL_Account{}/[{}])`
 
-The first argument of the `sign`-method should be a Transaction object, the second argument can either contain one `XRPL_Account` object (returned by either 
+The first argument of the `sign`-method should be a Transaction object, the second argument can either contain one `XRPL_Account` object (returned by either
 the `generate` or `derive` methods) or an array with multiple `XRPL_Account` object**s** (multiSign).
 
 When combining previously signed MultiSign transactions as HEX blob, the second argument can also be an array with `{ signedTransaction: '...' }` objects (or an array of strings with the HEX blob).
@@ -131,7 +129,7 @@ If you want to sign a single transaction that will be part of a MultiSigned tran
 
 ```
 lib.sign(
-  Tx, 
+  Tx,
   lib.derive.familySeed('sp5mkm12oJj3t8XXXXXXXXXXXXXXX')
   	 .signAs('r9yzFismdTTWzc6Ea3mJr9by26QaFrFHP7')
 )

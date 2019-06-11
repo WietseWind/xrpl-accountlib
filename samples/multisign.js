@@ -1,7 +1,7 @@
-const lib = require('../')
+const lib = require("../");
 
-console.log('XRPL-AccountLib')
-console.log()
+console.log("XRPL-AccountLib");
+console.log();
 
 /**
  * You can try this at TestNet,
@@ -35,21 +35,28 @@ console.log()
 // }
 
 const Tx = {
-  TransactionType: 'Payment',
-  Account: 'rBRnkVBkA79gDF52zNwzYLXhAQsCeqYoNQ',
-  Fee: '1000',
-  Destination: 'r9yzFismdTTWzc6Ea3mJr9by26QaFrFHP7',
-  Amount: '50000000',
+  TransactionType: "Payment",
+  Account: "rBRnkVBkA79gDF52zNwzYLXhAQsCeqYoNQ",
+  Fee: "1000",
+  Destination: "r9yzFismdTTWzc6Ea3mJr9by26QaFrFHP7",
+  Amount: "50000000",
   DestinationTag: 495,
   Sequence: 11
-}
+};
 
-console.log('Sign: multiSign')
-console.dir(lib.sign(Tx, [
-  lib.derive.familySeed('sp5mkm12oJj3t8XXXXXXXXXXXXXXX').signAs('r9yzFismdTTWzc6Ea3mJr9by26QaFrFHP7'),
-  lib.derive.familySeed('shqNUmrgnkBmK9YYYYYYYYYYYYYY').signAs('rpxfMpvC5NLRydTDgqfURqgVpz5nos7zit')
-]), { depth: null })
-console.log()
+console.log("Sign: multiSign");
+console.dir(
+  lib.sign(Tx, [
+    lib.derive
+      .familySeed("sp5mkm12oJj3t8fFRiaMNrDbc73N2")
+      .signAs("r9yzFismdTTWzc6Ea3mJr9by26QaFrFHP7"),
+    lib.derive
+      .familySeed("shqNUmrgnkBmK9iCijrtid2Ua4uHd")
+      .signAs("rpxfMpvC5NLRydTDgqfURqgVpz5nos7zit")
+  ]),
+  { depth: null }
+);
+console.log();
 
 // console.log('Sign: or: MultiSign from per-account signed blob')
 // console.dir(lib.sign([

@@ -1,0 +1,60 @@
+{
+  "familySeed": {
+    "secp256k1": {
+      "address": "rBJu8dEddDQ2FNhut12VK9n95BQh1kY3e6",
+      "seed": "sni2chTNGKBHkULN8zcLwELNTUMXS",
+      "keypair": {
+        "algorithm": "secp256k1",
+        "publicKey": "02675DE26F92DA64FF16AF6032F5FF77FCEE7C13DC7820F4A797859A3843FFF80B",
+        "privateKey": "00CCBEB24BA49B446CDFB143CCA4644E5C9D92DC9F37E470DDB74DA2BDC7583B11"
+      }
+    },
+    "ed25519": {
+      "address": "rwcypXdppxzWjQiZYAjWGmoUwaq2KcSSdd",
+      "seed": "sEd78uLZSTE1eYWoDBHPHQdx3SKwmP5",
+      "keypair": {
+        "algorithm": "ed25519",
+        "publicKey": "ED80632C6292F1296A0217B69BCEB7D7F306EAC8E9B2FF289AAAA3DA5365C6B259",
+        "privateKey": "ED7B22485AA962F264831DFF21319D0928B4EBCA7CB93F5FD3A66FF76FAECBEEDF"
+      }
+    }
+  },
+  "mnemonic": {
+    "address": "r3ZVmJFmnoXh8ARBdXkb4LWt11ZLZUXcJi",
+    "mnemonic": "lamp elevator orchard music glare night upper race mixture bullet property nasty agent sword blind dynamic gossip life series shrug day ice control reunion",
+    "passphrase": "Hello World!",
+    "keypair": {
+      "algorithm": "secp256k1",
+      "publicKey": "022626203CD74AE80E72D265DDDA90E445B0975FD7C94EC6BDF1C33167FD08C9EB",
+      "privateKey": "00B440C4948CD011B94F69839A16B985D23666194529F630781D58A18977F20635"
+    }
+  },
+  "privatekey": {
+    "address": "r3ZVmJFmnoXh8ARBdXkb4LWt11ZLZUXcJi",
+    "privatekey": "00B440C4948CD011B94F69839A16B985D23666194529F630781D58A18977F20635",
+    "keypair": {
+      "algorithm": "secp256k1",
+      "publicKey": "022626203CD74AE80E72D265DDDA90E445B0975FD7C94EC6BDF1C33167FD08C9EB",
+      "privateKey": "00B440C4948CD011B94F69839A16B985D23666194529F630781D58A18977F20635"
+    }
+  },
+  "passphrase": {
+    "address": "rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh",
+    "passphrase": "masterpassphrase",
+    "familySeed": "snoPBrXtMeMyMHUVTgbuqAfg1SUTb",
+    "keypair": {
+      "algorithm": "secp256k1",
+      "publicKey": "0330E7FC9D56BB25D6893BA3F317AE5BCF33B3291BD63DB32654A313222F7FD020",
+      "privateKey": "001ACAAEDECE405B2A958212629E16F2EB46B153EEE94CDD350FDEFF52795525B7"
+    }
+  },
+  "tx": {
+    "TransactionType": "Payment",
+    "Account": "rPdvC6ccq8hCdPKSPJkPmyZ4Mi1oG2FFkT",
+    "Fee": "1000",
+    "Destination": "rPEPPER7kfTD9w2To4CQk6UCfuHM9c6GDY",
+    "Amount": "133701337",
+    "DestinationTag": 495,
+    "Sequence": 4
+  }
+}

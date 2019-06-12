@@ -1,6 +1,12 @@
-# XRPL-AccountLib
+# XRPL-AccountLib [![npm version](https://badge.fury.io/js/xrpl-accountlib.svg)](https://www.npmjs.com/xrpl-accountlib)
 
 > XRPL Account helper: generation, derivation and signing.
+
+## Getting started
+
+```
+npm install --save xrpl-accountlib
+```
 
 ## The XRPL_Account object
 

@@ -2,9 +2,7 @@
 
 import Keypairs from "ripple-keypairs";
 
-import Account from "../schema/Account";
-
-import { Algorithms } from "../types";
+import Account, { Algorithms } from "../schema/Account";
 
 type Options = {
   algorithm?: Algorithms;

@@ -12,6 +12,7 @@ type options = {
   changePath?: string;
   addressIndex?: number;
 };
+
 const mnemonic = (words: string, options: options = {}) => {
   const passphrase = options.passphrase ? options.passphrase : undefined;
 

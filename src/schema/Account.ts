@@ -1,14 +1,27 @@
-"use strict";
-
 import Keypairs from "ripple-keypairs";
 import AddressCodec from "ripple-address-codec";
 import * as Elliptic from "elliptic";
 import * as Utils from "../utils";
 
-import { AccountTypes, KeyPair, Algorithms } from "../types";
-
 const Ed25519 = new Elliptic.eddsa("ed25519");
 const Secp256k1 = new Elliptic.ec("secp256k1");
+
+/* Types ==================================================================== */
+
+export enum AccountTypes {
+  Passphrase = "passphrase",
+  FamilySeed = "familySeed",
+  Mnemonic = "mnemonic",
+  Hex = "hex"
+}
+
+export type KeyPair = {
+  algorithm?: Algorithms | null;
+  publicKey?: string | null;
+  privateKey: string | null;
+};
+
+export type Algorithms = "ed25519" | "secp256k1";
 
 export interface AccountOptions {
   accountType?: AccountTypes;
@@ -20,6 +33,8 @@ export interface AccountOptions {
   keypair?: KeyPair;
   algorithm?: Algorithms;
 }
+
+/* Class ==================================================================== */
 
 export default class XRPL_Account {
   public accountType: AccountTypes | null;

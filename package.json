@@ -2,17 +2,20 @@
   "name": "xrpl-accountlib",
   "version": "0.2.0",
   "description": "XRPL Account helper: generation, derivation and signing",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "prepublish": "npm run clean && npm run test && npm run build",
     "clean": "rm -rf dist",
     "build": "tsc",
     "test": "jest"
   },
+  "files": [
+    "src/**/*.js"
+  ],
   "directories": {
     "test": "test"
   },
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "dependencies": {
     "bip39": "^2.5.0",
     "bn.js": "^4.11.8",
@@ -44,5 +47,11 @@
   },
   "homepage": "https://github.com/WietseWind/xrpl-accountlib#readme",
   "license": "MIT",
-  "readmeFilename": "README.md"
+  "readmeFilename": "README.md",
+  "keywords": [
+    "xrp",
+    "xrpl-ledger",
+    "multi sign",
+    "sign"
+  ]
 }

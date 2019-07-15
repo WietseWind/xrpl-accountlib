@@ -12,7 +12,8 @@ export enum AccountTypes {
   Passphrase = "passphrase",
   FamilySeed = "familySeed",
   Mnemonic = "mnemonic",
-  Hex = "hex"
+  Hex = "hex",
+  SecretNumbers = "secretNumbers"
 }
 
 export type KeyPair = {
@@ -28,6 +29,7 @@ export interface AccountOptions {
   address?: string;
   passphrase?: string;
   familySeed?: string;
+  secretNumbers?: string[];
   mnemonic?: string;
   path?: string;
   keypair?: KeyPair;
@@ -44,6 +46,7 @@ export default class XRPL_Account {
     mnemonic: string | null;
     passphrase: string | null;
     path: string | null;
+    secretNumbers: string[] | null;
   };
   public keypair: KeyPair;
   public _signAs?: any;
@@ -58,7 +61,8 @@ export default class XRPL_Account {
       familySeed: null,
       mnemonic: null,
       passphrase: null,
-      path: null
+      path: null,
+      secretNumbers: null
     };
     this.keypair = {
       algorithm: null,
@@ -85,6 +89,11 @@ export default class XRPL_Account {
     if (options.familySeed) {
       this.accountType = AccountTypes.FamilySeed;
       this.secret.familySeed = options.familySeed;
+
+      if (options.secretNumbers) {
+        this.secret.secretNumbers = options.secretNumbers;
+        this.accountType = AccountTypes.SecretNumbers;
+      }
     } else if (options.mnemonic) {
       this.accountType = AccountTypes.Mnemonic;
       this.secret.mnemonic = options.mnemonic;

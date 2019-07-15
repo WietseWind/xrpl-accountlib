@@ -19,6 +19,18 @@
       }
     }
   },
+  "secretNumbers": {
+    "seed": [
+      "479237", "092066", "138573", "322135", "483860", "006477", "252857", "140146"
+    ],
+    "address": "rKUHQ4k95v9MD5rXjHokysBg2zvv8HoJvU",
+    "familySeed": "snJZ8rTHm9EJtahu37BEgSETiHAHA",
+    "keypair": {
+      "algorithm": "secp256k1",
+      "publicKey": "0315E9AB521F4FE57B88591E5917CCF0EDBA03B08491A9E2A2E6C649A513D68CAE",
+      "privateKey": "00ACCBDA72BA1538704D9DEBCFE79B58234B97C7B3676EA61C2F214579BF94F6B9"
+    }
+  },
   "mnemonic": {
     "address": "r3ZVmJFmnoXh8ARBdXkb4LWt11ZLZUXcJi",
     "mnemonic": "lamp elevator orchard music glare night upper race mixture bullet property nasty agent sword blind dynamic gossip life series shrug day ice control reunion",

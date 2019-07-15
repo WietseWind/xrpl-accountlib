@@ -2,5 +2,6 @@
 
 import mnemonic from "./mnemonic";
 import familySeed from "./familySeed";
+import secretNumbers from "./secretNumbers";
 
-export { mnemonic, familySeed };
+export { mnemonic, familySeed, secretNumbers };

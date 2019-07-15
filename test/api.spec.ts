@@ -19,6 +19,14 @@ describe("Api", () => {
       expect(account.keypair).toEqual(fixtures.familySeed.ed25519.keypair);
     });
 
+    test("Secret Numbers", () => {
+      const account = derive.secretNumbers(fixtures.secretNumbers.seed);
+      expect(account.accountType).toBe("secretNumbers");
+      expect(account.address).toBe(fixtures.secretNumbers.address);
+      expect(account.secret.familySeed).toBe(fixtures.secretNumbers.familySeed);
+      expect(account.keypair).toEqual(fixtures.secretNumbers.keypair);
+    });
+
     test("Mnemonic", () => {
       const account = derive.mnemonic(fixtures.mnemonic.mnemonic, {
         passphrase: fixtures.mnemonic.passphrase

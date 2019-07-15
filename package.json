@@ -19,15 +19,15 @@
     "test": "test"
   },
   "dependencies": {
-    "bip39": "^2.5.0",
+    "bip39": "^2.6.0",
     "bn.js": "^4.11.8",
-    "elliptic": "^6.4.1",
-    "hash.js": "^1.1.5",
+    "elliptic": "^6.5.0",
+    "hash.js": "^1.1.7",
     "ripple-address-codec": "^2.0.1",
-    "ripple-binary-codec": "^0.2.0",
+    "ripple-binary-codec": "^0.2.1",
     "ripple-bip32": "0.0.3",
     "ripple-keypairs": "^0.11.0",
-    "ripple-lib": "^1.1.1",
+    "ripple-lib": "^1.2.4",
     "ripple-secret-codec": "^1.0.2",
     "ripple-sign-keypairs": "^1.0.2"
   },

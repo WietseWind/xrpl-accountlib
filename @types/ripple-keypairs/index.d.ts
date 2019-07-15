@@ -6,12 +6,10 @@ declare module "ripple-keypairs" {
 
   export const deriveKeypair: (
     seed: string,
-    options?: {
-      entropy: string;
-    }
+    options?: any
   ) => RippleKeypair;
 
   export const deriveAddress: (publicKey: string) => string;
 
-  export const generateSeed: (options?: { algorithm: string }) => string;
+  export const generateSeed: (options?: { algorithm?: string, entropy?: Buffer | Uint8Array }) => string;
 }

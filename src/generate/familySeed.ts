@@ -6,15 +6,18 @@ import Account, { Algorithms } from "../schema/Account";
 
 type Options = {
   algorithm?: Algorithms;
+  entropy?: Buffer | Uint8Array;
 };
 
 const familySeed = (options: Options = {}): Account => {
-  const algorithm = options.algorithm === "ed25519" ? "ed25519" : "secp256k1";
-  const Familyseed = Keypairs.generateSeed({ algorithm: algorithm });
+  options = Object.assign(options, {
+    algorithm: options.algorithm === "ed25519" ? "ed25519" : "secp256k1"
+  })
+  const Familyseed = Keypairs.generateSeed(options);
   const Keypair = Keypairs.deriveKeypair(Familyseed);
   const Address = Keypairs.deriveAddress(Keypair.publicKey);
   return new Account({
-    algorithm: algorithm,
+    algorithm: options.algorithm,
     address: Address,
     familySeed: Familyseed,
     keypair: Keypair

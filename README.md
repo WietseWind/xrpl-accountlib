@@ -51,6 +51,13 @@ Options:
 - **algorithm**  
   Default: 'secp256k1', alternatively: 'ed25519'
 
+### Secret Numbers `lib.generate.secretNumbers()`
+
+See: 
+
+ - [https://www.npmjs.com/xrpl-secret-numbers](https://www.npmjs.com/xrpl-secret-numbers)
+ - [https://github.com/WietseWind/xrpl-secret-numbers](https://github.com/WietseWind/xrpl-secret-numbers)
+
 ### Mnemonic `lib.generate.mnemonic(options{})`
 
 Options:
@@ -85,6 +92,10 @@ Samples: https://github.com/WietseWind/xrpl-accountlib/blob/master/samples/deriv
 ### Family Seed `lib.derive.familySeed(familyseed'')`
 
 The _familyseed_ argument is required, and should contain a string, like: `sXXXXXXXXX...`
+
+### Secret Numbers `lib.derive.familySeed(secretNumbers''|[])`
+
+The _secretNumbers_ argument is required, and should contain a string, like: `012345 123456 ...` or an array containing **8** elements of the type **string** containing **6 digits**.
 
 ### Mnemonic `lib.derive.mnemonic(mnemonic'', options{})`
 

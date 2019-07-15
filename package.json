@@ -8,7 +8,7 @@
     "prepublish": "npm run clean && npm run test && npm run build",
     "clean": "rm -rf dist",
     "build": "tsc",
-    "test": "jest"
+    "test": "jest --verbose"
   },
   "files": [
     "dist/**/*.js",

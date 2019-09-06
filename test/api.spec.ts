@@ -93,6 +93,18 @@ describe("Api", () => {
       expect(result.signedTransaction).toBeDefined();
     });
 
+    test("One account (SignAs)", () => {
+      const result = sign(
+        fixtures.tx,
+        derive
+          .familySeed(fixtures.familySeed.secp256k1.seed)
+          .signAs("rPEPPER7kfTD9w2To4CQk6UCfuHM9c6GDY")
+      );
+      expect(result.type).toBe("SignedTx");
+      expect(result.id).toBeDefined();
+      expect(result.signedTransaction).toBeDefined();
+    });
+
     test("MultiSign", () => {
       const result = sign(fixtures.tx, [
         derive.familySeed(fixtures.familySeed.secp256k1.seed),

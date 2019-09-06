@@ -39,7 +39,7 @@ const sign = (
     let signAs = {};
     if (typeof accounts[0]._signAs === "string" && accounts[0]._signAs !== "") {
       // signAs explicitly set
-      signAs = { signAs: accounts[0].signAs };
+      signAs = { signAs: accounts[0]._signAs };
     }
     const tx = Sign(txJSON, accounts[0].keypair, signAs);
     return {

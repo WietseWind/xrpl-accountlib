@@ -14,7 +14,7 @@ type signedObject = {
 
 const sign = (
   transaction: Object,
-  account: Account | Account[]
+  account?: Account | Account[]
 ): signedObject => {
   let accounts = [];
 
@@ -58,12 +58,12 @@ const sign = (
     const RippleLibApi = require("ripple-lib").RippleAPI;
     const RippleApi = new RippleLibApi();
     const Codec = require("ripple-binary-codec");
-
+    
     const MultiSignedTransactionBinary = (() => {
       if (
         transaction instanceof Object &&
         Array.isArray(transaction) &&
-        typeof Account === "undefined" &&
+        accounts.length === 0 &&
         transaction.length > 0
       ) {
         if (
@@ -79,7 +79,7 @@ const sign = (
           // MultiSign [ { signedTransaction: ... } , ... ]
           return RippleApi.combine(
             transaction.map(t => {
-              return t.signedTransaction;
+              return t.signedTransaction.toUpperCase();
             })
           );
         } else if (

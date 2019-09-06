@@ -131,4 +131,24 @@ describe("Api", () => {
       expect(result.signers.length).toBe(2);
     });
   });
+
+  /* Combine ==================================================================== */
+
+  describe("Combine", () => {
+    test("Text HEX", () => {
+      const result = sign(fixtures.multisignedHex);
+      expect(result.type).toBe("MultiSignedTx");
+      expect(result.id).toBeDefined();
+      expect(result.signedTransaction.length).toBeGreaterThan(10);
+    });
+
+    test("Object HEX", () => {
+      const result = sign(fixtures.multisignedHex.map((r: string) => {
+        return { signedTransaction: r }
+      }));
+      expect(result.type).toBe("MultiSignedTx");
+      expect(result.id).toBeDefined();
+      expect(result.signedTransaction.length).toBeGreaterThan(10);
+    });
+  });
 });

@@ -1,6 +1,6 @@
 "use strict";
 
-import Bip39 from "bip39";
+import { mnemonicToSeedSync } from "bip39";
 import Bip32 from "ripple-bip32";
 import Keypairs from "ripple-keypairs";
 
@@ -31,7 +31,7 @@ const mnemonic = (words: string, options: options = {}) => {
 
   const Path = `m/44'/144'/${accountPath}'/${changePath}/${addressIndex}`;
 
-  const Seed = Bip39.mnemonicToSeed(words, passphrase);
+  const Seed = mnemonicToSeedSync(words, passphrase);
   const m = Bip32.fromSeedBuffer(Seed);
   const Keypair = m.derivePath(Path).keyPair.getKeyPairs();
   const Address = Keypairs.deriveAddress(Keypair.publicKey);

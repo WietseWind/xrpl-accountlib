@@ -1,6 +1,6 @@
 "use strict";
 
-import Bip39 from "bip39";
+import { wordlists, mnemonicToSeedSync, generateMnemonic } from "bip39";
 import Bip32 from "ripple-bip32";
 import Keypairs from "ripple-keypairs";
 
@@ -21,10 +21,10 @@ const mnemonic = (options: Options = {}): Account => {
 
   const Wordlist =
     options.wordlist &&
-    Object.keys(Bip39.wordlists).indexOf(options.wordlist) > -1
-      ? Bip39.wordlists[options.wordlist as keyof typeof Bip39.wordlists]
+    Object.keys(wordlists).indexOf(options.wordlist) > -1
+      ? wordlists[options.wordlist as keyof typeof wordlists]
       : undefined;
-  const words = Bip39.generateMnemonic(strength, undefined, Wordlist);
+  const words = generateMnemonic(strength, undefined, Wordlist);
 
   const accountPath =
     options.accountPath && !isNaN(parseInt(options.accountPath))
@@ -41,7 +41,7 @@ const mnemonic = (options: Options = {}): Account => {
 
   const Path = `m/44'/144'/${accountPath}'/${changePath}/${addressIndex}`;
 
-  const Seed = Bip39.mnemonicToSeed(words, passphrase);
+  const Seed = mnemonicToSeedSync(words, passphrase);
   const m = Bip32.fromSeedBuffer(Seed);
   const Keypair = m.derivePath(Path).keyPair.getKeyPairs();
   const Address = Keypairs.deriveAddress(Keypair.publicKey);

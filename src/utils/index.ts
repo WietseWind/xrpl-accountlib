@@ -1,7 +1,7 @@
 "use strict";
 
 import BN from "bn.js";
-import AddressCodec from "ripple-address-codec";
+import * as AddressCodec from "ripple-address-codec";
 import Bip39 from "bip39";
 
 function bytesToHex(a: number[]): string {
@@ -22,8 +22,12 @@ function getAlgorithmFromKey(key: string) {
   return bytes.length === 33 && bytes[0] === 0xed ? "ed25519" : "secp256k1";
 }
 
+function isValidClassicAddress(address: string): boolean {
+  return AddressCodec.isValidClassicAddress(address);
+}
+
 function isValidAddress(address: string): boolean {
-  return AddressCodec.isValidAddress(address);
+  return isValidClassicAddress(address);
 }
 
 function isValidSeed(seed: string): boolean {
@@ -39,6 +43,7 @@ export {
   hexToBytes,
   getAlgorithmFromKey,
   isValidAddress,
+  isValidClassicAddress,
   isValidSeed,
   isValidMnemnic
 };

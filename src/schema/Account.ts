@@ -1,5 +1,5 @@
 import Keypairs from "ripple-keypairs";
-import AddressCodec from "ripple-address-codec";
+import * as AddressCodec from "ripple-address-codec";
 import * as Elliptic from "elliptic";
 import * as Utils from "../utils";
 
@@ -74,7 +74,7 @@ export default class XRPL_Account {
      * Check & apply address
      */
     if (options.address) {
-      if (AddressCodec.isValidAddress(options.address)) {
+      if (AddressCodec.isValidClassicAddress(options.address)) {
         this.address = options.address;
       }
     }
@@ -162,7 +162,7 @@ export default class XRPL_Account {
   }
 
   signAs(address: string) {
-    if (AddressCodec.isValidAddress(address)) {
+    if (AddressCodec.isValidClassicAddress(address)) {
       this._signAs = address;
     } else {
       throw new Error(

@@ -3434,9 +3434,9 @@ ripple-lib-transactionparser@0.8.0:
     lodash "^4.17.4"
 
 ripple-lib@^1.3.4:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/ripple-lib/-/ripple-lib-1.4.1.tgz#819bc366464a5398eb68420340700a2565ca67b2"
-  integrity sha512-23wK5xia65h8NndppTay55a8y7ZFnfVpTraQ3JTouMli0hIu/cOVlOwytLMxLmcLgI82TNnMK2Qujh49CGRAGw==
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/ripple-lib/-/ripple-lib-1.4.2.tgz#2e47f8e3e6ef87779f767a1cc93c4f6105ef1d9d"
+  integrity sha512-xFJI0R8GZR8tu+jSEhO2PKs4G0iOAsiyOKT3iOofIUw3IjLAPbcwkm8MulNcd859S/Qp1ZyNr4q6aLvPHf2KTA==
   dependencies:
     "@types/lodash" "^4.14.136"
     "@types/ws" "^6.0.3"

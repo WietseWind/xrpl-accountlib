@@ -1,6 +1,6 @@
 {
   "name": "xrpl-accountlib",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "description": "XRPL Account helper: generation, derivation and signing",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

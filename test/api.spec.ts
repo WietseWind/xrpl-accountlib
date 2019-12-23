@@ -83,9 +83,39 @@ describe("Api", () => {
   /* Sign ==================================================================== */
 
   describe("Sign", () => {
-    test("One account", () => {
+    test("One account using secp256k1", () => {
       const result = sign(
         fixtures.tx,
+        derive.familySeed(fixtures.familySeed.secp256k1.seed)
+      );
+      expect(result.type).toBe("SignedTx");
+      expect(result.id).toBeDefined();
+      expect(result.signedTransaction).toBeDefined();
+    });
+
+    test("One account using mnemonic", () => {
+      const result = sign(
+        fixtures.tx,
+        derive.familySeed(fixtures.familySeed.secp256k1.seed)
+      );
+      expect(result.type).toBe("SignedTx");
+      expect(result.id).toBeDefined();
+      expect(result.signedTransaction).toBeDefined();
+    });
+
+    test("SignIn PseudoTransaction using secp256k1", () => {
+      const result = sign(
+        fixtures.txPseudo,
+        derive.mnemonic(fixtures.mnemonic.mnemonic)
+      );
+      expect(result.type).toBe("SignedTx");
+      expect(result.id).toBeDefined();
+      expect(result.signedTransaction).toBeDefined();
+    });
+
+    test("SignIn PseudoTransaction using mnemonic", () => {
+      const result = sign(
+        fixtures.txPseudo,
         derive.familySeed(fixtures.familySeed.secp256k1.seed)
       );
       expect(result.type).toBe("SignedTx");
@@ -108,13 +138,27 @@ describe("Api", () => {
     test("MultiSign", () => {
       const result = sign(fixtures.tx, [
         derive.familySeed(fixtures.familySeed.secp256k1.seed),
-        derive.familySeed(fixtures.familySeed.ed25519.seed)
+        derive.familySeed(fixtures.familySeed.ed25519.seed),
+        derive.mnemonic(fixtures.mnemonic.mnemonic)
       ]);
 
       expect(result.type).toBe("MultiSignedTx");
       expect(result.id).toBeDefined();
       expect(result.signedTransaction).toBeDefined();
-      expect(result.signers.length).toBe(2);
+      expect(result.signers.length).toBe(3);
+    });
+
+    test("MultiSign Pseudo Transaction (SignIn)", () => {
+      const result = sign(fixtures.txPseudo, [
+        derive.familySeed(fixtures.familySeed.secp256k1.seed),
+        derive.familySeed(fixtures.familySeed.ed25519.seed),
+        derive.mnemonic(fixtures.mnemonic.mnemonic)
+      ]);
+
+      expect(result.type).toBe("MultiSignedTx");
+      expect(result.id).toBeDefined();
+      expect(result.signedTransaction).toBeDefined();
+      expect(result.signers.length).toBe(3);
     });
 
     test("MultiSign (SignAs)", () => {

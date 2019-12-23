@@ -17,6 +17,16 @@ const sign = (
   account?: Account | Account[]
 ): signedObject => {
   let accounts = [];
+  const Tx: any = Object.assign({}, transaction)
+
+  if (Object.keys(Tx).indexOf('TransactionType') > -1) {
+    if (Tx['TransactionType'].toLowerCase() === 'signin') {
+      Object.assign(Tx, {
+        TransactionType: undefined,
+        SignIn: true
+      })
+    }
+  }
 
   if (account instanceof Object && !Array.isArray(account)) {
     if (account instanceof Account) {
@@ -35,7 +45,7 @@ const sign = (
   }
 
   if (accounts.length === 1) {
-    const txJSON = JSON.stringify(transaction);
+    const txJSON = JSON.stringify(Tx);
     let signAs = {};
     if (typeof accounts[0]._signAs === "string" && accounts[0]._signAs !== "") {
       // signAs explicitly set
@@ -105,7 +115,7 @@ const sign = (
         // MultiSign [ lib.sign(...), lib.sign(...) ]
         return RippleApi.combine(
           accounts.map(account => {
-            return Sign(JSON.stringify(transaction), account.keypair, {
+            return Sign(JSON.stringify(Tx), account.keypair, {
               signAs:
                 typeof account._signAs === "string"
                   ? account._signAs

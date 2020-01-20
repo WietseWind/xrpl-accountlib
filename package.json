@@ -36,7 +36,7 @@
     "@types/bip39": "^3.0.0",
     "@types/elliptic": "^6.4.10",
     "@types/jest": "^24.0.24",
-    "@types/node": "^12.12.21",
+    "@types/node": "^13.1.8",
     "jest": "^24.9.0",
     "ts-jest": "^24.2.0",
     "typescript": "^3.7.4"

@@ -17,6 +17,10 @@ function hexToBytes(a: string): number[] {
   return new BN(a, 16).toArray(undefined, a.length / 2);
 }
 
+function bufferToHext(buffer: Buffer): string {
+  return buffer.toString("hex").toUpperCase();
+}
+
 function getAlgorithmFromKey(key: string) {
   const bytes = hexToBytes(key);
   return bytes.length === 33 && bytes[0] === 0xed ? "ed25519" : "secp256k1";
@@ -41,6 +45,7 @@ function isValidMnemnic(words: string): boolean {
 export {
   bytesToHex,
   hexToBytes,
+  bufferToHext,
   getAlgorithmFromKey,
   isValidAddress,
   isValidClassicAddress,

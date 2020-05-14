@@ -417,13 +417,6 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
-"@types/base-x@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@types/base-x/-/base-x-3.0.0.tgz#a1365259d1d3fa3ff973ab543192a6bdd4cb2f90"
-  integrity sha512-vnqSlpsv9uFX5/z8GyKWAfWHhLGJDBkrgRRsnxlsX23DHOlNyqP/eHQiv4TwnYcZULzQIxaWA/xRWU9Dyy4qzw==
-  dependencies:
-    "@types/node" "*"
-
 "@types/bip39@^3.0.0":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@types/bip39/-/bip39-3.0.0.tgz#4b5b9e89196e0c6c3793f1950724b197018daf70"
@@ -1259,23 +1252,10 @@ ecc-jsbn@~0.1.1:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
 
-elliptic@6.5.2, elliptic@^6.5.2:
+elliptic@6.5.2, elliptic@^6.4.0, elliptic@^6.5.2:
   version "6.5.2"
   resolved "https://registry.yarnpkg.com/elliptic/-/elliptic-6.5.2.tgz#05c5678d7173c049d8ca433552224a495d0e3762"
   integrity sha512-f4x70okzZbIQl/NSRLkI/+tteV/9WqL98zx+SQ69KbXxmVrmjwsNUPn/gYJJ0sHvEak24cZgHIPegRePAtA/xw==
-  dependencies:
-    bn.js "^4.4.0"
-    brorand "^1.0.1"
-    hash.js "^1.0.0"
-    hmac-drbg "^1.0.0"
-    inherits "^2.0.1"
-    minimalistic-assert "^1.0.0"
-    minimalistic-crypto-utils "^1.0.0"
-
-elliptic@^6.4.0:
-  version "6.4.1"
-  resolved "https://registry.yarnpkg.com/elliptic/-/elliptic-6.4.1.tgz#c2d0b7776911b86722c632c3c06c60f2f819939a"
-  integrity sha512-BsXLz5sqX8OHcsh7CqBMztyXARmGQ3LWPtGjJi6DiJHq5C/qvi9P3OqgswKSDftbu8+IoI/QDTAm2fFnQ9SZSQ==
   dependencies:
     bn.js "^4.4.0"
     brorand "^1.0.1"
@@ -3148,7 +3128,7 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
-ripple-address-codec@4.1.0:
+ripple-address-codec@4.1.0, ripple-address-codec@^4.0.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/ripple-address-codec/-/ripple-address-codec-4.1.0.tgz#7a119638527f1ccf1eb4aea3d4a8886bc9ccd5c5"
   integrity sha512-C72gJpwvDagaOUiHyh67otqNqFduB4hjvJFiiPz/8I3FCiUYuvFLXeLhb29CEkoAEdoN9p7pPreLgoHUvwzt9w==
@@ -3161,15 +3141,6 @@ ripple-address-codec@^3.0.4:
   resolved "https://registry.yarnpkg.com/ripple-address-codec/-/ripple-address-codec-3.0.4.tgz#a7a8bb040df41cb082330fd828f09b9e6478c7fd"
   integrity sha512-GFk1BgavW+9oy5Z1Cp6YAGMfB51QdbeuhOo0Zir+s+S40F5vHtVZYu6zZE1eOAX92A5kygPuBRX4APH2v8Yhmg==
   dependencies:
-    base-x "3.0.4"
-    create-hash "^1.1.2"
-
-ripple-address-codec@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/ripple-address-codec/-/ripple-address-codec-4.0.0.tgz#c20f39eea38def43d2379462e47bff4adabece30"
-  integrity sha512-PsKl9aytg6fZG2F4RtfPT0c1gj42suAQY9VvJVGz+DfQTdXQaTT9V/StVhaJ6jhVpl7oCd981BB9p2Kq+Kyrng==
-  dependencies:
-    "@types/base-x" "^3.0.0"
     base-x "3.0.4"
     create-hash "^1.1.2"
 
@@ -3224,7 +3195,18 @@ ripple-hashes@latest:
     ripple-address-codec "^3.0.4"
     ripple-binary-codec "^0.2.4"
 
-ripple-keypairs@1.0.0, ripple-keypairs@^1.0.0, ripple-keypairs@latest:
+ripple-keypairs@1.0.1, ripple-keypairs@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/ripple-keypairs/-/ripple-keypairs-1.0.1.tgz#a9e0c0d71f7c40f55a9c3ea7e93190aed7a879d9"
+  integrity sha512-cdVcTfDzYcjbXkrUfno7IPP/d95jiy1TvShv28CZQSPH3HgsKL8IkUQwBDik+fIkDUWBatUWdOR7OVW2N/yGpw==
+  dependencies:
+    bn.js "^5.1.1"
+    brorand "^1.0.5"
+    elliptic "^6.5.2"
+    hash.js "^1.0.3"
+    ripple-address-codec "^4.0.0"
+
+ripple-keypairs@latest:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/ripple-keypairs/-/ripple-keypairs-1.0.0.tgz#8f1c604f89daeac5e61b7eebbbca2da99da2bacf"
   integrity sha512-MQ3d6fU3D+Cqu5ma4dfkfa+KakN2sKpVVVN0FeJyAYPVIGXu8Rcvd1g028TdwYAZcSYk0tGn5UhHxd0gUG3T8g==

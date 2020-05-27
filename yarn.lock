@@ -417,13 +417,6 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
-"@types/base-x@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@types/base-x/-/base-x-3.0.0.tgz#a1365259d1d3fa3ff973ab543192a6bdd4cb2f90"
-  integrity sha512-vnqSlpsv9uFX5/z8GyKWAfWHhLGJDBkrgRRsnxlsX23DHOlNyqP/eHQiv4TwnYcZULzQIxaWA/xRWU9Dyy4qzw==
-  dependencies:
-    "@types/node" "*"
-
 "@types/bip39@^3.0.0":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@types/bip39/-/bip39-3.0.0.tgz#4b5b9e89196e0c6c3793f1950724b197018daf70"
@@ -569,10 +562,12 @@ acorn@^6.0.1:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-6.1.1.tgz#7d25ae05bb8ad1f9b699108e1094ecd7884adc1f"
   integrity sha512-jPTiwtOxaHNaAPg/dmrJ/beuzLRnXtB0kQPQ8JpotKJgTB6rX6c8mlf315941pyjBSaPg8NHXS9fhP4u17DpGA==
 
-agent-base@5:
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/agent-base/-/agent-base-5.1.1.tgz#e8fb3f242959db44d63be665db7a8e739537a32c"
-  integrity sha512-TMeqbNl2fMW0nMjTEPOwe3J/PRFP4vqeoNuQMG0HlMrtm5QxKqdvAkZ1pRBQ/ulIyDD5Yq0nJ7YbdD8ey0TO3g==
+agent-base@6:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/agent-base/-/agent-base-6.0.0.tgz#5d0101f19bbfaed39980b22ae866de153b93f09a"
+  integrity sha512-j1Q7cSCqN+AwrmDd+pzgqc0/NpC655x2bUf5ZjRIO77DcNBFmh+OgRNzF6OKdCC9RSCb19fGd99+bhXFdkRNqw==
+  dependencies:
+    debug "4"
 
 ajv@^6.5.5:
   version "6.10.0"
@@ -846,7 +841,7 @@ bn.js@5.1.1, bn.js@^5.1.1:
   resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-5.1.1.tgz#48efc4031a9c4041b9c99c6941d903463ab62eb5"
   integrity sha512-IUTD/REb78Z2eodka1QZyyEk66pciRcP6Sroka0aI3tG/iwIdYLrBD62RsubR7vqdt3WyX8p4jxeatzmRSphtA==
 
-bn.js@^4.11.3, bn.js@^4.11.8, bn.js@^4.4.0:
+bn.js@^4.11.8, bn.js@^4.4.0:
   version "4.11.8"
   resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.11.8.tgz#2cde09eb5ee341f484746bb0309b3253b1b1442f"
   integrity sha512-ItfYfPLkWHUjckQCk8xC+LwxgK8NYcXywGigJgSwOP8Y2iyWT4f2vsZnoOXTTbo+o5yXmIUJ4gn5538SO5S3gA==
@@ -1179,11 +1174,6 @@ decimal.js@^10.2.0:
   version "10.2.0"
   resolved "https://registry.yarnpkg.com/decimal.js/-/decimal.js-10.2.0.tgz#39466113a9e036111d02f82489b5fd6b0b5ed231"
   integrity sha512-vDPw+rDgn3bZe1+F/pyEwb1oMG2XTlRVgAa6B4KccTEpYgF8w6eQllVbQcfIJnZyvzFtFpxnpGtx8dd7DJp/Rw==
-
-decimal.js@^5.0.8:
-  version "5.0.8"
-  resolved "https://registry.yarnpkg.com/decimal.js/-/decimal.js-5.0.8.tgz#b48c3fb7d73a2d4d4940e0b38f1cd21db5b367ce"
-  integrity sha1-tIw/t9c6LU1JQOCzjxzSHbWzZ84=
 
 decode-uri-component@^0.2.0:
   version "0.2.0"
@@ -1705,12 +1695,12 @@ http-signature@~1.2.0:
     jsprim "^1.2.2"
     sshpk "^1.7.0"
 
-https-proxy-agent@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/https-proxy-agent/-/https-proxy-agent-4.0.0.tgz#702b71fb5520a132a66de1f67541d9e62154d82b"
-  integrity sha512-zoDhWrkR3of1l9QAL8/scJZyLu8j/gBkcwcaQOZh7Gyh/+uJQzGVETdgT30akuwkpL8HTRfssqI3BZuV18teDg==
+https-proxy-agent@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/https-proxy-agent/-/https-proxy-agent-5.0.0.tgz#e2a90542abb68a762e0a0850f6c9edadfd8506b2"
+  integrity sha512-EkYm5BcKUGiduxzSt3Eppko+PiNWNEpa4ySk9vTC6wDsQJW9rHSa+UhGNJoRYp7bz6Ht1eaRIa6QaJqO5rCFbA==
   dependencies:
-    agent-base "5"
+    agent-base "6"
     debug "4"
 
 iconv-lite@0.4.24:
@@ -3164,16 +3154,15 @@ ripple-address-codec@^3.0.4:
     base-x "3.0.4"
     create-hash "^1.1.2"
 
-ripple-address-codec@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/ripple-address-codec/-/ripple-address-codec-4.0.0.tgz#c20f39eea38def43d2379462e47bff4adabece30"
-  integrity sha512-PsKl9aytg6fZG2F4RtfPT0c1gj42suAQY9VvJVGz+DfQTdXQaTT9V/StVhaJ6jhVpl7oCd981BB9p2Kq+Kyrng==
+ripple-address-codec@^4.0.0, ripple-address-codec@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/ripple-address-codec/-/ripple-address-codec-4.1.1.tgz#48e5d76b00b6b9752b1d376646d5abbcd3c8bd67"
+  integrity sha512-mcVD8f7+CH6XaBnLkRcmw4KyHMufa0HTJE3TYeaecwleIQASLYVenjQmVJLgmJQcDUS2Ldh/EltqktmiFMFgkg==
   dependencies:
-    "@types/base-x" "^3.0.0"
-    base-x "3.0.4"
+    base-x "3.0.7"
     create-hash "^1.1.2"
 
-ripple-binary-codec@0.2.6, ripple-binary-codec@^0.2.5, ripple-binary-codec@latest:
+ripple-binary-codec@0.2.6, ripple-binary-codec@^0.2.4, ripple-binary-codec@^0.2.5, ripple-binary-codec@latest:
   version "0.2.6"
   resolved "https://registry.yarnpkg.com/ripple-binary-codec/-/ripple-binary-codec-0.2.6.tgz#a8c45c905c12d5dc6fa7e179c3584d56fb8bdb07"
   integrity sha512-k0efyjpcde7p+rJ9PXW9tJSYsUDdlC9Z9xU7OPM7fJiHVKlR1E7nfu0jqw9vVXtTG3tujqKeEgtcb8yaa7rMXA==
@@ -3185,19 +3174,6 @@ ripple-binary-codec@0.2.6, ripple-binary-codec@^0.2.5, ripple-binary-codec@lates
     inherits "^2.0.1"
     lodash "^4.17.15"
     ripple-address-codec "^4.0.0"
-
-ripple-binary-codec@^0.2.4:
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/ripple-binary-codec/-/ripple-binary-codec-0.2.4.tgz#555d64c52182a215222af6045b5170e43f0530b1"
-  integrity sha512-lfT9bybaVqA8IJmGFnSWaISCXmwvNY/P5HHKm6zQ1yTIXJpC+hDIeQqm/eD/2HLv82y2IvqGYd0GhEQ41lpNpQ==
-  dependencies:
-    babel-runtime "^6.6.1"
-    bn.js "^4.11.3"
-    create-hash "^1.1.2"
-    decimal.js "^5.0.8"
-    inherits "^2.0.1"
-    lodash "^4.17.15"
-    ripple-address-codec "^3.0.4"
 
 ripple-bs58@^4.0.0:
   version "4.0.1"
@@ -3243,19 +3219,19 @@ ripple-lib-transactionparser@0.8.2:
     bignumber.js "^9.0.0"
     lodash "^4.17.15"
 
-ripple-lib@1.6.4:
-  version "1.6.4"
-  resolved "https://registry.yarnpkg.com/ripple-lib/-/ripple-lib-1.6.4.tgz#56458bd08a59b38646c832b9dca3e9c8bb439758"
-  integrity sha512-6PDooo5b23oY89WVQ+IqTDerG8FXYeu4ZuprrIbqe7/A3Iy6zCGatez9AcNMgUnq+bCk3P/oylJXrBYLqpe3bA==
+ripple-lib@1.7.1:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/ripple-lib/-/ripple-lib-1.7.1.tgz#f9b3de525791749d3fb770e301989834afbaf15a"
+  integrity sha512-sulON8v8rfcofC0h18hzOkOfnegz0wz87FaqfN9D4Y3exSgSM5Nm1YLdcp5pdY89Y2fvD1OOWXJ6S/q1nU7LOw==
   dependencies:
     "@types/lodash" "^4.14.136"
     "@types/ws" "^7.2.0"
     bignumber.js "^9.0.0"
-    https-proxy-agent "^4.0.0"
+    https-proxy-agent "^5.0.0"
     jsonschema "1.2.2"
     lodash "^4.17.4"
     lodash.isequal "^4.5.0"
-    ripple-address-codec "^4.0.0"
+    ripple-address-codec "^4.1.1"
     ripple-binary-codec "^0.2.5"
     ripple-keypairs "^1.0.0"
     ripple-lib-transactionparser "0.8.2"

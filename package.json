@@ -22,7 +22,7 @@
     "bip32": "2.0.5",
     "bip39": "3.0.2",
     "bn.js": "5.1.1",
-    "elliptic": "6.5.2",
+    "elliptic": "6.5.3",
     "hash.js": "1.1.7",
     "ripple-address-codec": "4.1.0",
     "ripple-binary-codec": "0.2.6",

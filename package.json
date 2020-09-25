@@ -19,26 +19,26 @@
     "test": "test"
   },
   "dependencies": {
-    "bip32": "2.0.5",
-    "bip39": "3.0.2",
-    "bn.js": "5.1.1",
-    "elliptic": "6.5.2",
-    "hash.js": "1.1.7",
-    "ripple-address-codec": "4.1.0",
-    "ripple-binary-codec": "0.2.6",
-    "ripple-keypairs": "1.0.0",
-    "ripple-lib": "1.6.4",
-    "ripple-secret-codec": "1.0.2",
+    "bip32": "*",
+    "bip39": "*",
+    "bn.js": "*",
+    "elliptic": "*",
+    "hash.js": "*",
+    "ripple-address-codec": "*",
+    "ripple-binary-codec": "*",
+    "ripple-keypairs": "*",
+    "ripple-lib": "*",
+    "ripple-secret-codec": "*",
     "ripple-sign-keypairs": "git+https://github.com/WietseWind/node-ripple-sign-keypairs.git",
-    "xrpl-secret-numbers": "0.2.1"
+    "xrpl-secret-numbers": "*"
   },
   "devDependencies": {
     "@types/bip39": "^3.0.0",
     "@types/elliptic": "^6.4.12",
     "@types/jest": "^25.1.3",
     "@types/node": "^13.7.6",
-    "jest": "^24.9.0",
-    "ts-jest": "^24.2.0",
+    "jest": "^26.4.2",
+    "ts-jest": "^26.4.0",
     "typescript": "^3.8.2"
   },
   "repository": {

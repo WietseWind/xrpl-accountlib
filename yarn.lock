@@ -3286,7 +3286,7 @@ ripple-address-codec@^3.0.4:
     base-x "3.0.4"
     create-hash "^1.1.2"
 
-ripple-binary-codec@*, ripple-binary-codec@^1.0.2, ripple-binary-codec@latest:
+ripple-binary-codec@*, ripple-binary-codec@latest:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/ripple-binary-codec/-/ripple-binary-codec-1.0.2.tgz#a6a70d104f115300ceb0b01c70aafc2970952474"
   integrity sha512-KfkUZ3GHuhapDCB7OLiCMugo/vaxaRJyXeUeOOPuLNqCfd8U6zvG5wgDVae/6u0zyalZiR3b80kMGxGN0ZrtMA==
@@ -3295,7 +3295,7 @@ ripple-binary-codec@*, ripple-binary-codec@^1.0.2, ripple-binary-codec@latest:
     decimal.js "^10.2.0"
     ripple-address-codec "^4.1.1"
 
-ripple-binary-codec@^0.2.4:
+ripple-binary-codec@^0.2.4, ripple-binary-codec@^0.2.7:
   version "0.2.7"
   resolved "https://registry.yarnpkg.com/ripple-binary-codec/-/ripple-binary-codec-0.2.7.tgz#c5390e97e4072747a3ff386ee99558b496c6e5ab"
   integrity sha512-VD+sHgZK76q3kmO765klFHPDCEveS5SUeg/bUNVpNrj7w2alyDNkbF17XNbAjFv+kSYhfsUudQanoaSs2Y6uzw==
@@ -3353,9 +3353,9 @@ ripple-lib-transactionparser@0.8.2:
     lodash "^4.17.15"
 
 ripple-lib@*:
-  version "1.8.1"
-  resolved "https://registry.yarnpkg.com/ripple-lib/-/ripple-lib-1.8.1.tgz#e05447ac13038a38352c0ac3fe18b12770558861"
-  integrity sha512-5K0wCpQG441g9BZ+ZnD1VgvTTAqJglpfEb9BZiNzwm4xICiJrgZRNUG9PzVbEoRjtPb3HVELaUezpK/tO4rUGw==
+  version "1.8.2"
+  resolved "https://registry.yarnpkg.com/ripple-lib/-/ripple-lib-1.8.2.tgz#d36dafcb64a913a5dab8a2f66a3b0727baaa9347"
+  integrity sha512-7fLQtiXb8LfyedkXQtDSNQPy7omNu7rGUO8M8bK2qiE+DuX4FPl8B8tVJbxBwOusAuYzdoVQfZtfdXt4WmBpmw==
   dependencies:
     "@types/lodash" "^4.14.136"
     "@types/ws" "^7.2.0"
@@ -3365,7 +3365,7 @@ ripple-lib@*:
     lodash "^4.17.4"
     lodash.isequal "^4.5.0"
     ripple-address-codec "^4.1.1"
-    ripple-binary-codec "^1.0.2"
+    ripple-binary-codec "^0.2.7"
     ripple-keypairs "^1.0.0"
     ripple-lib-transactionparser "0.8.2"
     ws "^7.2.0"

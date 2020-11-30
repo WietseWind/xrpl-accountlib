@@ -3,6 +3,9 @@
 import BN from "bn.js";
 import * as AddressCodec from "ripple-address-codec";
 import Bip39 from "bip39";
+import * as elliptic from 'elliptic'
+import {deriveAddress} from 'ripple-keypairs'
+import assert from 'assert'
 
 function bytesToHex(a: number[]): string {
   return a
@@ -42,6 +45,19 @@ function isValidMnemnic(words: string): boolean {
   return Bip39.validateMnemonic(words);
 }
 
+function compressPubKey(uncompressedPubKey: string, curve = 'secp256k1'): string {  
+  const validCurves = ['curve25519', 'ed25519', 'secp256k1']
+  assert(validCurves.indexOf(curve) > -1, 'Unsupported curve')
+  assert(typeof uncompressedPubKey === 'string', 'Uncompressed PubKey: not hex string')
+  assert(uncompressedPubKey.length === 130, 'Uncompressed pubkey: not 1+32+32 length')
+
+  // @ts-ignore
+  const c = elliptic.curves[curve].curve
+  const p = c.point(uncompressedPubKey.slice(2, 66), uncompressedPubKey.slice(66))
+
+  return p.encodeCompressed('hex').toUpperCase()
+}
+
 export {
   bytesToHex,
   hexToBytes,
@@ -50,5 +66,7 @@ export {
   isValidAddress,
   isValidClassicAddress,
   isValidSeed,
-  isValidMnemnic
+  isValidMnemnic,
+  deriveAddress,
+  compressPubKey
 };

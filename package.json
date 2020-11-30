@@ -1,6 +1,6 @@
 {
   "name": "xrpl-accountlib",
-  "version": "0.3.7",
+  "version": "0.4.0",
   "description": "XRPL Account helper: generation, derivation and signing",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -19,18 +19,19 @@
     "test": "test"
   },
   "dependencies": {
-    "bip32": "*",
-    "bip39": "*",
-    "bn.js": "*",
-    "elliptic": "*",
-    "hash.js": "*",
-    "ripple-address-codec": "*",
-    "ripple-binary-codec": "*",
-    "ripple-keypairs": "*",
-    "ripple-lib": "*",
-    "ripple-secret-codec": "*",
-    "ripple-sign-keypairs": "git+https://github.com/WietseWind/node-ripple-sign-keypairs.git",
-    "xrpl-secret-numbers": "*"
+    "assert": "^2.0.0",
+    "bip32": "^2.0.5",
+    "bip39": "^3.0.2",
+    "bn.js": "^5.1.1",
+    "elliptic": "^6.5.3",
+    "hash.js": "^1.1.7",
+    "ripple-address-codec": "^4.1.0",
+    "ripple-binary-codec": "^0.2.7",
+    "ripple-keypairs": "^1.0.0",
+    "ripple-lib": "^1.6.4",
+    "ripple-secret-codec": "^1.0.2",
+    "ripple-sign-keypairs": "https://github.com/WietseWind/node-ripple-sign-keypairs.git",
+    "xrpl-secret-numbers": "^0.2.1"
   },
   "devDependencies": {
     "@types/bip39": "^3.0.0",

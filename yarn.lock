@@ -607,10 +607,10 @@
   "resolved" "https://registry.npmjs.org/@types/lodash/-/lodash-4.14.165.tgz"
   "version" "4.14.165"
 
-"@types/node@*", "@types/node@^13.7.6":
-  "integrity" "sha512-g8D1HF2dMDKYSDl5+79izRwRgNPsSynmWMbj50mj7GZ0b7Lv4p8EmZjbo3h0h+6iLr6YmVz9VnF6XVZ3O6V1Ug=="
-  "resolved" "https://registry.npmjs.org/@types/node/-/node-13.13.34.tgz"
-  "version" "13.13.34"
+"@types/node@*", "@types/node@^14.0.10":
+  "integrity" "sha512-J32dgx2hw8vXrSbu4ZlVhn1Nm3GbeCFNw2FWL8S5QKucHGY0cyNwjdQdO+KMBZ4wpmC7KhLCiNsdk1RFRIYUQQ=="
+  "resolved" "https://registry.npmjs.org/@types/node/-/node-14.14.10.tgz"
+  "version" "14.14.10"
 
 "@types/node@10.12.18":
   "integrity" "sha512-fh+pAqt4xRzPfqA6eh3Z2y6fyZavRIumvjhaCL753+TVkGKGhpPeyrJG2JftD0T9q4GF00KjefsQ+PQNDdWQaQ=="
@@ -939,7 +939,7 @@
   dependencies:
     "tweetnacl" "^0.14.3"
 
-"big-integer@latest":
+"big-integer@^1.6.48", "big-integer@latest":
   "integrity" "sha512-j51egjPa7/i+RdiRuJbPdJ2FIUYYPhvYLjzoYbcMMm62ooO6F94fETG4MTs46zPAF9Brs04OajboA/qTGuz78w=="
   "resolved" "https://registry.npmjs.org/big-integer/-/big-integer-1.6.48.tgz"
   "version" "1.6.48"
@@ -3539,7 +3539,7 @@
     "base-x" "3.0.7"
     "create-hash" "^1.1.2"
 
-"ripple-binary-codec@^0.2.4", "ripple-binary-codec@^0.2.7", "ripple-binary-codec@latest":
+"ripple-binary-codec@^0.2.4":
   "integrity" "sha512-VD+sHgZK76q3kmO765klFHPDCEveS5SUeg/bUNVpNrj7w2alyDNkbF17XNbAjFv+kSYhfsUudQanoaSs2Y6uzw=="
   "resolved" "https://registry.npmjs.org/ripple-binary-codec/-/ripple-binary-codec-0.2.7.tgz"
   "version" "0.2.7"
@@ -3551,6 +3551,29 @@
     "inherits" "^2.0.4"
     "lodash" "^4.17.15"
     "ripple-address-codec" "^4.1.0"
+
+"ripple-binary-codec@^0.2.7":
+  "integrity" "sha512-VD+sHgZK76q3kmO765klFHPDCEveS5SUeg/bUNVpNrj7w2alyDNkbF17XNbAjFv+kSYhfsUudQanoaSs2Y6uzw=="
+  "resolved" "https://registry.npmjs.org/ripple-binary-codec/-/ripple-binary-codec-0.2.7.tgz"
+  "version" "0.2.7"
+  dependencies:
+    "babel-runtime" "^6.26.0"
+    "bn.js" "^5.1.1"
+    "create-hash" "^1.2.0"
+    "decimal.js" "^10.2.0"
+    "inherits" "^2.0.4"
+    "lodash" "^4.17.15"
+    "ripple-address-codec" "^4.1.0"
+
+"ripple-binary-codec@^1.1.0-beta.0", "ripple-binary-codec@latest":
+  "integrity" "sha512-brpgGK6bIg/KrAr0S81tGDgnK11zLVZKuZ7Y3D7kAwwcc7HvMaCC5N0CNf2wU22fImg8Mjc+Yxc9L5DcuL4Ijw=="
+  "resolved" "https://registry.npmjs.org/ripple-binary-codec/-/ripple-binary-codec-1.1.0-beta.0.tgz"
+  "version" "1.1.0-beta.0"
+  dependencies:
+    "big-integer" "^1.6.48"
+    "create-hash" "^1.2.0"
+    "decimal.js" "^10.2.0"
+    "ripple-address-codec" "^4.1.1"
 
 "ripple-bs58@^4.0.0":
   "integrity" "sha512-qV88Ls19OIcTt5e70Helj9aLfuFA1f9HLv1EfUGqMXOLgJhpotzfdcn+rXo9oYHd31BvPT/q64BuRKP5IEM+AA=="
@@ -3567,7 +3590,7 @@
     "create-hash" "^1.1.0"
     "ripple-bs58" "^4.0.0"
 
-"ripple-hashes@latest":
+"ripple-hashes@^0.3.4", "ripple-hashes@latest":
   "integrity" "sha512-u2kgg9Yu9D44HWnC9R2lNg+amVLllJkMQmXZEEM2DAMFXigr4+ph1O8LLxLv+k0fbdjAjos4aUyWwcw6cxzYMw=="
   "resolved" "https://registry.npmjs.org/ripple-hashes/-/ripple-hashes-0.3.4.tgz"
   "version" "0.3.4"
@@ -4188,7 +4211,7 @@
   "resolved" "https://registry.npmjs.org/typeforce/-/typeforce-1.18.0.tgz"
   "version" "1.18.0"
 
-"typescript@^3.8.2", "typescript@>=3.8 <5.0":
+"typescript@^3.9.5", "typescript@>=3.8 <5.0":
   "integrity" "sha512-BLbiRkiBzAwsjut4x/dsibSTB6yWpwT5qWmC2OfuCg3GgVQCSgMs4vEctYPhsaGtd0AeuuHMkjZ2h2WG8MSzRw=="
   "resolved" "https://registry.npmjs.org/typescript/-/typescript-3.9.7.tgz"
   "version" "3.9.7"

@@ -6,7 +6,7 @@ const TxToMultiSign = {
   Sequence: 12855634,
   Fee: '500',
   Amount: '1337',
-  Account: 'rG9eprWEMoVyoesnVaouEJ26UEwXszpNJ8',
+  Account: accounts.wietse.accountAddress,
   Destination: 'rwietsevLFg8XSmG3bEZzFein1g8RBqWDZ'
 }
 

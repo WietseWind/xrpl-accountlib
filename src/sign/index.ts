@@ -3,7 +3,7 @@
 import Sign from "ripple-sign-keypairs";
 import Account from "../schema/Account";
 
-type signedObject = {
+type SignedObject = {
   type: "SignedTx" | "MultiSignedTx";
   id: string;
   signedTransaction: string;
@@ -12,9 +12,9 @@ type signedObject = {
 };
 
 const sign = (
-  transaction: Record<string, unknown>,
+  transaction: Object,
   account?: Account | Account[]
-): signedObject => {
+): SignedObject => {
   let accounts = [];
   const Tx: any = Object.assign({}, transaction)
 
@@ -141,7 +141,7 @@ export {
 };
 
 export type {
-  signedObject
+  SignedObject
 };
 
 export default sign;

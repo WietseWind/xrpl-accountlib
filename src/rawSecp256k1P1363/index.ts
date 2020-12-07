@@ -7,136 +7,138 @@ import {RippleAPI} from 'ripple-lib'
 import {decode} from 'ripple-binary-codec'
 
 type PreparedRawSecp256k1P1363Transaction = {
-  UncompressedPubKey: string
-  SigningPubKey: string
-  MultiSign: boolean
-  Transaction: Record<string, unknown>
-  Message: string
-  HashToSign: string
+  uncompressedPubKey: string
+  signingPubKey: string
+  multiSign: boolean
+  transaction: Record<string, unknown>
+  message: string
+  hashToSign: string
 }
 
-type SignedRawSecp256k1P1363Transaction = {
-  TxnSignature: string
-  SignatureVerifies: boolean
-  TxJson: Record<string, unknown>
-  TxBlob: string
-  TxId: string
+type SignedRawSecp256k1P1363Object = {
+  type: "SignedTx" | "MultiSignedTx";
+  txnSignature: string
+  signatureVerifies: boolean
+  txJson: Record<string, unknown>
+  signedTransaction: string
+  id: string,
 }
 
 type SignerAndSignature = {
-  PubKey: string
-  Signature: string
+  pubKey: string
+  signature: string
 }
 
-const assertUncompressedPubKey = (UncompressedPubKey: string): void => {
-  assert(typeof UncompressedPubKey === 'string', 'Uncompressed PubKey: string expected')
-  assert(UncompressedPubKey.length === 130, 'Uncompressed PubKey: incorrect length')
-  assert(UncompressedPubKey.slice(0, 2) === '04', 'Uncompressed PubKey: should start with "04"')
+const assertUncompressedPubKey = (uncompressedPubKey: string): void => {
+  assert(typeof uncompressedPubKey === 'string', 'Uncompressed PubKey: string expected')
+  assert(uncompressedPubKey.length === 130, 'Uncompressed PubKey: incorrect length')
+  assert(uncompressedPubKey.slice(0, 2) === '04', 'Uncompressed PubKey: should start with "04"')
 }
 
 /**
  * Prepare a transaction for a RawSecp256k1P1363 card: get Hash to sign
  */
 const prepare = (
-  TxJson: Record<string, unknown>,
-  UncompressedPubKey: string,
-  MultiSign = false
+  txJson: Record<string, unknown>,
+  uncompressedPubKey: string,
+  multiSign = false
 ): PreparedRawSecp256k1P1363Transaction => {
-  assertUncompressedPubKey(UncompressedPubKey)
+  assertUncompressedPubKey(uncompressedPubKey)
   
-  const SigningPubKey = Utils.compressPubKey(UncompressedPubKey)
+  const signingPubKey = Utils.compressPubKey(uncompressedPubKey)
 
-  const Transaction = Object.assign({}, TxJson)
-  assert(typeof Transaction === 'object' && Transaction !== null, 'Transaction: Object expected')
-  if (typeof Transaction.SigningPubKey === 'undefined') {
-    Object.assign(Transaction, {SigningPubKey})
+  const transaction = Object.assign({}, txJson)
+  assert(typeof transaction === 'object' && transaction !== null, 'Transaction: Object expected')
+  if (typeof transaction.signingPubKey === 'undefined') {
+    Object.assign(transaction, {signingPubKey})
   }
 
-  if (MultiSign) {
-    Object.assign(Transaction, {SigningPubKey: ''})
+  if (multiSign) {
+    Object.assign(transaction, {signingPubKey: ''})
   }
 
-  const Message = Utils.encodeTransaction(
-    Transaction,
-    MultiSign
-      ? Utils.deriveAddress(SigningPubKey)
+  const message = Utils.encodeTransaction(
+    transaction,
+    multiSign
+      ? Utils.deriveAddress(signingPubKey)
       : undefined
   )
-  const HashToSign = Utils.bytesToHex(Utils.hash(Message))
+  const hashToSign = Utils.bytesToHex(Utils.hash(message))
 
   return {
-    UncompressedPubKey,
-    SigningPubKey,
-    MultiSign,
-    Transaction,
-    Message,
-    HashToSign
+    uncompressedPubKey,
+    signingPubKey,
+    multiSign,
+    transaction,
+    message,
+    hashToSign
   }
 }
 
 const complete = (
   Prepared: PreparedRawSecp256k1P1363Transaction,
-  Signature: string
-): SignedRawSecp256k1P1363Transaction => {
-  assertUncompressedPubKey(Prepared.UncompressedPubKey)
-  assert(typeof Signature === 'string', 'Signature: string expected')
-  assert(Signature.length === 128, 'Signature: incorrect length')
+  signature: string
+): SignedRawSecp256k1P1363Object => {
+  assertUncompressedPubKey(Prepared.uncompressedPubKey)
+  assert(typeof signature === 'string', 'signature: string expected')
+  assert(signature.length === 128, 'signature: incorrect length')
 
-  const TxnSignature = Utils.secp256k1_p1363ToFullyCanonicalDerSignature(Signature)
-  const SignatureVerifies = Utils.verifySignature(Prepared.Message, TxnSignature, Prepared.SigningPubKey)
+  const txnSignature = Utils.secp256k1_p1363ToFullyCanonicalDerSignature(signature)
+  const signatureVerifies = Utils.verifySignature(Prepared.message, txnSignature, Prepared.signingPubKey)
 
-  let TxJson: Record<string, unknown> = {}
-  let TxBlob: string = ''
-  let TxId: string = ''
+  let txJson: Record<string, unknown> = {}
+  let signedTransaction: string = ''
+  let id: string = ''
 
-  Object.assign(TxJson, Prepared.Transaction)
+  Object.assign(txJson, Prepared.transaction)
 
-  if (SignatureVerifies) {
-    Object.assign(TxJson, {TxnSignature})
-    TxBlob = Utils.encodeTransaction(TxJson)
-    TxId = computeBinaryTransactionHash(TxBlob)
+  if (signatureVerifies) {
+    Object.assign(txJson, {txnSignature})
+    signedTransaction = Utils.encodeTransaction(txJson)
+    id = computeBinaryTransactionHash(signedTransaction)
   }
 
   return {
-    TxnSignature,
-    SignatureVerifies,
-    TxJson,
-    TxBlob,
-    TxId
+    type: 'SignedTx',
+    txnSignature,
+    signatureVerifies,
+    txJson,
+    signedTransaction,
+    id
   }
 }
 
 const completeMultiSigned = (
-  TxJson: Record<string, unknown>,
+  txJson: Record<string, unknown>,
   SignersAndSignatures: SignerAndSignature[]
-): SignedRawSecp256k1P1363Transaction => {
+): SignedRawSecp256k1P1363Object => {
   assert(Array.isArray(SignersAndSignatures), 'SignersAndSignatures not array')
   assert(SignersAndSignatures.length > 0, 'SignersAndSignatures empty')
 
-  const Transaction = Object.assign({}, TxJson)
-  Object.assign(Transaction, {SigningPubKey: ''})
-  // const HashToSign = Utils.bytesToHex(Utils.hash(Message))
+  const transaction = Object.assign({}, txJson)
+  Object.assign(transaction, {signingPubKey: ''})
+  // const hashToSign = Utils.bytesToHex(Utils.hash(message))
 
   const toCombine = SignersAndSignatures.map(SignerAndSignature => {
-    const PubKey = SignerAndSignature.PubKey.length === 130
-      ? Utils.compressPubKey(SignerAndSignature.PubKey)
-      : SignerAndSignature.PubKey
-    const SignerAddress = Utils.deriveAddress(PubKey)
+    const pubKey = SignerAndSignature.pubKey.length === 130
+      ? Utils.compressPubKey(SignerAndSignature.pubKey)
+      : SignerAndSignature.pubKey
+    const SignerAddress = Utils.deriveAddress(pubKey)
 
-    const TxnSignature = Utils.secp256k1_p1363ToFullyCanonicalDerSignature(SignerAndSignature.Signature)
-    const Message = Utils.encodeTransaction(Transaction, SignerAddress)
+    const txnSignature = Utils.secp256k1_p1363ToFullyCanonicalDerSignature(SignerAndSignature.signature)
+    const message = Utils.encodeTransaction(transaction, SignerAddress)
 
-    // console.log({Message, TxnSignature, PubKey})
-    const SignatureVerifies = Utils.verifySignature(Message, TxnSignature, PubKey)
-    assert(SignatureVerifies, 'Invalid signature by/for ' + SignerAddress)
+    // console.log({message, txnSignature, pubKey})
+    const signatureVerifies = Utils.verifySignature(message, txnSignature, pubKey)
+    assert(signatureVerifies, 'Invalid signature by/for ' + SignerAddress)
 
-    Object.assign(Transaction, {
+    Object.assign(transaction, {
       Signers: [
         {
           Signer: {
             Account: SignerAddress,
-            SigningPubKey: PubKey,
-            TxnSignature: TxnSignature
+            signingPubKey: pubKey,
+            txnSignature: txnSignature
           }
         }
       ]
@@ -144,10 +146,10 @@ const completeMultiSigned = (
   
     const MultiSignature = {
       SignerAddress,
-      signature: SignerAndSignature.Signature,
-      verifies: SignatureVerifies,
-      Transaction,
-      signedTransaction: Utils.encodeTransaction(Transaction)
+      signature: SignerAndSignature.signature,
+      verifies: signatureVerifies,
+      transaction,
+      signedTransaction: Utils.encodeTransaction(transaction)
     }
 
     return MultiSignature
@@ -155,21 +157,22 @@ const completeMultiSigned = (
 
   // console.dir(toCombine, {depth: null})
   const combined = (new RippleAPI()).combine(toCombine.map(c => c.signedTransaction))
-  const TxBlob = String((combined as Record<string, unknown>).signedTransaction || '')
+  const signedTransaction = String((combined as Record<string, unknown>).signedTransaction || '')
 
   return {
-    TxnSignature: '',
-    SignatureVerifies: toCombine.every(s => s.verifies),
-    TxJson: decode(TxBlob),
-    TxBlob,
-    TxId: String((combined as Record<string, unknown>).id || '')
+    type: "MultiSignedTx",
+    txnSignature: '',
+    signatureVerifies: toCombine.every(s => s.verifies),
+    txJson: decode(signedTransaction),
+    signedTransaction,
+    id: String((combined as Record<string, unknown>).id || '')
   }
 }
 
-const accountAddress = (UncompressedPubKey: string): string => {
-  assertUncompressedPubKey(UncompressedPubKey)
-  const SigningPubKey = Utils.compressPubKey(UncompressedPubKey)
-  return Utils.deriveAddress(SigningPubKey)
+const accountAddress = (uncompressedPubKey: string): string => {
+  assertUncompressedPubKey(uncompressedPubKey)
+  const signingPubKey = Utils.compressPubKey(uncompressedPubKey)
+  return Utils.deriveAddress(signingPubKey)
 }
 
 export {

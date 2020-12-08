@@ -50,11 +50,11 @@ const prepare = (
   const transaction = Object.assign({}, txJson)
   assert(typeof transaction === 'object' && transaction !== null, 'Transaction: Object expected')
   if (typeof transaction.signingPubKey === 'undefined') {
-    Object.assign(transaction, {signingPubKey})
+    Object.assign(transaction, {SigningPubKey: signingPubKey})
   }
 
   if (multiSign) {
-    Object.assign(transaction, {signingPubKey: ''})
+    Object.assign(transaction, {SigningPubKey: ''})
   }
 
   const message = Utils.encodeTransaction(
@@ -93,7 +93,7 @@ const complete = (
   Object.assign(txJson, Prepared.transaction)
 
   if (signatureVerifies) {
-    Object.assign(txJson, {txnSignature})
+    Object.assign(txJson, {TxnSignature: txnSignature})
     signedTransaction = Utils.encodeTransaction(txJson)
     id = computeBinaryTransactionHash(signedTransaction)
   }
@@ -116,36 +116,36 @@ const completeMultiSigned = (
   assert(SignersAndSignatures.length > 0, 'SignersAndSignatures empty')
 
   const transaction = Object.assign({}, txJson)
-  Object.assign(transaction, {signingPubKey: ''})
+  Object.assign(transaction, {SigningPubKey: ''})
   // const hashToSign = Utils.bytesToHex(Utils.hash(message))
 
   const toCombine = SignersAndSignatures.map(SignerAndSignature => {
     const pubKey = SignerAndSignature.pubKey.length === 130
       ? Utils.compressPubKey(SignerAndSignature.pubKey)
       : SignerAndSignature.pubKey
-    const SignerAddress = Utils.deriveAddress(pubKey)
+    const signerAddress = Utils.deriveAddress(pubKey)
 
     const txnSignature = Utils.secp256k1_p1363ToFullyCanonicalDerSignature(SignerAndSignature.signature)
-    const message = Utils.encodeTransaction(transaction, SignerAddress)
+    const message = Utils.encodeTransaction(transaction, signerAddress)
 
     // console.log({message, txnSignature, pubKey})
     const signatureVerifies = Utils.verifySignature(message, txnSignature, pubKey)
-    assert(signatureVerifies, 'Invalid signature by/for ' + SignerAddress)
+    assert(signatureVerifies, 'Invalid signature by/for ' + signerAddress)
 
     Object.assign(transaction, {
       Signers: [
         {
           Signer: {
-            Account: SignerAddress,
-            signingPubKey: pubKey,
-            txnSignature: txnSignature
+            Account: signerAddress,
+            SigningPubKey: pubKey,
+            TxnSignature: txnSignature
           }
         }
       ]
     })
   
     const MultiSignature = {
-      SignerAddress,
+      signerAddress,
       signature: SignerAndSignature.signature,
       verifies: signatureVerifies,
       transaction,

@@ -1,21 +1,20 @@
 "use strict";
 
 import Sign from "ripple-sign-keypairs";
-
 import Account from "../schema/Account";
 
-type signedObject = {
+type SignedObject = {
   type: "SignedTx" | "MultiSignedTx";
   id: string;
   signedTransaction: string;
-  txJson: Object;
+  txJson: Record<string, unknown>;
   signers: string[];
 };
 
 const sign = (
   transaction: Object,
   account?: Account | Account[]
-): signedObject => {
+): SignedObject => {
   let accounts = [];
   const Tx: any = Object.assign({}, transaction)
 
@@ -135,6 +134,14 @@ const sign = (
       signers: txJson.Signers
     };
   }
+};
+
+export {
+  sign
+};
+
+export type {
+  SignedObject
 };
 
 export default sign;

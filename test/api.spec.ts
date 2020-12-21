@@ -1,5 +1,5 @@
 import fixtures from "./fixtures/api.json";
-import { derive, generate, sign, rawSecp256k1P1363 } from "../src";
+import { derive, generate, sign, rawSigning } from "../src";
 
 describe("Api", () => {
   /* Derive ==================================================================== */
@@ -178,55 +178,106 @@ describe("Api", () => {
 
     /* Combine ==================================================================== */
 
-  describe("RawSecp256k1P1363", () => {
-    test("Basic", () => {
-      const preparedTx = rawSecp256k1P1363.prepare(fixtures.rawSecp256k1P1363.tx, fixtures.rawSecp256k1P1363.accounts.ali.uncompressedPubKey)
+  describe("rawSigning", () => {
+    test("Basic secp256k1", () => {
+      const preparedTx = rawSigning.prepare(fixtures.rawSigning.tx, fixtures.rawSigning.accounts.ali.uncompressedPubKey)
 
       expect(preparedTx.multiSign).toBe(false)
       expect(preparedTx.hashToSign).toBeDefined()
       expect(preparedTx.message).toBeDefined()
-      expect(preparedTx.signingPubKey).toBe(fixtures.rawSecp256k1P1363.accounts.ali.pubKeyCompressed);
-      expect(preparedTx.transaction).toMatchObject(Object.assign(fixtures.rawSecp256k1P1363.tx, {SigningPubKey: fixtures.rawSecp256k1P1363.accounts.ali.pubKeyCompressed }))
+      expect(preparedTx.signingPubKey).toBe(fixtures.rawSigning.accounts.ali.pubKeyCompressed);
+      expect(preparedTx.transaction).toMatchObject(Object.assign(fixtures.rawSigning.tx, {SigningPubKey: fixtures.rawSigning.accounts.ali.pubKeyCompressed }))
 
-      const sigendObject = rawSecp256k1P1363.complete(preparedTx, fixtures.rawSecp256k1P1363.accounts.ali.signature)
+      const sigendObject = rawSigning.complete(preparedTx, fixtures.rawSigning.accounts.ali.signature)
 
       expect(sigendObject.type).toBe("SignedTx")
       expect(sigendObject.txnSignature).not.toBe('')
       expect(sigendObject.signatureVerifies).toBe(true)
-      expect(sigendObject.txJson).toMatchObject(Object.assign(fixtures.rawSecp256k1P1363.tx, {SigningPubKey: fixtures.rawSecp256k1P1363.accounts.ali.pubKeyCompressed, TxnSignature:  sigendObject.txnSignature}))
+      expect(sigendObject.txJson).toMatchObject(Object.assign(fixtures.rawSigning.tx, {SigningPubKey: fixtures.rawSigning.accounts.ali.pubKeyCompressed, TxnSignature:  sigendObject.txnSignature}))
       expect(sigendObject.signedTransaction).not.toBe('')
       expect(sigendObject.id).not.toBe('')
     });
 
 
-    test("MultiSigned", () => {
-      const signedByTristan = rawSecp256k1P1363.prepare(fixtures.rawSecp256k1P1363.tx, fixtures.rawSecp256k1P1363.accounts.tristan.uncompressedPubKey, true)
-      const signedByAli     = rawSecp256k1P1363.prepare(fixtures.rawSecp256k1P1363.tx, fixtures.rawSecp256k1P1363.accounts.ali.uncompressedPubKey, true)
+    test("MultiSigned secp256k1", () => {
+      const signedByTristan = rawSigning.prepare(fixtures.rawSigning.tx, fixtures.rawSigning.accounts.tristan.uncompressedPubKey, true)
+      const signedByAli     = rawSigning.prepare(fixtures.rawSigning.tx, fixtures.rawSigning.accounts.ali.uncompressedPubKey, true)
       
       expect(signedByTristan.multiSign).toBe(true)
       expect(signedByTristan.hashToSign).toBeDefined()
       expect(signedByTristan.message).toBeDefined()
-      expect(signedByTristan.signingPubKey).toBe(fixtures.rawSecp256k1P1363.accounts.tristan.pubKeyCompressed);
-      expect(signedByTristan.transaction).toMatchObject(Object.assign(fixtures.rawSecp256k1P1363.tx, {SigningPubKey: "" }))
+      expect(signedByTristan.signingPubKey).toBe(fixtures.rawSigning.accounts.tristan.pubKeyCompressed);
+      expect(signedByTristan.transaction).toMatchObject(Object.assign(fixtures.rawSigning.tx, {SigningPubKey: "" }))
 
       expect(signedByAli.multiSign).toBe(true)
       expect(signedByAli.hashToSign).toBeDefined()
       expect(signedByAli.message).toBeDefined()
-      expect(signedByAli.signingPubKey).toBe(fixtures.rawSecp256k1P1363.accounts.ali.pubKeyCompressed);
-      expect(signedByAli.transaction).toMatchObject(Object.assign(fixtures.rawSecp256k1P1363.tx, {SigningPubKey: "" }))
+      expect(signedByAli.signingPubKey).toBe(fixtures.rawSigning.accounts.ali.pubKeyCompressed);
+      expect(signedByAli.transaction).toMatchObject(Object.assign(fixtures.rawSigning.tx, {SigningPubKey: "" }))
 
       const signatures = [
         {
-          pubKey: fixtures.rawSecp256k1P1363.accounts.ali.uncompressedPubKey,
-          signature: fixtures.rawSecp256k1P1363.accounts.ali.signatureMS,
+          pubKey: fixtures.rawSigning.accounts.ali.uncompressedPubKey,
+          signature: fixtures.rawSigning.accounts.ali.signatureMS,
         },
         {
-          pubKey: fixtures.rawSecp256k1P1363.accounts.tristan.uncompressedPubKey,
-          signature: fixtures.rawSecp256k1P1363.accounts.tristan.signatureMS,
+          pubKey: fixtures.rawSigning.accounts.tristan.uncompressedPubKey,
+          signature: fixtures.rawSigning.accounts.tristan.signatureMS,
         }
       ]
       
-      const sigendObject = rawSecp256k1P1363.completeMultiSigned(fixtures.rawSecp256k1P1363.tx, signatures)
+      const sigendObject = rawSigning.completeMultiSigned(fixtures.rawSigning.tx, signatures)
+
+      expect(sigendObject.type).toBe("MultiSignedTx")
+      expect(sigendObject.txnSignature).toBe('')
+      expect(sigendObject.signatureVerifies).toBe(true)
+      // @ts-ignore
+      expect(sigendObject.txJson.Signers.length).toBe(2)
+      expect(sigendObject.signedTransaction).not.toBe('')
+      expect(sigendObject.id).not.toBe('')
+    });
+
+    it("get Hash (message) to sign, ed25519", () => {
+      const unsignedTx = {
+        TransactionType: 'Payment',
+        Sequence: 13371002,
+        Fee: '12',
+        Amount: '5000000',
+        Account: 'rBkiQiQAkmiTidSofBqpVbBxu9PhbyZsdW',
+        Destination: 'rwietsevLFg8XSmG3bEZzFein1g8RBqWDZ'
+      }
+      expect(rawSigning.prepare(unsignedTx, fixtures.utils.edPubKeyCompressed).hashToSign)
+        .toEqual(fixtures.rawSigning.edMessageToSign);
+    });
+
+    test("MultiSigned ed25519", () => {
+      const signedByTristan = rawSigning.prepare(fixtures.rawSigning.txEd, fixtures.rawSigning.accounts.tristan.uncompressedPubKeyEd, true)
+      const signedByAli     = rawSigning.prepare(fixtures.rawSigning.txEd, fixtures.rawSigning.accounts.ali.uncompressedPubKeyEd, true)
+      
+      expect(signedByTristan.multiSign).toBe(true)
+      expect(signedByTristan.hashToSign).toBeDefined()
+      expect(signedByTristan.message).toBeDefined()
+      expect(signedByTristan.signingPubKey).toBe(fixtures.rawSigning.accounts.tristan.pubKeyCompressedEd);
+      expect(signedByTristan.transaction).toMatchObject(Object.assign(fixtures.rawSigning.txEd, {SigningPubKey: "" }))
+
+      expect(signedByAli.multiSign).toBe(true)
+      expect(signedByAli.hashToSign).toBeDefined()
+      expect(signedByAli.message).toBeDefined()
+      expect(signedByAli.signingPubKey).toBe(fixtures.rawSigning.accounts.ali.pubKeyCompressedEd);
+      expect(signedByAli.transaction).toMatchObject(Object.assign(fixtures.rawSigning.txEd, {SigningPubKey: "" }))
+
+      const signatures = [
+        {
+          pubKey: fixtures.rawSigning.accounts.ali.uncompressedPubKeyEd,
+          signature: fixtures.rawSigning.accounts.ali.signatureMSEd,
+        },
+        {
+          pubKey: fixtures.rawSigning.accounts.tristan.uncompressedPubKeyEd,
+          signature: fixtures.rawSigning.accounts.tristan.signatureMSEd,
+        }
+      ]
+      
+      const sigendObject = rawSigning.completeMultiSigned(fixtures.rawSigning.txEd, signatures)
 
       expect(sigendObject.type).toBe("MultiSignedTx")
       expect(sigendObject.txnSignature).toBe('')

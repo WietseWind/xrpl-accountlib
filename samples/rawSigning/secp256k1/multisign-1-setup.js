@@ -1,4 +1,4 @@
-const lib = require("../../dist/");
+const lib = require("../../../dist/");
 const {accounts} = require('./fixtures')
 
 const SignerListSetupTx = {
@@ -14,14 +14,14 @@ const SignerListSetupTx = {
   ]
 }
 
-console.log("XRPL-AccountLib - rawSecp256k1P1363 MultiSign")
+console.log("XRPL-AccountLib - rawSigning MultiSign - secp256k1")
 console.log()
 
-const PreparedSignerListSetupTx = lib.rawSecp256k1P1363.prepare(SignerListSetupTx, accounts.wietse.uncompressedPubKey)
+const PreparedSignerListSetupTx = lib.rawSigning.prepare(SignerListSetupTx, accounts.wietse.uncompressedPubKey)
 console.log({PreparedSignerListSetupTx})
 
 const SetupSignature = 'A22D3E9E004A24BAC7CA35F0A7661EBD0DDC856F6AEC91EF1138085A8BF3DCE4C593F0B633DA76B55468E4A184F06F192B1C51B56744B1857FC5DC95CEDDC8BF'
-const CompletedSignerListSetup = lib.rawSecp256k1P1363.complete(PreparedSignerListSetupTx, SetupSignature)
+const CompletedSignerListSetup = lib.rawSigning.complete(PreparedSignerListSetupTx, SetupSignature)
 console.log({CompletedSignerListSetup})
 // Now submit to XRPL:
 //  b=XXXXXX (CompletedSignerListSetup.TxBlob)

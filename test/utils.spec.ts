@@ -10,14 +10,19 @@ describe("Utils", () => {
     expect(utils.hexToBytes("DEADBEEF")).toEqual([222, 173, 190, 239]);
   });
 
-  it("derives account from compressed pubkey", () => {
+  it("derives account from secp256k1 compressed pubkey", () => {
     expect(utils.deriveAddress(fixtures.utils.PubKeyCompressed))
       .toEqual(fixtures.utils.PubKeyAccount);
   });
+
+  it("derives account from ed25519 pubkey", () => {
+    expect(utils.deriveAddress(fixtures.utils.edPubKeyCompressed))
+      .toEqual(fixtures.utils.edPubKeyAccount);
+  });
 });
 
-describe("Utils - rawSecp256k1P1363", () => {
-  it("compresses an uncompressed pubkey", () => {
+describe("Utils - rawSigning", () => {
+  it("compresses an uncompressed secp256k1 pubkey", () => {
     expect(utils.compressPubKey(fixtures.utils.PubKeyUncompressed))
       .toEqual(fixtures.utils.PubKeyCompressed);
   });
@@ -27,7 +32,7 @@ describe("Utils - rawSecp256k1P1363", () => {
       .toEqual(fixtures.utils.txPreSignHash);
   });
 
-  it("encodeTransaction - unsigned", () => {
+  it("encodeTransaction - unsigned, secp256k1", () => {
     const unsignedTx = {
       TransactionType: 'Payment',
       Sequence: 59924898,
@@ -45,7 +50,7 @@ describe("Utils - rawSecp256k1P1363", () => {
       .toEqual(fixtures.utils.derSignature);
   });
 
-  it("verifySignature", () => {
+  it("verifySignature secp256k1", () => {
     expect(utils.compressPubKey(fixtures.utils.txPrePubUncompressed))
       .toEqual(fixtures.utils.txPrePubCompressed);
 

@@ -1,0 +1,32 @@
+const basic = {
+  Key: 'AB0D2CAEA6BA6B7ECE1C45944730720425DB5B26CD8F46B47FFDA87D58A80AE1',
+  Signature: 'A4B0644A2857C051A0305B93E89155A8C55C375A3A977A7F96E885C5EACE31918E2511D9ABCE2414546D07CE04340F667BAD68B2464FE8A7ACA9F62A74D1E50F',
+  Tx: {
+    TransactionType: 'Payment',
+    Sequence: 13371002,
+    Fee: '12',
+    Amount: '5000000',
+    Account: 'rBkiQiQAkmiTidSofBqpVbBxu9PhbyZsdW',
+    Destination: 'rwietsevLFg8XSmG3bEZzFein1g8RBqWDZ'
+  }
+}
+
+const accounts = {
+  wietse: {
+    uncompressedPubKey: 'AB0D2CAEA6BA6B7ECE1C45944730720425DB5B26CD8F46B47FFDA87D58A80AE1',
+    accountAddress: 'rBkiQiQAkmiTidSofBqpVbBxu9PhbyZsdW'
+  },
+  ali: {
+    uncompressedPubKey: 'BC1D93C0CD9F8BF26580F6FA3C888F232464B43323CC02FCE0CCAFA5C995165E',
+    accountAddress: 'rPHbaAo6aWMft8177aY1hnE3hyU4EmaCVh'
+  },
+  tristan: {
+    uncompressedPubKey: 'A6CADFC1BF20EC6FC356FED95822A90C93D6ED410E2EB9F1F7DFFB8D066986F5',
+    accountAddress: 'rh4s9Ayd2bNVGrBgDXV8bUoHJ7MWJYajRZ'
+  }
+}
+
+module.exports = {
+  basic,
+  accounts
+}

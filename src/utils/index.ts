@@ -21,6 +21,18 @@ function bytesToHex(a: number[]): string {
     .join("");
 }
 
+function deriveAddressWithEdPrefixer(publicKey: string) {
+  assert(typeof publicKey === 'string', 'PubKey: not hex string')
+  assert(publicKey.length === 64 || publicKey.length === 66, 'PubKey: invalid length')
+  assert(publicKey.match(/^[a-fA-F0-9]{64,66}$/), 'PubKey: invalid characters (non HEX)')
+  
+  const pubKey = publicKey.length === 64 && getAlgorithmFromKey('ED' + publicKey) === 'ed25519'
+    ? 'ED' + publicKey
+    : publicKey
+
+  return deriveAddress(pubKey)
+};
+
 function hexToBytes(a: string): number[] {
   return new BN(a, 16).toArray(undefined, a.length / 2);
 }
@@ -50,15 +62,20 @@ function isValidMnemnic(words: string): boolean {
   return Bip39.validateMnemonic(words);
 }
 
-function compressPubKey(uncompressedPubKey: string, curve = 'secp256k1'): string {  
-  // Only secp256k1 for now, possibly (future) eg. 'curve25519', 'ed25519', ...
-  const validCurves = ['secp256k1']
-  assert(validCurves.indexOf(curve) > -1, 'Unsupported curve')
+function compressPubKey(uncompressedPubKey: string): string {  
   assert(typeof uncompressedPubKey === 'string', 'Uncompressed PubKey: not hex string')
-  assert(uncompressedPubKey.length === 130, 'Uncompressed pubkey: not 1+32+32 length')
+  if (uncompressedPubKey.length === 64) {
+    // ed25519
+    const edPubKey = 'ED' + uncompressedPubKey
+    assert(getAlgorithmFromKey(edPubKey) === 'ed25519', 'Key length ed25519, algo not ed25519')
+    return edPubKey
+  } else {
+    // secp256k1
+    assert(uncompressedPubKey.length === 130, 'Uncompressed pubkey: not 1+32+32 length')
+  }
 
   // @ts-ignore
-  const c = elliptic.curves[curve].curve
+  const c = elliptic.curves.secp256k1.curve
   const p = c.point(uncompressedPubKey.slice(2, 66), uncompressedPubKey.slice(66))
 
   const compressedPubKey = p.encodeCompressed('hex').toUpperCase()
@@ -119,7 +136,7 @@ export {
   isValidClassicAddress,
   isValidSeed,
   isValidMnemnic,
-  deriveAddress,
+  deriveAddressWithEdPrefixer as deriveAddress,
   compressPubKey,
   hash,
   encodeTransaction,

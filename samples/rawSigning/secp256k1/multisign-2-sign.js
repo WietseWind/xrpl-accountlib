@@ -1,4 +1,4 @@
-const lib = require("../../dist/");
+const lib = require("../../../dist/");
 const {accounts} = require('./fixtures')
 
 const TxToMultiSign = {
@@ -10,11 +10,11 @@ const TxToMultiSign = {
   Destination: 'rwietsevLFg8XSmG3bEZzFein1g8RBqWDZ'
 }
 
-console.log("XRPL-AccountLib - rawSecp256k1P1363 MultiSign")
+console.log("XRPL-AccountLib - rawSigning MultiSign - secp256k1")
 console.log()
 
-const SignedByTristan = lib.rawSecp256k1P1363.prepare(TxToMultiSign, accounts.tristan .uncompressedPubKey, true)
-const SignedByAli     = lib.rawSecp256k1P1363.prepare(TxToMultiSign, accounts.ali     .uncompressedPubKey, true)
+const SignedByTristan = lib.rawSigning.prepare(TxToMultiSign, accounts.tristan .uncompressedPubKey, true)
+const SignedByAli     = lib.rawSigning.prepare(TxToMultiSign, accounts.ali     .uncompressedPubKey, true)
 
 console.log({SignedByTristan, SignedByAli})
 
@@ -23,12 +23,14 @@ const Signatures = {
   tristan: 'E0D073C1EE29075A966C60B61B0C2E26E555239CBC797460A8DE77B194EDFC976681692600E690EEB29ABD3123444980772C6D0423B49D695F694745CBB6414C',
 }
 
-const MultiSignedTx = lib.rawSecp256k1P1363.completeMultiSigned(TxToMultiSign, Object.keys(Signatures).map(s => {
+const MappedSignatures = Object.keys(Signatures).map(s => {
   return {
-    PubKey: accounts[s].uncompressedPubKey,
-    Signature: Signatures[s]
+    pubKey: accounts[s].uncompressedPubKey,
+    signature: Signatures[s]
   }
-}))
+})
+console.log({MappedSignatures})
+const MultiSignedTx = lib.rawSigning.completeMultiSigned(TxToMultiSign, MappedSignatures)
 console.log({MultiSignedTx})
 // Now submit to XRPL:
 //  b=XXXXXX (MultiSignedTx.TxBlob)

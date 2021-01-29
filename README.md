@@ -105,6 +105,12 @@ Options:
 
 - **passphrase**  
   Default: (none), alternatively: 'my secret passsword'
+- **accountPath**  
+  Default: (0), alternatively: any integer
+- **changePath**  
+  Default: (0), alternatively: any integer
+- **addressIndex**  
+  Default: (0), alternatively: any integer
 
 ### Passphrase `lib.derive.passphrase(passphrase'')`
 

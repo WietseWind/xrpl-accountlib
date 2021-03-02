@@ -23,6 +23,9 @@
     "seed": [
       "479237", "092066", "138573", "322135", "483860", "006477", "252857", "140146"
     ],
+    "seedNoChecksum": [
+      "47923", "09206", "13857", "32213", "48386", "00647", "25285", "14014"
+    ],
     "address": "rKUHQ4k95v9MD5rXjHokysBg2zvv8HoJvU",
     "familySeed": "snJZ8rTHm9EJtahu37BEgSETiHAHA",
     "keypair": {

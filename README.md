@@ -93,7 +93,7 @@ Samples: https://github.com/WietseWind/xrpl-accountlib/blob/master/samples/deriv
 
 The _familyseed_ argument is required, and should contain a string, like: `sXXXXXXXXX...`
 
-### Secret Numbers `lib.derive.familySeed(secretNumbers''|[])`
+### Secret Numbers `lib.derive.secretNumbers(secretNumbers''|[], acceptWithoutChecksum?:false)`
 
 The _secretNumbers_ argument is required, and should contain a string, like: `012345 123456 ...` or an array containing **8** elements of the type **string** containing **6 digits**.
 

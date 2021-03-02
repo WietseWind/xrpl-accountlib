@@ -16,6 +16,24 @@ console.log(
 console.log();
 
 console.log(
+  "Derive: Secret Numbers (array)",
+  lib.derive.secretNumbers([ "479237", "092066", "138573", "322135", "483860", "006477", "252857", "140146" ]) 
+);
+console.log();
+
+console.log(
+  "Derive: Secret Numbers (string)",
+  lib.derive.secretNumbers("479237 092066 138573 322135 483860 006477 252857 140146") 
+);
+console.log();
+
+console.log(
+  "Derive: Secret Numbers without checksum",
+  lib.derive.secretNumbers([ "47923", "09206", "13857", "32213", "48386", "00647", "25285", "14014" ], true)
+);
+console.log();
+
+console.log(
   "Derive: mnemonic",
   lib.derive.mnemonic(
     "lamp elevator orchard music glare night upper race mixture bullet property nasty agent sword blind dynamic gossip life series shrug day ice control reunion",

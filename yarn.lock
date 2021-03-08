@@ -3675,7 +3675,7 @@
     "ripple-address-codec" "^3.0.4"
     "ripple-binary-codec" "^0.2.4"
 
-"ripple-keypairs@^1.0.0", "ripple-keypairs@^1.0.3", "ripple-keypairs@latest":
+"ripple-keypairs@^1.0.3", "ripple-keypairs@latest":
   "integrity" "sha512-Na5q8sUdxjd5DXBM88ocJgL2Ig0I1USyO3bvI0SMxJPp7F9DHvqLdPX45PVXs7HUq0Dj691Z9Uz9NeD/K7/eOA=="
   "resolved" "https://registry.npmjs.org/ripple-keypairs/-/ripple-keypairs-1.0.3.tgz"
   "version" "1.0.3"
@@ -4539,14 +4539,14 @@
   "resolved" "https://registry.npmjs.org/xmlchars/-/xmlchars-2.2.0.tgz"
   "version" "2.2.0"
 
-"xrpl-secret-numbers@^0.2.1":
-  "integrity" "sha512-jC9LVNoX6vKmIGip43uuS+yi/R2hdnI+f9QeFTXzZFN+0SBSaSeBxDeGXV7DoBUn1/9Z+mR0nn4cHsDS/+uQjA=="
-  "resolved" "https://registry.npmjs.org/xrpl-secret-numbers/-/xrpl-secret-numbers-0.2.1.tgz"
-  "version" "0.2.1"
+"xrpl-secret-numbers@^0.3.3":
+  "integrity" "sha512-D6VeXQVJcWQllNDZtX/h+hlnk06bP1EkVZhm14qnEwR8vE/svZJuwrYJQIREkglOJyeZ/+09CHh2iDXgI2ZclQ=="
+  "resolved" "https://registry.npmjs.org/xrpl-secret-numbers/-/xrpl-secret-numbers-0.3.3.tgz"
+  "version" "0.3.3"
   dependencies:
     "@types/brorand" "^1.0.30"
     "brorand" "^1.1.0"
-    "ripple-keypairs" "^1.0.0"
+    "ripple-keypairs" "^1.0.3"
 
 "y18n@^4.0.0":
   "integrity" "sha512-wNcy4NvjMYL8gogWWYAO7ZFWFfHcbdbE57tZO8e4cbpj8tfUcwrwqSl3ad8HxpYWCdXcJUCeKKZS62Av1affwQ=="

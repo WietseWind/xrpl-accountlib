@@ -32,7 +32,7 @@
     "ripple-lib": "^1.6.4",
     "ripple-secret-codec": "^1.0.2",
     "ripple-sign-keypairs": "https://github.com/WietseWind/node-ripple-sign-keypairs.git",
-    "xrpl-secret-numbers": "^0.2.1"
+    "xrpl-secret-numbers": "^0.3.2"
   },
   "devDependencies": {
     "@types/bip39": "^3.0.0",

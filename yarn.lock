@@ -3638,10 +3638,10 @@
     "lodash" "^4.17.15"
     "ripple-address-codec" "^4.1.0"
 
-"ripple-binary-codec@^1.1.0", "ripple-binary-codec@^1.1.1", "ripple-binary-codec@latest":
-  "integrity" "sha512-oqmGIahQynGodn3mizqxm8vbbpuz6+N+w4tp/lVml+R8/Qd93xs81irmRXQmtQV+Dm5Gu1Z1FR3mGUvr1QEz0Q=="
-  "resolved" "https://registry.npmjs.org/ripple-binary-codec/-/ripple-binary-codec-1.1.1.tgz"
-  "version" "1.1.1"
+"ripple-binary-codec@^1.1.0", "ripple-binary-codec@^1.1.2", "ripple-binary-codec@latest":
+  "integrity" "sha512-BrsBkNic0F2++zEnCmWlHZEBNmMUJMN9xL2HL5I2fpmo0qlv+6g9oT7HrkxY3HCui52PJuKnkkrwBjqWvPBqpg=="
+  "resolved" "https://registry.npmjs.org/ripple-binary-codec/-/ripple-binary-codec-1.1.2.tgz"
+  "version" "1.1.2"
   dependencies:
     "assert" "^2.0.0"
     "big-integer" "^1.6.48"

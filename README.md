@@ -8,6 +8,11 @@
 npm install --save xrpl-accountlib
 ```
 
+### A note on signing vs. connectivity
+
+Please note: this lib only provides signing and derivation capabilities. To connect to the XRPL and submit transactions, please take a look at `xrpl-client`. Here's an example on how these two libs can work together:
+https://gist.github.com/WietseWind/557a5c11fa0d474468e8c9c54e3e5b93
+
 ## The XRPL_Account object
 
 Both the `generate` and the `derive` methods will return an `XRPL_Account` object, containing all information to sign:

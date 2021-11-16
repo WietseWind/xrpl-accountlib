@@ -131,6 +131,16 @@ describe("Api", () => {
       expect(result.signedTransaction).toBeDefined();
     });
 
+    test("NFT tx using mnemonic", () => {
+      const result = sign(
+        fixtures.txNft,
+        derive.familySeed(fixtures.familySeed.secp256k1.seed)
+      );
+      expect(result.type).toBe("SignedTx");
+      expect(result.id).toBeDefined();
+      expect(result.signedTransaction).toBeDefined();
+    });
+
     test("One account (SignAs)", () => {
       const result = sign(
         fixtures.tx,

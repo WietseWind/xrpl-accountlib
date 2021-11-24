@@ -3537,8 +3537,9 @@
     "base-x" "^3.0.3"
     "bignumber.js" "^5.0.0"
 
-"ripple-sign-keypairs@https://github.com/XRPL-Labs/xrpl-sign-keypairs.git":
-  "resolved" "git+ssh://git@github.com/XRPL-Labs/xrpl-sign-keypairs.git#2566ae6b56e535f586332feabec7495fc41b1c64"
+"ripple-sign-keypairs@git+https://github.com/XRPL-Labs/xrpl-sign-keypairs.git":
+  "integrity" "sha512-fA7LlcNxxbhz6WgeeZT8E01ryJTMqOSUlHQYDtlNA759iu8ykFwDum3AlrPJehS+Az8S87Kk0BKT8RUK7MHzPw=="
+  "resolved" "git+ssh://git@github.com/XRPL-Labs/xrpl-sign-keypairs.git"
   "version" "2.0.0"
   dependencies:
     "big-integer" "latest"

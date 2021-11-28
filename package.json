@@ -31,8 +31,8 @@
     "ripple-keypairs": "^1.0.3",
     "ripple-lib": "^1.6.4",
     "ripple-secret-codec": "^1.0.2",
-    "ripple-sign-keypairs": "git+https://github.com/XRPL-Labs/xrpl-sign-keypairs.git",
-    "xrpl-secret-numbers": "^0.3.3"
+    "xrpl-secret-numbers": "^0.3.3",
+    "xrpl-sign-keypairs": "^2.0.0"
   },
   "devDependencies": {
     "@types/bip39": "^3.0.0",

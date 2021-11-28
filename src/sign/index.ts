@@ -1,6 +1,6 @@
 "use strict";
 
-import Sign from "ripple-sign-keypairs";
+import Sign from "xrpl-sign-keypairs";
 import Account from "../schema/Account";
 
 type SignedObject = {

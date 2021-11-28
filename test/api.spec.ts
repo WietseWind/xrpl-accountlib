@@ -1,5 +1,5 @@
 import fixtures from "./fixtures/api.json";
-import { derive, generate, sign, rawSigning } from "../src";
+import { derive, generate, sign, rawSigning, utils } from "../src";
 
 describe("Api", () => {
   /* Derive ==================================================================== */
@@ -85,6 +85,41 @@ describe("Api", () => {
       expect(account.accountType).toBe("mnemonic");
       expect(account.secret.familySeed).toBe(null);
       expect(account.secret.mnemonic).toBeDefined();
+    });
+  });
+
+  /* Verify ==================================================================== */
+
+  describe("Verify seed validity", () => {
+    test("Family secp seed valid", () => {
+      const account = generate.familySeed();
+      expect(utils.isValidSeed(account.secret.familySeed || '')).toBeTruthy();
+    });
+
+    test("Family ed seed valid", () => {
+      const account = generate.familySeed({ algorithm: "ed25519" });
+      expect(utils.isValidSeed(account.secret.familySeed || '')).toBeTruthy();
+    });
+
+    test("Secret Numbers valid", () => {
+      const account = derive.secretNumbers(fixtures.secretNumbers.seed);
+      expect(utils.isValidSeed(account.secret.familySeed || '')).toBeTruthy();
+    });
+
+    test("Mnemonic valid", () => {
+      const account = generate.mnemonic({
+        wordlist: "english",
+        passphrase: "Hello World!"
+      });
+      expect(utils.isValidMnemnic(account.secret.mnemonic || '')).toBeTruthy();
+    });
+
+    test("Family seed invalid", () => {
+      expect(utils.isValidSeed('sthiswillneverwork')).toBeFalsy();
+    });
+
+    test("Mnemonic invalid", () => {
+      expect(utils.isValidMnemnic('car car car car car car')).toBeFalsy();
     });
   });
 

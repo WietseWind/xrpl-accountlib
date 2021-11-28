@@ -2,7 +2,7 @@
 
 import BN from "bn.js";
 import * as AddressCodec from "ripple-address-codec";
-import Bip39 from "bip39";
+import {validateMnemonic} from "bip39";
 import * as elliptic from 'elliptic'
 import {verify, deriveAddress} from 'ripple-keypairs'
 import assert from 'assert'
@@ -55,11 +55,19 @@ function isValidAddress(address: string): boolean {
 }
 
 function isValidSeed(seed: string): boolean {
-  return AddressCodec.isValidSeed(seed);
+  try {
+    return !!AddressCodec.decodeSeed(seed);
+  } catch (e) {
+    return false
+  }
 }
 
 function isValidMnemnic(words: string): boolean {
-  return Bip39.validateMnemonic(words);
+  try {
+    return !!validateMnemonic(words);
+  } catch (e) {
+    return false;
+  }
 }
 
 function compressPubKey(uncompressedPubKey: string): string {  

@@ -26,13 +26,13 @@
     "elliptic": "6.5.4",
     "hash.js": "^1.1.7",
     "ripple-address-codec": "^4.1.0",
-    "ripple-binary-codec": "^1.4.0",
+    "ripple-binary-codec": "^1.4.2",
     "ripple-hashes": "^0.3.4",
     "ripple-keypairs": "^1.0.3",
     "ripple-lib": "^1.6.4",
     "ripple-secret-codec": "^1.0.2",
     "xrpl-secret-numbers": "^0.3.3",
-    "xrpl-sign-keypairs": "^2.1.0"
+    "xrpl-sign-keypairs": "^2.1.1"
   },
   "devDependencies": {
     "@types/bip39": "^3.0.0",

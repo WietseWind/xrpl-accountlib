@@ -36,12 +36,24 @@
   },
   "mnemonic": {
     "address": "r3ZVmJFmnoXh8ARBdXkb4LWt11ZLZUXcJi",
+    "addressUpper": "rsCSPwFDi87fmZfheLnaLv7ysZmDwLKP5E",
+    "addressLower": "r9w2RvKA6rYyBsN3WWFBuEKB7XM83jVqbU",
     "mnemonic": "lamp elevator orchard music glare night upper race mixture bullet property nasty agent sword blind dynamic gossip life series shrug day ice control reunion",
     "passphrase": "Hello World!",
     "keypair": {
       "algorithm": "secp256k1",
       "publicKey": "022626203CD74AE80E72D265DDDA90E445B0975FD7C94EC6BDF1C33167FD08C9EB",
       "privateKey": "00B440C4948CD011B94F69839A16B985D23666194529F630781D58A18977F20635"
+    },
+    "keypairUpper": {
+      "algorithm": "secp256k1",
+      "publicKey": "02E19471F7743146AFAFDC4DD05F1B52EE7F96763A8DB3A5E204C79E5255EBC8A6",
+      "privateKey": "00A126C30E95203AE369CC8BFD3BDB2DE76FF68342303B17D4F00D6FF5FA61E7AE"
+    },
+    "keypairLower": {
+      "algorithm": "secp256k1",
+      "publicKey": "0211D6E17A2BC4D0D61AEACA9FD05AD1DAC57A6395F57EA3E8198CA3F01A66D93F",
+      "privateKey": "00693AEC2D99E7124DBEE2E28B033621EC459D0253C169558E5CFFE568287399A7"
     }
   },
   "privatekey": {

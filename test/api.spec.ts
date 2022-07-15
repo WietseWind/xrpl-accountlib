@@ -47,6 +47,20 @@ describe("Api", () => {
       expect(account.keypair).toEqual(fixtures.mnemonic.keypair);
     });
 
+    test("Mnemonic [lowercase]", () => {
+      const account = derive.mnemonic(fixtures.mnemonic.mnemonic.toLowerCase());
+      expect(account.accountType).toBe("mnemonic");
+      expect(account.address).toBe(fixtures.mnemonic.addressLower);
+      expect(account.keypair).toEqual(fixtures.mnemonic.keypairLower);
+    });
+
+    test("Mnemonic [uppercase]", () => {
+      const account = derive.mnemonic(fixtures.mnemonic.mnemonic.toUpperCase());
+      expect(account.accountType).toBe("mnemonic");
+      expect(account.address).toBe(fixtures.mnemonic.addressUpper);
+      expect(account.keypair).toEqual(fixtures.mnemonic.keypairUpper);
+    });
+
     test("PrivateKey (HEX)", () => {
       const account = derive.privatekey(fixtures.privatekey.privatekey);
       expect(account.accountType).toBe("hex");

@@ -30,7 +30,7 @@
     "ripple-hashes": "^0.3.4",
     "ripple-keypairs": "^1.0.3",
     "ripple-lib": "^1.6.4",
-    "ripple-secret-codec": "^1.0.2",
+    "ripple-secret-codec": "^1.0.3",
     "xrpl-secret-numbers": "^0.3.3",
     "xrpl-sign-keypairs": "^2.1.1"
   },

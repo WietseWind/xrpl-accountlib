@@ -18,14 +18,14 @@ const sign = (
   account?: Account | Account[]
 ): SignedObject => {
   let accounts = [];
-  const Tx: any = Object.assign({}, transaction)
+  const Tx: any = Object.assign({}, transaction);
 
-  if (Object.keys(Tx).indexOf('TransactionType') > -1) {
-    if (Tx['TransactionType'].toLowerCase() === 'signin') {
+  if (Object.keys(Tx).indexOf("TransactionType") > -1) {
+    if (Tx?.TransactionType?.toLowerCase() === "signin") {
       Object.assign(Tx, {
         TransactionType: undefined,
-        SignIn: true
-      })
+        SignIn: true,
+      });
     }
   }
 
@@ -36,7 +36,7 @@ const sign = (
       throw new Error("Account not instanceof XRPL Account");
     }
   } else if (Array.isArray(account)) {
-    account.forEach(account => {
+    account.forEach((account) => {
       if (account instanceof Account) {
         accounts.push(account);
       } else {
@@ -88,17 +88,16 @@ const sign = (
       signedTransaction: tx.signedTransaction,
       txJson: tx.txJson,
       signers: [
-        // @ts-ignore
         typeof accounts[0]._signAs === "string"
           ? accounts[0]._signAs
-          : accounts[0].address
-      ]
+          : accounts[0].address || "",
+      ],
     };
   } else {
     const RippleLibApi = require("ripple-lib").RippleAPI;
     const RippleApi = new RippleLibApi();
     const Codec = require("ripple-binary-codec");
-    
+
     const MultiSignedTransactionBinary = (() => {
       if (
         transaction instanceof Object &&
@@ -108,7 +107,7 @@ const sign = (
       ) {
         if (
           transaction.length ===
-          transaction.filter(t => {
+          transaction.filter((t) => {
             return (
               t instanceof Object &&
               t !== null &&
@@ -118,13 +117,13 @@ const sign = (
         ) {
           // MultiSign [ { signedTransaction: ... } , ... ]
           return RippleApi.combine(
-            transaction.map(t => {
+            transaction.map((t) => {
               return t.signedTransaction.toUpperCase();
             })
           );
         } else if (
           transaction.length ===
-          transaction.filter(t => {
+          transaction.filter((t) => {
             return (
               typeof t === "string" && t.toUpperCase().match(/^[A-F0-9]+$/)
             );
@@ -132,7 +131,7 @@ const sign = (
         ) {
           // MultiSign [ 'AEF9...', 'C6DA...' ]
           return RippleApi.combine(
-            transaction.map(t => {
+            transaction.map((t) => {
               return t.toUpperCase();
             })
           );
@@ -144,12 +143,12 @@ const sign = (
       } else {
         // MultiSign [ lib.sign(...), lib.sign(...) ]
         return RippleApi.combine(
-          accounts.map(account => {
+          accounts.map((account) => {
             return Sign(JSON.stringify(Tx), account.keypair, {
               signAs:
                 typeof account._signAs === "string"
                   ? account._signAs
-                  : account.address
+                  : account.address,
             }).signedTransaction;
           })
         );
@@ -162,17 +161,13 @@ const sign = (
       id: MultiSignedTransactionBinary.id,
       signedTransaction: MultiSignedTransactionBinary.signedTransaction,
       txJson: txJson,
-      signers: txJson.Signers
+      signers: txJson.Signers,
     };
   }
 };
 
-export {
-  sign
-};
+export { sign };
 
-export type {
-  SignedObject
-};
+export type { SignedObject };
 
 export default sign;

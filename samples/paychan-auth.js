@@ -21,6 +21,14 @@ const TxFormats = [
   {
     channel: '5DB01B7FFED6B67E6B0414DED11E051D2EE2B7619CE0EAA6286D67A3A4D5BDB3',
     amount: '1000000',
+  },
+  {
+    TransactionType: 'PaymentChannelAuthorize',
+    Sequence: 123,
+    Fee: '123',
+    Account: 'rwietsevLFg8XSmG3bEZzFein1g8RBqWDZ',
+    channel: '5DB01B7FFED6B67E6B0414DED11E051D2EE2B7619CE0EAA6286D67A3A4D5BDB3',
+    amount: '1000000',
   }
 ];
 
@@ -69,6 +77,7 @@ TxFormats.forEach(Tx => {
       verify(claim, Completed.signedTransaction, (KeyType === 'ed25519' ? 'ED' : '') + rawSigningPubKeys[KeyType])
     )
     
-    console.log()    
+    // console.log(Completed)
+    console.log()
   })
 })

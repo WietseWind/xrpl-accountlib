@@ -11,6 +11,7 @@ import {
   encode,
   encodeForSigning,
   encodeForMultisigning,
+  encodeForSigningClaim,
 } from "ripple-binary-codec";
 
 // Ugly, but no definitions when directly loading the lib file, and Signature() not exported in lib
@@ -128,6 +129,19 @@ function encodeTransaction(
     typeof Transaction.TxnSignature === "undefined" &&
     typeof Transaction.Signers === "undefined"
   ) {
+    if (
+      !Transaction?.TransactionType &&
+      !Transaction?.command &&
+      Transaction?.channel &&
+      Transaction?.amount
+    ) {
+      // Payment Channel Authorization
+      return encodeForSigningClaim({
+        channel: Transaction.channel,
+        amount: Transaction?.amount,
+      });
+    }
+
     // Regular TX signing
     return encodeForSigning(Transaction);
   } else {

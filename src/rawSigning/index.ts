@@ -16,7 +16,7 @@ type PreparedRawTransaction = {
 };
 
 type SignedRawObject = {
-  type: "SignedTx" | "MultiSignedTx";
+  type: "SignedTx" | "MultiSignedTx" | "SignedPayChanAuth";
   txnSignature: string;
   signatureVerifies: boolean;
   txJson: Record<string, unknown>;
@@ -78,6 +78,24 @@ const prepare = (
     Object.assign(transaction, { SigningPubKey: "" });
   }
 
+  // Payment Channel Authorization
+  if (
+    String(transaction?.TransactionType || "").toLowerCase() ===
+      "paymentchannelauthorize" ||
+    String(transaction?.command || "").toLowerCase() === "channel_authorize" ||
+    (!transaction?.TransactionType &&
+      !transaction?.command &&
+      transaction?.channel &&
+      transaction?.amount)
+  ) {
+    Object.assign(transaction, {
+      TransactionType: undefined,
+      command: undefined,
+      channel: transaction.channel,
+      amount: transaction.amount,
+    });
+  }
+
   const message = Utils.encodeTransaction(
     transaction,
     multiSign ? Utils.deriveAddress(signingPubKey) : undefined
@@ -117,6 +135,7 @@ const complete = (
     Prepared.signingPubKey
   );
 
+  let isPayChanAuth = false;
   let txJson: Record<string, unknown> = {};
   let signedTransaction: string = "";
   let id: string = "";
@@ -125,12 +144,29 @@ const complete = (
 
   if (signatureVerifies) {
     Object.assign(txJson, { TxnSignature: txnSignature });
+
     signedTransaction = Utils.encodeTransaction(txJson);
     id = computeBinaryTransactionHash(signedTransaction);
   }
 
+  // Payment channel auth
+  if (
+    !txJson?.TransactionType &&
+    !txJson?.command &&
+    txJson?.channel &&
+    txJson?.amount
+  ) {
+    isPayChanAuth = true;
+    id = "";
+    signedTransaction = String(txJson.TxnSignature || "");
+    txJson = {
+      channel: txJson.channel,
+      amount: txJson.amount,
+    };
+  }
+
   return {
-    type: "SignedTx",
+    type: isPayChanAuth ? "SignedPayChanAuth" : "SignedTx",
     txnSignature,
     signatureVerifies,
     txJson,

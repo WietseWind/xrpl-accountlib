@@ -1,10 +1,12 @@
 "use strict";
 
+import { encodeForSigningClaim } from "ripple-binary-codec";
+import { sign as rk_sign } from "ripple-keypairs";
 import Sign from "xrpl-sign-keypairs";
 import Account from "../schema/Account";
 
 type SignedObject = {
-  type: "SignedTx" | "MultiSignedTx";
+  type: "SignedTx" | "MultiSignedTx" | "SignedPayChanAuth";
   id: string;
   signedTransaction: string;
   txJson: Record<string, unknown>;
@@ -41,6 +43,35 @@ const sign = (
         throw new Error("Account not instanceof XRPL Account");
       }
     });
+  }
+
+  if (
+    Tx?.TransactionType?.toLowerCase() === "paymentchannelauthorize" ||
+    Tx?.command?.toLowerCase() === "channel_authorize" ||
+    (!Tx?.TransactionType && !Tx?.command && Tx?.channel && Tx?.amount)
+  ) {
+    if (accounts.length === 1) {
+      if (
+        typeof accounts[0]._signAs === "string" &&
+        accounts[0]._signAs !== ""
+      ) {
+        throw new Error("Payment channel authorization: cannot Sign As");
+      }
+      const claimInput = { channel: Tx.channel, amount: Tx.amount };
+      const claim = encodeForSigningClaim(claimInput);
+      const signed = rk_sign(claim, accounts[0].keypair.privateKey);
+      return {
+        type: "SignedPayChanAuth",
+        id: "",
+        signedTransaction: signed,
+        txJson: claimInput,
+        signers: [accounts[0].address || ""],
+      };
+    } else {
+      throw new Error(
+        "Payment channel authorization: multi-signing not supported"
+      );
+    }
   }
 
   if (accounts.length === 1) {

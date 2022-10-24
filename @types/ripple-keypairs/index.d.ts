@@ -18,4 +18,6 @@ declare module "ripple-keypairs" {
   export const deriveAddress: (publicKey: string) => string;
 
   export const generateSeed: (options?: { algorithm?: string, entropy?: Buffer | Uint8Array }) => string;
+
+  export const sign: (messageHex: any, privateKey: any) => string;
 }

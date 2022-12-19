@@ -1,7 +1,6 @@
 "use strict";
 
 import * as Utils from "../utils";
-import { computeBinaryTransactionHash } from "ripple-hashes";
 import assert from "assert";
 import { RippleAPI } from "ripple-lib";
 import { decode } from "ripple-binary-codec";
@@ -146,7 +145,7 @@ const complete = (
     Object.assign(txJson, { TxnSignature: txnSignature });
 
     signedTransaction = Utils.encodeTransaction(txJson);
-    id = computeBinaryTransactionHash(signedTransaction);
+    id = Utils.computeBinaryTransactionHash(signedTransaction);
   }
 
   // Payment channel auth

@@ -1,12 +1,15 @@
 "use strict";
 
 import BN from "bn.js";
+import { Buffer as BufferPf } from "buffer/";
 import * as AddressCodec from "ripple-address-codec";
 import { validateMnemonic } from "bip39";
 import * as elliptic from "elliptic";
 import { verify, deriveAddress } from "ripple-keypairs";
 import assert from "assert";
 import hashjs from "hash.js";
+import { HashPrefix } from "ripple-binary-codec/dist/hash-prefixes";
+import { sha512Half } from "ripple-binary-codec/dist/hashes";
 import {
   encode,
   encodeForSigning,
@@ -16,6 +19,12 @@ import {
 
 // Ugly, but no definitions when directly loading the lib file, and Signature() not exported in lib
 const Signature = require("elliptic/lib/elliptic/ec/signature");
+
+function computeBinaryTransactionHash(txBlobHex: string) {
+  const prefix = HashPrefix.transactionID.toString("hex").toUpperCase();
+  const input = BufferPf.from(prefix + txBlobHex, "hex");
+  return sha512Half(input).toString("hex").toUpperCase();
+}
 
 function bytesToHex(a: number[]): string {
   return a
@@ -186,4 +195,5 @@ export {
   encodeTransaction,
   secp256k1_p1363ToFullyCanonicalDerSignature,
   verify as verifySignature,
+  computeBinaryTransactionHash,
 };

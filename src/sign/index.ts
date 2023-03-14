@@ -1,9 +1,17 @@
 "use strict";
 
-import { encodeForSigningClaim } from "ripple-binary-codec";
+import {
+  encodeForSigningClaim,
+  type XrplDefinitions,
+} from "ripple-binary-codec";
 import { sign as rk_sign } from "ripple-keypairs";
 import Sign from "xrpl-sign-keypairs";
 import Account from "../schema/Account";
+import { combine } from "../utils";
+
+type SignOptions = {
+  [key: string]: any;
+};
 
 type SignedObject = {
   type: "SignedTx" | "MultiSignedTx" | "SignedPayChanAuth";
@@ -15,7 +23,8 @@ type SignedObject = {
 
 const sign = (
   transaction: Object,
-  account?: Account | Account[]
+  account?: Account | Account[],
+  definitions?: XrplDefinitions
 ): SignedObject => {
   let accounts = [];
   const Tx: any = Object.assign({}, transaction);
@@ -76,12 +85,12 @@ const sign = (
 
   if (accounts.length === 1) {
     const txJSON = JSON.stringify(Tx);
-    let signAs = {};
+    let options: SignOptions = { signAs: undefined, definitions };
     if (typeof accounts[0]._signAs === "string" && accounts[0]._signAs !== "") {
       // signAs explicitly set
-      signAs = { signAs: accounts[0]._signAs };
+      options.signAs = accounts[0]._signAs;
     }
-    const tx = Sign(txJSON, accounts[0].keypair, signAs);
+    const tx = Sign(txJSON, accounts[0].keypair, options);
     return {
       type: "SignedTx",
       id: tx.id,
@@ -94,8 +103,6 @@ const sign = (
       ],
     };
   } else {
-    const RippleLibApi = require("ripple-lib").RippleAPI;
-    const RippleApi = new RippleLibApi();
     const Codec = require("ripple-binary-codec");
 
     const MultiSignedTransactionBinary = (() => {
@@ -116,10 +123,11 @@ const sign = (
           }).length
         ) {
           // MultiSign [ { signedTransaction: ... } , ... ]
-          return RippleApi.combine(
+          return combine(
             transaction.map((t) => {
               return t.signedTransaction.toUpperCase();
-            })
+            }),
+            definitions
           );
         } else if (
           transaction.length ===
@@ -130,10 +138,11 @@ const sign = (
           }).length
         ) {
           // MultiSign [ 'AEF9...', 'C6DA...' ]
-          return RippleApi.combine(
+          return combine(
             transaction.map((t) => {
               return t.toUpperCase();
-            })
+            }),
+            definitions
           );
         } else {
           throw new Error(
@@ -142,20 +151,25 @@ const sign = (
         }
       } else {
         // MultiSign [ lib.sign(...), lib.sign(...) ]
-        return RippleApi.combine(
+        return combine(
           accounts.map((account) => {
             return Sign(JSON.stringify(Tx), account.keypair, {
               signAs:
                 typeof account._signAs === "string"
                   ? account._signAs
                   : account.address,
+              definitions,
             }).signedTransaction;
-          })
+          }),
+          definitions
         );
       }
     })();
 
-    const txJson = Codec.decode(MultiSignedTransactionBinary.signedTransaction);
+    const txJson = Codec.decode(
+      MultiSignedTransactionBinary.signedTransaction,
+      definitions
+    );
     return {
       type: "MultiSignedTx",
       id: MultiSignedTransactionBinary.id,

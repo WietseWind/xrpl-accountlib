@@ -2,8 +2,7 @@
 
 import * as Utils from "../utils";
 import assert from "assert";
-import { RippleAPI } from "ripple-lib";
-import { decode } from "ripple-binary-codec";
+import { decode, type XrplDefinitions } from "ripple-binary-codec";
 
 type PreparedRawTransaction = {
   pubkey: string;
@@ -58,7 +57,8 @@ const assertValidPubkey = (pubkey: string): void => {
 const prepare = (
   txJson: Record<string, unknown>,
   pubkey: string,
-  multiSign = false
+  multiSign = false,
+  definitions?: XrplDefinitions
 ): PreparedRawTransaction => {
   assertValidPubkey(pubkey);
 
@@ -97,7 +97,8 @@ const prepare = (
 
   const message = Utils.encodeTransaction(
     transaction,
-    multiSign ? Utils.deriveAddress(signingPubKey) : undefined
+    multiSign ? Utils.deriveAddress(signingPubKey) : undefined,
+    definitions
   );
 
   const hashToSign =
@@ -117,7 +118,8 @@ const prepare = (
 
 const complete = (
   Prepared: PreparedRawTransaction,
-  signature: string
+  signature: string,
+  definitions?: XrplDefinitions
 ): SignedRawObject => {
   assertValidPubkey(Prepared.pubkey);
   assert(typeof signature === "string", "signature: string expected");
@@ -144,7 +146,7 @@ const complete = (
   if (signatureVerifies) {
     Object.assign(txJson, { TxnSignature: txnSignature });
 
-    signedTransaction = Utils.encodeTransaction(txJson);
+    signedTransaction = Utils.encodeTransaction(txJson, undefined, definitions);
     id = Utils.computeBinaryTransactionHash(signedTransaction);
   }
 
@@ -176,7 +178,8 @@ const complete = (
 
 const completeMultiSigned = (
   txJson: Record<string, unknown>,
-  SignersAndSignatures: SignerAndSignature[]
+  SignersAndSignatures: SignerAndSignature[],
+  definitions?: XrplDefinitions
 ): SignedRawObject => {
   assert(Array.isArray(SignersAndSignatures), "SignersAndSignatures not array");
   assert(SignersAndSignatures.length > 0, "SignersAndSignatures empty");
@@ -202,7 +205,11 @@ const completeMultiSigned = (
             SignerAndSignature.signature
           );
 
-    const message = Utils.encodeTransaction(transaction, signerAddress);
+    const message = Utils.encodeTransaction(
+      transaction,
+      signerAddress,
+      definitions
+    );
 
     // console.log({message, txnSignature, pubKey})
     const signatureVerifies = Utils.verifySignature(
@@ -229,16 +236,18 @@ const completeMultiSigned = (
       signature: SignerAndSignature.signature,
       verifies: signatureVerifies,
       transaction,
-      signedTransaction: Utils.encodeTransaction(transaction),
+      signedTransaction: Utils.encodeTransaction(
+        transaction,
+        undefined,
+        definitions
+      ),
     };
 
     return MultiSignature;
   });
 
   // console.dir(toCombine, {depth: null})
-  const combined = new RippleAPI().combine(
-    toCombine.map((c) => c.signedTransaction)
-  );
+  const combined = Utils.combine(toCombine.map((c) => c.signedTransaction));
   const signedTransaction = String(
     (combined as Record<string, unknown>).signedTransaction || ""
   );
@@ -247,7 +256,7 @@ const completeMultiSigned = (
     type: "MultiSignedTx",
     txnSignature: "",
     signatureVerifies: toCombine.every((s) => s.verifies),
-    txJson: decode(signedTransaction),
+    txJson: decode(signedTransaction, definitions),
     signedTransaction,
     id: String((combined as Record<string, unknown>).id || ""),
   };

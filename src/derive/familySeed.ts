@@ -1,13 +1,13 @@
 "use strict";
 
-import Keypairs from "ripple-keypairs";
+import { deriveKeypair, deriveAddress, } from "ripple-keypairs";
 import * as Utils from "../utils";
 
 import Account from "../schema/Account";
 
 const familySeed = (familyseed: string): Account => {
-  const Keypair = Keypairs.deriveKeypair(familyseed);
-  const Address = Keypairs.deriveAddress(Keypair.publicKey);
+  const Keypair = deriveKeypair(familyseed);
+  const Address = deriveAddress(Keypair.publicKey);
   return new Account({
     algorithm: Utils.getAlgorithmFromKey(Keypair.privateKey),
     address: Address,

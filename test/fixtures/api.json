@@ -84,6 +84,13 @@
     "DestinationTag": 495,
     "Sequence": 4
   },
+  "customTx": {
+    "TransactionType": "ClaimReward",
+    "Account": "rPdvC6ccq8hCdPKSPJkPmyZ4Mi1oG2FFkT",
+    "Issuer": "rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh",
+    "Fee": "1000",
+    "Sequence": 4
+  },
   "txPseudo": {
     "TransactionType": "SignIn"
   },

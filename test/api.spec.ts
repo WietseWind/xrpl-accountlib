@@ -1,5 +1,6 @@
 import fixtures from "./fixtures/api.json";
 import { derive, generate, sign, rawSigning, utils } from "../src";
+import { XrplDefinitions } from "ripple-binary-codec";
 
 describe("Api", () => {
   /* Derive ==================================================================== */
@@ -602,4 +603,6 @@ describe("Api", () => {
       expect(result.signedTransaction.length).toBeGreaterThan(10);
     });
   });
+
+  // The end
 });

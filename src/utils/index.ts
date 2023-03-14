@@ -1,6 +1,8 @@
 "use strict";
 
 import BN from "bn.js";
+import { flatMap } from "lodash";
+import { decodeAccountID } from "ripple-address-codec";
 import { Buffer as BufferPf } from "buffer/";
 import * as AddressCodec from "ripple-address-codec";
 import { validateMnemonic } from "bip39";
@@ -12,9 +14,11 @@ import { HashPrefix } from "ripple-binary-codec/dist/hash-prefixes";
 import { sha512Half } from "ripple-binary-codec/dist/hashes";
 import {
   encode,
+  decode,
   encodeForSigning,
   encodeForMultisigning,
   encodeForSigningClaim,
+  type XrplDefinitions,
 } from "ripple-binary-codec";
 
 // Ugly, but no definitions when directly loading the lib file, and Signature() not exported in lib
@@ -128,12 +132,13 @@ function hash(hex: string): number[] {
 
 function encodeTransaction(
   TxJson: Record<string, unknown>,
-  MultiSignAccount?: string
+  MultiSignAccount?: string,
+  definitions?: XrplDefinitions
 ): string {
   const Transaction = Object.assign({}, TxJson);
   if (typeof MultiSignAccount !== "undefined") {
     Object.assign(Transaction, { SigningPubKey: "" });
-    return encodeForMultisigning(Transaction, MultiSignAccount);
+    return encodeForMultisigning(Transaction, MultiSignAccount, definitions);
   } else if (
     typeof Transaction.TxnSignature === "undefined" &&
     typeof Transaction.Signers === "undefined"
@@ -152,10 +157,10 @@ function encodeTransaction(
     }
 
     // Regular TX signing
-    return encodeForSigning(Transaction);
+    return encodeForSigning(Transaction, definitions);
   } else {
     // Signed TX (tx_blob)
-    return encode(Transaction);
+    return encode(Transaction, definitions);
   }
 }
 
@@ -180,6 +185,39 @@ function secp256k1_p1363ToFullyCanonicalDerSignature(
   return Buffer.from(nonCanonicalDer).toString("hex").toUpperCase();
 }
 
+function addressToBigNumber(address: string) {
+  const hex = Buffer.from(decodeAccountID(address)).toString("hex");
+  return new BN(hex, 16);
+}
+
+function compareSigners(left: any, right: any): number {
+  return addressToBigNumber(left.Signer.Account).cmp(
+    addressToBigNumber(right.Signer.Account)
+  );
+}
+
+function combine(multiSignedTxHex: string[], definitions?: XrplDefinitions) {
+  // Signers must be sorted in the combined transaction - See compareSigners' documentation for more details
+  const multiSignedTx = multiSignedTxHex.map((encoded) =>
+    decode(encoded, definitions)
+  );
+
+  const sortedSigners = flatMap(
+    multiSignedTx,
+    (tx: any) => tx.Signers ?? []
+  ).sort(compareSigners);
+
+  const signedTransaction = encode(
+    { ...multiSignedTx[0], Signers: sortedSigners },
+    definitions
+  );
+
+  return {
+    id: computeBinaryTransactionHash(signedTransaction),
+    signedTransaction,
+  };
+}
+
 export {
   bytesToHex,
   hexToBytes,
@@ -196,4 +234,5 @@ export {
   secp256k1_p1363ToFullyCanonicalDerSignature,
   verify as verifySignature,
   computeBinaryTransactionHash,
+  combine,
 };

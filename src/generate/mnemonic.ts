@@ -2,7 +2,7 @@
 
 import { wordlists, mnemonicToSeedSync, generateMnemonic } from "bip39";
 import * as Bip32 from "bip32";
-import Keypairs from "ripple-keypairs";
+import { deriveAddress } from "ripple-keypairs";
 
 import Account from "../schema/Account";
 
@@ -52,7 +52,7 @@ const mnemonic = (options: Options = {}): Account => {
     publicKey: publicKey,
     privateKey: "00" + privateKey
   };
-  const Address = Keypairs.deriveAddress(Keypair.publicKey);
+  const Address = deriveAddress(Keypair.publicKey);
 
   return new Account({
     address: Address,

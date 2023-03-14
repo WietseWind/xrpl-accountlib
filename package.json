@@ -1,6 +1,6 @@
 {
   "name": "xrpl-accountlib",
-  "version": "1.6.1",
+  "version": "2.0.0",
   "description": "XRPL Account helper: generation, derivation and signing",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -8,7 +8,9 @@
     "prepublish": "npm run clean && npm run test && npm run build",
     "clean": "rm -rf dist",
     "build": "tsc",
-    "test": "jest --verbose"
+    "test": "jest --verbose",
+    "browserify": "browserify -r ./dist/index.js:xrpl-accountlib -o dist/browser.js && npm run minify",
+    "minify": "cat dist/browser.js | terser --compress --mangle > dist/browser.min.js"
   },
   "files": [
     "dist/**/*.js",
@@ -25,13 +27,13 @@
     "bn.js": "^5.2.1",
     "elliptic": "6.5.4",
     "hash.js": "^1.1.7",
-    "ripple-address-codec": "^4.2.4",
+    "lodash": "^4.17.21",
+    "ripple-address-codec": "^4.2.5",
     "ripple-binary-codec": "^1.4.2",
     "ripple-keypairs": "^1.1.4",
-    "ripple-lib": "^1.10.1",
     "ripple-secret-codec": "^1.0.3",
     "xrpl-secret-numbers": "^0.3.3",
-    "xrpl-sign-keypairs": "^2.1.2"
+    "xrpl-sign-keypairs": "^2.1.3"
   },
   "devDependencies": {
     "@types/babel__core": "^7.1.19",
@@ -39,11 +41,14 @@
     "@types/bip39": "^3.0.0",
     "@types/elliptic": "^6.4.14",
     "@types/jest": "^27.5.2",
+    "@types/lodash": "^4.14.191",
     "@types/node": "^14.18.35",
     "@types/prettier": "2.4",
+    "browserify": "^17.0.0",
     "jest": "^27.5.1",
+    "terser": "^5.16.6",
     "ts-jest": "^27.1.5",
-    "typescript": "4.0"
+    "typescript": "4.5"
   },
   "repository": {
     "type": "git",

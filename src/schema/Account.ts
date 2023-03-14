@@ -1,4 +1,4 @@
-import Keypairs from "ripple-keypairs";
+import { deriveAddress } from "ripple-keypairs";
 import * as AddressCodec from "ripple-address-codec";
 import * as Elliptic from "elliptic";
 import * as Utils from "../utils";
@@ -157,7 +157,7 @@ export default class XRPL_Account {
      * Derive address from publicKey if address unknown
      */
     if (this.address === null && this.keypair.publicKey) {
-      this.address = Keypairs.deriveAddress(this.keypair.publicKey);
+      this.address = deriveAddress(this.keypair.publicKey);
     }
   }
 

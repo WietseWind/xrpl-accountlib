@@ -146,13 +146,13 @@ function encodeTransaction(
     if (
       !Transaction?.TransactionType &&
       !Transaction?.command &&
-      Transaction?.channel &&
-      Transaction?.amount
+      ((Transaction?.channel && Transaction?.amount) ||
+        (Transaction?.Channel && Transaction?.Amount))
     ) {
       // Payment Channel Authorization
       return encodeForSigningClaim({
-        channel: Transaction.channel,
-        amount: Transaction?.amount,
+        channel: Transaction?.channel || Transaction?.Channel,
+        amount: Transaction?.amount || Transaction?.Amount,
       });
     }
 

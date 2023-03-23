@@ -84,14 +84,14 @@ const prepare = (
     String(transaction?.command || "").toLowerCase() === "channel_authorize" ||
     (!transaction?.TransactionType &&
       !transaction?.command &&
-      transaction?.channel &&
-      transaction?.amount)
+      ((transaction?.channel && transaction?.amount) ||
+        (transaction?.Channel && transaction?.Amount)))
   ) {
     Object.assign(transaction, {
       TransactionType: undefined,
       command: undefined,
-      channel: transaction.channel,
-      amount: transaction.amount,
+      channel: transaction?.channel || transaction?.Channel,
+      amount: transaction?.amount || transaction?.Amount,
     });
   }
 

@@ -57,7 +57,9 @@ const sign = (
   if (
     Tx?.TransactionType?.toLowerCase() === "paymentchannelauthorize" ||
     Tx?.command?.toLowerCase() === "channel_authorize" ||
-    (!Tx?.TransactionType && !Tx?.command && Tx?.channel && Tx?.amount)
+    (!Tx?.TransactionType &&
+      !Tx?.command &&
+      ((Tx?.channel && Tx?.amount) || (Tx?.Channel && Tx?.Amount)))
   ) {
     if (accounts.length === 1) {
       if (
@@ -66,7 +68,12 @@ const sign = (
       ) {
         throw new Error("Payment channel authorization: cannot Sign As");
       }
-      const claimInput = { channel: Tx.channel, amount: Tx.amount };
+
+      const claimInput =
+        Tx?.channel && Tx?.amount
+          ? { channel: Tx.channel, amount: Tx.amount }
+          : { channel: Tx.Channel, amount: Tx.Amount };
+
       const claim = encodeForSigningClaim(claimInput);
       const signed = rk_sign(claim, accounts[0].keypair.privateKey);
       return {

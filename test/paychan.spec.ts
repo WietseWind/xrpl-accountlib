@@ -14,6 +14,11 @@ const TxFormats = [
     amount: fixtures.paychan.common.input.amount,
   },
   {
+    TransactionType: "PaymentChannelAuthorize",
+    Channel: fixtures.paychan.common.input.channel,
+    Amount: fixtures.paychan.common.input.amount,
+  },
+  {
     channel: fixtures.paychan.common.input.channel,
     amount: fixtures.paychan.common.input.amount,
   },

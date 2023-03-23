@@ -3,6 +3,7 @@
 import { wordlists, mnemonicToSeedSync, generateMnemonic } from "bip39";
 import * as Bip32 from "bip32";
 import { deriveAddress } from "ripple-keypairs";
+import { randomBytes } from "crypto";
 
 import Account from "../schema/Account";
 
@@ -25,7 +26,11 @@ const mnemonic = (options: Options = {}): Account => {
     options.wordlist && Object.keys(wordlists).indexOf(options.wordlist) > -1
       ? wordlists[options.wordlist as keyof typeof wordlists]
       : undefined;
-  const words = generateMnemonic(strength, undefined, Wordlist);
+  const words = generateMnemonic(
+    strength,
+    (size) => Buffer.from(randomBytes(size)),
+    Wordlist
+  );
 
   const accountPath =
     options.accountPath && !isNaN(parseInt(options.accountPath))
@@ -50,7 +55,7 @@ const mnemonic = (options: Options = {}): Account => {
   const privateKey = Utils.bufferToHext(Node.privateKey);
   const Keypair = {
     publicKey: publicKey,
-    privateKey: "00" + privateKey
+    privateKey: "00" + privateKey,
   };
   const Address = deriveAddress(Keypair.publicKey);
 
@@ -59,7 +64,7 @@ const mnemonic = (options: Options = {}): Account => {
     mnemonic: words,
     passphrase: passphrase,
     keypair: Keypair,
-    path: Path
+    path: Path,
   });
 };
 

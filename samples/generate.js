@@ -13,6 +13,12 @@ console.log(
 console.log();
 
 console.log(
+  "Generate: family seed (algorithm undefined)",
+  lib.generate.familySeed()
+);
+console.log();
+
+console.log(
   "Generate: mnemonic",
   lib.generate.mnemonic({ wordlist: "english", passphrase: "Hello World!" })
 );

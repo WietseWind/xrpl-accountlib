@@ -10,6 +10,7 @@ import XRPL_Account from "./schema/Account";
 
 /* Defs ==================================================================== */
 import { XrplDefinitions } from "ripple-binary-codec";
+import { type DefinitionsData } from "ripple-binary-codec/dist/enums/xrpl-definitions-base";
 
 /* Export ==================================================================== */
 export {
@@ -21,3 +22,5 @@ export {
   rawSigning,
   XrplDefinitions,
 };
+
+export type { DefinitionsData };

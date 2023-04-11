@@ -9,8 +9,23 @@ import * as rawSigning from "./rawSigning";
 import XRPL_Account from "./schema/Account";
 
 /* Defs ==================================================================== */
-import { XrplDefinitions } from "ripple-binary-codec";
+import {
+  XrplDefinitions,
+  encode,
+  decode,
+  encodeForSigning,
+  encodeForMultisigning,
+  encodeForSigningClaim,
+} from "ripple-binary-codec";
 import { type DefinitionsData } from "ripple-binary-codec/dist/enums/xrpl-definitions-base";
+
+const binary = {
+  encode,
+  decode,
+  encodeForSigning,
+  encodeForMultisigning,
+  encodeForSigningClaim,
+}
 
 /* Export ==================================================================== */
 export {
@@ -21,6 +36,7 @@ export {
   utils,
   rawSigning,
   XrplDefinitions,
+  binary,
 };
 
 export type { DefinitionsData };

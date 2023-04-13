@@ -1,4 +1,4 @@
-const lib = require("../");
+const lib = require("../"); // require('xrpl-accountlib') after `npm install xrpl-accountlib` in prod.
 
 console.log("XRPL-AccountLib");
 console.log();

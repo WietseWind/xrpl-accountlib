@@ -1,13 +1,12 @@
 "use strict";
 
-import {
-  encodeForSigningClaim,
-  type XrplDefinitions,
-} from "ripple-binary-codec";
+import { encodeForSigningClaim, XrplDefinitions } from "ripple-binary-codec";
 import { sign as rk_sign } from "ripple-keypairs";
 import Sign from "xrpl-sign-keypairs";
 import Account from "../schema/Account";
 import { combine } from "../utils";
+import { XrplClient } from "xrpl-client";
+import assert from "assert";
 
 type SignOptions = {
   [key: string]: any;
@@ -187,7 +186,45 @@ const sign = (
   }
 };
 
-export { sign };
+const signAndSubmit = async (
+  client: XrplClient | string,
+  transaction: Object,
+  account: Account | Account[]
+) => {
+  assert(
+    typeof client !== "undefined",
+    "First param. must be XrplClient (npm: xrpl-client) or wss:// node endpoint"
+  );
+
+  const connection =
+    typeof client === "string" ? new XrplClient(client) : client;
+
+  const definitions = await connection.definitions();
+
+  const { signedTransaction, id } = sign(
+    transaction,
+    account,
+    definitions ? new XrplDefinitions(definitions as any) : undefined
+  );
+
+  const submitResponse = await connection.send({
+    command: "submit",
+    tx_blob: signedTransaction,
+  });
+
+  if (typeof client === "string") {
+    // If constructed on demand: close
+    connection.close();
+  }
+
+  return {
+    tx_blob: signedTransaction,
+    tx_id: id,
+    response: submitResponse,
+  };
+};
+
+export { sign, signAndSubmit };
 
 export type { SignedObject };
 

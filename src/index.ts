@@ -2,11 +2,14 @@
 import * as generate from "./generate";
 import * as derive from "./derive";
 import * as utils from "./utils";
-import sign from "./sign";
+import { sign, signAndSubmit } from "./sign";
 import * as rawSigning from "./rawSigning";
 
 /* Types ==================================================================== */
 import XRPL_Account from "./schema/Account";
+
+/* Client ==================================================================== */
+import { XrplClient } from "xrpl-client";
 
 /* Defs ==================================================================== */
 import {
@@ -25,7 +28,7 @@ const binary = {
   encodeForSigning,
   encodeForMultisigning,
   encodeForSigningClaim,
-}
+};
 
 /* Export ==================================================================== */
 export {
@@ -33,10 +36,12 @@ export {
   generate,
   derive,
   sign,
+  signAndSubmit,
   utils,
   rawSigning,
   XrplDefinitions,
   binary,
+  XrplClient,
 };
 
 export type { DefinitionsData };

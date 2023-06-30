@@ -20,6 +20,8 @@ import {
   encodeForSigningClaim,
   type XrplDefinitions,
 } from "ripple-binary-codec";
+import type Account from "../schema/Account";
+import { XrplClient } from "xrpl-client";
 
 // Ugly, but no definitions when directly loading the lib file, and Signature() not exported in lib
 const Signature = require("elliptic/lib/elliptic/ec/signature");
@@ -218,6 +220,65 @@ function combine(multiSignedTxHex: string[], definitions?: XrplDefinitions) {
   };
 }
 
+const accountAndLedgerSequence = async (
+  client: XrplClient | string,
+  account: string | Account
+) => {
+  assert(
+    typeof client !== "undefined",
+    "First param. must be XrplClient (npm: xrpl-client) or wss:// node endpoint"
+  );
+
+  const accountAddress =
+    typeof account === "string" ? account : account.address;
+
+  const connection =
+    typeof client === "string" ? new XrplClient(client) : client;
+
+  const ledgerInfo = await connection.send({
+    command: "ledger",
+  });
+
+  const accountInfo = await connection.send({
+    command: "account_info",
+    account: accountAddress,
+  });
+
+  const endpoint = connection.getState().server.uri;
+  const networkId = connection.getState().server.networkId;
+
+  const fee = Math.min(
+    (connection.getState().fee.avg ||
+      connection.getState().fee.last ||
+      50_000) + 8, // Beat the queue.
+    50_000 // Absurd.
+  );
+
+  if (typeof client === "string") {
+    // If constructed on demand: close
+    connection.close();
+  }
+
+  const ledgerSequence = Number(ledgerInfo?.closed?.ledger?.seqNum || 0);
+  const accountSequence = Number(accountInfo?.account_data?.Sequence || 0);
+
+  return {
+    networkInfo: {
+      ledgerSequence: ledgerSequence > 0 ? ledgerSequence : null,
+      accountSequence: accountSequence > 0 ? accountSequence : null,
+      endpoint,
+      networkId,
+    },
+    txValues: {
+      Account: accountAddress,
+      NetworkID: networkId,
+      Sequence: accountSequence,
+      LastLedgerSequence: ledgerSequence > 0 ? ledgerSequence + 20 : undefined,
+      Fee: String(fee),
+    },
+  };
+};
+
 export {
   bytesToHex,
   hexToBytes,
@@ -235,4 +296,5 @@ export {
   verify as verifySignature,
   computeBinaryTransactionHash,
   combine,
+  accountAndLedgerSequence,
 };

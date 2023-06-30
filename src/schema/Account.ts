@@ -13,7 +13,7 @@ export enum AccountTypes {
   FamilySeed = "familySeed",
   Mnemonic = "mnemonic",
   Hex = "hex",
-  SecretNumbers = "secretNumbers"
+  SecretNumbers = "secretNumbers",
 }
 
 export type KeyPair = {
@@ -62,12 +62,12 @@ export default class XRPL_Account {
       mnemonic: null,
       passphrase: null,
       path: null,
-      secretNumbers: null
+      secretNumbers: null,
     };
     this.keypair = {
       algorithm: null,
       publicKey: null,
-      privateKey: null
+      privateKey: null,
     };
 
     /**

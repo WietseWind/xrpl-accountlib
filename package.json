@@ -32,6 +32,7 @@
     "ripple-binary-codec": "npm:xrpl-binary-codec-prerelease@2.0.0",
     "ripple-keypairs": "^1.1.4",
     "ripple-secret-codec": "^1.0.3",
+    "xrpl-client": "^2.1.0",
     "xrpl-secret-numbers": "^0.3.3",
     "xrpl-sign-keypairs": "^2.1.4"
   },

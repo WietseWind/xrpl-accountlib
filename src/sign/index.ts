@@ -187,8 +187,8 @@ const sign = (
 };
 
 const signAndSubmit = async (
-  client: XrplClient | string,
   transaction: Object,
+  client: XrplClient | string,
   account: Account | Account[]
 ) => {
   assert(

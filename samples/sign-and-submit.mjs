@@ -8,6 +8,7 @@ console.log("Sign & Submit (Custom Definitions)");
 console.log();
 
 const wss = 'wss://hooks-testnet-v3.xrpl-labs.com/'
+// const wss = 'wss://s.altnet.rippletest.net:51233/'
 // const wss = new XrplClient();
 
 const account = derive.familySeed("ssi4moYHYkWs2RPzRvrXzMrbpxqAJ")
@@ -23,7 +24,7 @@ const tx = {
   ...networkInfo.txValues, // Adds Sequence, Fee, Account, LastLedgerSequence
 };
 
-const submitted = await signAndSubmit(wss, tx, account)
+const submitted = await signAndSubmit(tx, wss, account)
 
 console.log(submitted);
 console.log();

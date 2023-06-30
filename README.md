@@ -10,8 +10,25 @@ npm install --save xrpl-accountlib
 
 ### A note on signing vs. connectivity
 
-Please note: this lib only provides signing and derivation capabilities. To connect to the XRPL and submit transactions, please take a look at `xrpl-client`. Here's an example on how these two libs can work together:
-https://gist.github.com/WietseWind/557a5c11fa0d474468e8c9c54e3e5b93
+Please note: this lib primarily provides signing and derivation capabilities. To connect to the XRPL and submit transactions, please take a look at `xrpl-client`.
+
+[Here's an example](https://gist.github.com/WietseWind/557a5c11fa0d474468e8c9c54e3e5b93) on how these two libs can work together (manually).
+
+#### 🎉 **HOWEVER**... Since version 2.1.0 this lib. bundles `xrpl-client` as well, and comes with helpers to prepare transactions & submit transactions 🎉
+
+The bundled `xrpl-client` instance & behaviour is **network definitions aware**, meaning it will dynamically load definitions from supporting networks, like [Hooks](https://hooks.xrpl.org) enabled networks.
+
+- `utils.accountAndLedgerSequence(wss, account)` (async) can be used to get values required to prepare a transaction:
+  - The first param. takes either an instance of `xrpl-client` or a string containing a WebSocket node endpoint. In case of a string (endpoint) a connection will be created & closed automatically.
+  - The second param. takes either an account address (string, r...) or an `XRPL_Account` object (see below).
+  - The output contains ready to use params. in the `txValues` property.
+- `signAndSubmit(tx, wss, account)` (async) can be used to sign a transaction & submit it to the network provided:
+  - The first param contains the TX Json, complete or completed by the `accountAndLedgerSequence` method `txValues`
+  - The second param. takes either an account address (string, r...) or an `XRPL_Account` object (see below).
+  - The third param takes an `XRPL_Account` object (see below). An account 'r-address' string can't be used here as a keypair needs to be present to sign.
+
+A sample can be viewed here:
+https://github.com/WietseWind/xrpl-accountlib/blob/master/samples/sign-and-submit.mjs
 
 ## The XRPL_Account object
 
@@ -58,10 +75,10 @@ Options:
 
 ### Secret Numbers `lib.generate.secretNumbers()`
 
-See: 
+See:
 
- - [https://www.npmjs.com/xrpl-secret-numbers](https://www.npmjs.com/xrpl-secret-numbers)
- - [https://github.com/WietseWind/xrpl-secret-numbers](https://github.com/WietseWind/xrpl-secret-numbers)
+- [https://www.npmjs.com/xrpl-secret-numbers](https://www.npmjs.com/xrpl-secret-numbers)
+- [https://github.com/WietseWind/xrpl-secret-numbers](https://github.com/WietseWind/xrpl-secret-numbers)
 
 ### Mnemonic `lib.generate.mnemonic(options{})`
 

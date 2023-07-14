@@ -21,7 +21,7 @@ The bundled `xrpl-client` instance & behaviour is **network definitions aware**,
 - `utils.accountAndLedgerSequence(wss, account)` (async) can be used to get values required to prepare a transaction:
   - The first param. takes either an instance of `xrpl-client` or a string containing a WebSocket node endpoint. In case of a string (endpoint) a connection will be created & closed automatically.
   - The second param. takes either an account address (string, r...) or an `XRPL_Account` object (see below).
-  - The output contains ready to use params. in the `txValues` property.
+  - The output contains ready to use params. in the `txValues` property. The given `LastLedgerSequence` is the current ledger index + 20.
 - `signAndSubmit(tx, wss, account)` (async) can be used to sign a transaction & submit it to the network provided:
   - The first param contains the TX Json, complete or completed by the `accountAndLedgerSequence` method `txValues`
   - The second param. takes either an account address (string, r...) or an `XRPL_Account` object (see below).

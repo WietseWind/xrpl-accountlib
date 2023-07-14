@@ -29,6 +29,17 @@ const tx = {
   ...networkInfo.txValues,
 };
 
+/**
+ * Note: the code above and `signAndSubmit` results in automatically fetching and setting a fee for you.
+ * If you want to check the fee for min/max/..., get your own fee (string in drops) using:
+ *    utils.networkTxFee(wss, tx)
+ * 
+ * e.g.
+ *    const Fee = await utils.networkTxFee(wss, tx)
+ *    assert(Number(Fee) < 50_000, "Auto fee above 50k drops, abort")
+ *    Object.assign(tx, { Fee, })
+ */
+
 const submitted = await signAndSubmit(tx, wss, account)
 
 console.log(submitted);

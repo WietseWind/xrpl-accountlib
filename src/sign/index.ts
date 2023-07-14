@@ -4,7 +4,7 @@ import { encodeForSigningClaim, XrplDefinitions } from "ripple-binary-codec";
 import { sign as rk_sign } from "ripple-keypairs";
 import Sign from "xrpl-sign-keypairs";
 import Account from "../schema/Account";
-import { combine } from "../utils";
+import { combine, networkTxFee, networkInfo } from "../utils";
 import { XrplClient } from "xrpl-client";
 import assert from "assert";
 
@@ -200,6 +200,16 @@ const signAndSubmit = async (
     typeof client === "string" ? new XrplClient(client) : client;
 
   const definitions = await connection.definitions();
+  const network = await networkInfo(connection, true /** keep alive */);
+
+  if (
+    network.features.hooks &&
+    String(Number((transaction as any)?.Fee)) === "0"
+  ) {
+    // We're on Hooks network and there is no fee, fetch it
+    const Fee = await networkTxFee(connection, transaction);
+    Object.assign(transaction, { Fee });
+  }
 
   const { signedTransaction, id } = sign(
     transaction,

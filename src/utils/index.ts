@@ -18,9 +18,11 @@ import {
   encodeForSigning,
   encodeForMultisigning,
   encodeForSigningClaim,
-  type XrplDefinitions,
+  XrplDefinitions,
 } from "ripple-binary-codec";
 import type Account from "../schema/Account";
+import { passphrase } from "../derive";
+import { sign } from "../sign";
 import { XrplClient } from "xrpl-client";
 
 // Ugly, but no definitions when directly loading the lib file, and Signature() not exported in lib
@@ -220,6 +222,114 @@ function combine(multiSignedTxHex: string[], definitions?: XrplDefinitions) {
   };
 }
 
+const networkInfo = async (
+  client: XrplClient | string,
+  keepCreatedConnectionAlive = false
+) => {
+  assert(
+    typeof client !== "undefined",
+    "First param. must be XrplClient (npm: xrpl-client) or wss:// node endpoint"
+  );
+
+  const connection =
+    typeof client === "string" ? new XrplClient(client) : client;
+
+  const ledger = await connection.send({
+    command: "ledger",
+  });
+
+  const amendments = (
+    await connection.send({
+      command: "ledger_entry",
+      index: "7DB0788C020F02780A673DC74757F23823FA3014C1866E72CC4CD8B226CD6EF4",
+      validated: true,
+    })
+  )?.node?.Amendments;
+
+  if (typeof client === "string" && !keepCreatedConnectionAlive) {
+    // If constructed on demand: close
+    connection.close();
+  }
+
+  const endpoint = connection.getState().server.uri;
+  const networkId = connection.getState().server.networkId;
+  const ledgerSequence = Number(ledger?.closed?.ledger?.seqNum || 0);
+
+  return {
+    endpoint,
+    networkId,
+    ledgerSequence,
+    ledger,
+    amendments,
+    features: {
+      hooks:
+        amendments.indexOf(
+          "ECE6819DBA5DB528F1A241695F5A9811EF99467CDE22510954FD357780BBD078"
+        ) > -1,
+    },
+    connection: keepCreatedConnectionAlive ? connection : null,
+  };
+};
+
+const networkTxFee = async (
+  client: XrplClient | string,
+  tx?: string | Object,
+  keepCreatedConnectionAlive = false
+) => {
+  /**
+   * TX can be string (expect BLOB) or TX Object
+   */
+  const { features, connection } = await networkInfo(
+    client,
+    true // keep alive
+  );
+
+  const getHooksTxFee = async (tx?: string | Object) => {
+    assert(
+      typeof tx === "string" || (typeof tx === "object" && tx !== null),
+      "Network fee calculation on Hooks enabled networks requires a TX to calculate the fee for"
+    );
+
+    const definitions = new XrplDefinitions(
+      (await connection?.definitions()) as any
+    );
+
+    const transaction = Object.assign(
+      {},
+      {
+        ...(typeof tx === "object"
+          ? Object.assign({}, tx)
+          : decode(tx, definitions)),
+        Fee: undefined,
+        SigningPubKey: undefined,
+      }
+    );
+
+    const tx_blob = sign(tx, passphrase(""), definitions).signedTransaction;
+    const fee = await connection?.send({ command: "fee", tx_blob });
+
+    return fee?.drops?.base_fee || null;
+  };
+
+  const fee = features.hooks
+    ? tx
+      ? await getHooksTxFee(tx)
+      : null
+    : Math.min(
+        (connection?.getState().fee.avg ||
+          connection?.getState().fee.last ||
+          50_000) + 8, // Beat the queue.
+        50_000 // Absurd.
+      );
+
+  if (typeof client === "string" && !keepCreatedConnectionAlive) {
+    // If constructed on demand: close
+    connection?.close();
+  }
+
+  return String(Number(fee));
+};
+
 const accountAndLedgerSequence = async (
   client: XrplClient | string,
   account: string | Account
@@ -232,34 +342,28 @@ const accountAndLedgerSequence = async (
   const accountAddress =
     typeof account === "string" ? account : account.address;
 
-  const connection =
-    typeof client === "string" ? new XrplClient(client) : client;
+  const { endpoint, networkId, ledgerSequence, features, connection } =
+    await networkInfo(
+      client,
+      true // keep alive
+    );
 
-  const ledgerInfo = await connection.send({
-    command: "ledger",
-  });
-
-  const accountInfo = await connection.send({
+  const accountInfo = await connection?.send({
     command: "account_info",
     account: accountAddress,
   });
 
-  const endpoint = connection.getState().server.uri;
-  const networkId = connection.getState().server.networkId;
-
-  const fee = Math.min(
-    (connection.getState().fee.avg ||
-      connection.getState().fee.last ||
-      50_000) + 8, // Beat the queue.
-    50_000 // Absurd.
+  const fee = await networkTxFee(
+    connection ? connection : client,
+    undefined,
+    true // keep alive
   );
 
   if (typeof client === "string") {
     // If constructed on demand: close
-    connection.close();
+    connection?.close();
   }
 
-  const ledgerSequence = Number(ledgerInfo?.closed?.ledger?.seqNum || 0);
   const accountSequence = Number(accountInfo?.account_data?.Sequence || 0);
 
   return {
@@ -268,13 +372,14 @@ const accountAndLedgerSequence = async (
       accountSequence: accountSequence > 0 ? accountSequence : null,
       endpoint,
       networkId,
+      features,
     },
     txValues: {
       Account: accountAddress,
       NetworkID: networkId,
       Sequence: accountSequence,
       LastLedgerSequence: ledgerSequence > 0 ? ledgerSequence + 20 : undefined,
-      Fee: String(fee),
+      Fee: String(Number(fee)),
     },
   };
 };
@@ -297,4 +402,7 @@ export {
   computeBinaryTransactionHash,
   combine,
   accountAndLedgerSequence,
+  accountAndLedgerSequence as txNetworkAndAccountValues,
+  networkInfo,
+  networkTxFee,
 };

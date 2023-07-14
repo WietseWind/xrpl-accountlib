@@ -190,3 +190,83 @@ const Tx = lib.sign([
 ```
 
 You can also pass the signed HEX blob as an array with strings.
+
+## Hooks Helpers
+
+To obtain network information, fetch Hooks fees, etc. there are some helpers present in the `utils` object.
+
+To prevent new connections from being setup all the time, you can connect a pre-constructed XrplClient class.
+
+#### Get Account & Ledger sequences & TX network values
+
+```javascript
+utils.txNetworkAndAccountValues(
+  client: XrplClient | string,
+  account: string | Account
+)
+```
+
+Returns:
+
+```javascript
+{
+  networkInfo: {
+    ledgerSequence: 4782267,
+    accountSequence: 4404168,
+    endpoint: 'wss://hooks-testnet-v3.xrpl-labs.com/',
+    networkId: 21338,
+    features: { hooks: true }
+  },
+  txValues: {
+    Account: 'rDUsh2K9rFeEZNU24zyjHD61ceeDwspFAU',
+    NetworkID: 21338,
+    Sequence: 4404168,
+    LastLedgerSequence: 4782287,
+    Fee: '0'
+  }
+}
+```
+  
+#### Get network information
+
+If you are obtaining network information and passing a string as client, a connection
+will be created for you. If you want to keep the connection alive for further communcation,
+pass `keepCreatedConnectionAlive` as true, and fetch the `XrplClient` connection from the
+`connection` return property.
+
+```javascript
+utils.networkInfo(
+  client: XrplClient | string,
+  keepCreatedConnectionAlive = false
+)
+```
+
+Returns:
+
+```javascript
+  endpoint: string,
+  networkId: number,
+  ledgerSequence: number,
+  ledger: number,
+  amendments: string[],
+  features: {
+    hooks: boolean,
+  },
+  connection: XrplClient,
+```
+
+#### Get network fee & network Fee based on Hooks on accounts
+
+```javascript
+utils.networkTxFee(
+  client: XrplClient | string,
+  tx?: string | Object,
+  keepCreatedConnectionAlive = false
+)
+```
+
+Returns (string in drops):
+
+```javascript
+13371337
+```

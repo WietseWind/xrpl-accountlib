@@ -8,14 +8,12 @@ console.log("Sign & Submit (Custom Definitions)");
 console.log();
 
 const wss = 'wss://hooks-testnet-v3.xrpl-labs.com/'
-// const wss = 'wss://s.altnet.rippletest.net:51233/'
-// const wss = new XrplClient();
-
 const account = derive.familySeed("ssi4moYHYkWs2RPzRvrXzMrbpxqAJ")
-// console.log(String(account))
 
-const networkInfo = await utils.accountAndLedgerSequence(wss, account)
-// console.log(await networkInfo)
+const networkInfo = await utils.txNetworkAndAccountValues(wss, account)
+
+console.log(networkInfo)
+console.log()
 
 const tx = {
   TransactionType: "SetHook",
@@ -25,9 +23,10 @@ const tx = {
     HookApiVersion: 0,
     HookNamespace: "F".repeat(64),
     HookOn: "F".repeat(58) + "BFFFFE",
-  } } ],
-  ...networkInfo.txValues, // Adds Sequence, Fee, Account, LastLedgerSequence
-  Fee: "256000", // Overrule, SetHook is 'expensive'
+  }
+  }],
+  // Add: Sequence, Account, LastLedgerSequence, Fee (in case Hooks enabled: autodetect (from ledger))
+  ...networkInfo.txValues,
 };
 
 const submitted = await signAndSubmit(tx, wss, account)

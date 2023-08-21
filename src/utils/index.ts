@@ -300,13 +300,23 @@ const networkTxFee = async (
         ...(typeof tx === "object"
           ? Object.assign({}, tx)
           : decode(tx, definitions)),
-        Fee: undefined,
-        SigningPubKey: undefined,
+        Fee: "0",
+        SigningPubKey: "",
       }
     );
 
-    const tx_blob = sign(transaction, passphrase(""), definitions).signedTransaction;
+    const tx_blob = sign(
+      transaction,
+      passphrase(""),
+      definitions
+    ).signedTransaction;
+
     const fee = await connection?.send({ command: "fee", tx_blob });
+
+    assert(
+      typeof fee?.error === "undefined",
+      "Could not get fee for tx blob from network"
+    );
 
     return fee?.drops?.base_fee || null;
   };

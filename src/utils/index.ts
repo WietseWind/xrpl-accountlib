@@ -305,7 +305,7 @@ const networkTxFee = async (
       }
     );
 
-    const tx_blob = sign(tx, passphrase(""), definitions).signedTransaction;
+    const tx_blob = sign(transaction, passphrase(""), definitions).signedTransaction;
     const fee = await connection?.send({ command: "fee", tx_blob });
 
     return fee?.drops?.base_fee || null;

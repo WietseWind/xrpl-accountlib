@@ -305,6 +305,14 @@ const networkTxFee = async (
       }
     );
 
+    if (
+      (transaction as any)?.TransactionType === "Import" &&
+      (transaction as any)?.Sequence === 0
+    ) {
+      // New account, import, fee will be zero
+      return "0";
+    }
+
     const tx_blob = sign(
       transaction,
       passphrase(""),

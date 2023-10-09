@@ -253,7 +253,7 @@ const networkInfo = async (
 
   const endpoint = connection.getState().server.uri;
   const networkId = connection.getState().server.networkId;
-  const ledgerSequence = Number(ledger?.closed?.ledger?.seqNum || 0);
+  const ledgerSequence = Number(connection.getState().ledger?.last || ledger?.closed?.ledger?.seqNum || 0);
 
   return {
     endpoint,

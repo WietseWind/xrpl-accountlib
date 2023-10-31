@@ -19,6 +19,7 @@ import {
   encodeForSigning,
   encodeForMultisigning,
   encodeForSigningClaim,
+  nativeAsset,
 } from "ripple-binary-codec";
 import { type DefinitionsData } from "ripple-binary-codec/dist/enums/xrpl-definitions-base";
 
@@ -42,6 +43,7 @@ export {
   XrplDefinitions,
   binary,
   XrplClient,
+  nativeAsset,
 };
 
 export type { DefinitionsData };

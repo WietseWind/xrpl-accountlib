@@ -58,6 +58,66 @@ describe("Utils - rawSigning", () => {
     );
   });
 
+  it("encodeTransaction - unsigned, secp256k1 - XRPL + Native Asset", () => {
+    const unsignedTx = {
+      TransactionType: "TrustSet",
+      NetworkID: 21336,
+      LimitAmount: {
+        currency: "XRP",
+        value: "100",
+        issuer: "rsP3mgGb2tcYUrxiLFiHJiQXhsziegtwBc",
+      },
+    };
+    expect(utils.encodeTransaction(unsignedTx)).toEqual(
+      "53545800120014210000535863D5038D7EA4C6800000000000000000000000000000000000000000001A1FE3983C300D142EC2CF154C8A6BBB275875D2"
+    );
+  });
+
+  it("encodeTransaction - unsigned, secp256k1 - XRPL + Non-Native Asset", () => {
+    const unsignedTx = {
+      TransactionType: "TrustSet",
+      NetworkID: 21336,
+      LimitAmount: {
+        currency: "XAH",
+        value: "100",
+        issuer: "rsP3mgGb2tcYUrxiLFiHJiQXhsziegtwBc",
+      },
+    };
+    expect(utils.encodeTransaction(unsignedTx)).toEqual(
+      "53545800120014210000535863D5038D7EA4C6800000000000000000000000000058414800000000001A1FE3983C300D142EC2CF154C8A6BBB275875D2"
+    );
+  });
+
+  it("encodeTransaction - unsigned, secp256k1 - Xahau + Native Asset", () => {
+    const unsignedTx = {
+      TransactionType: "TrustSet",
+      NetworkID: 21337,
+      LimitAmount: {
+        currency: "XAH",
+        value: "100",
+        issuer: "rsP3mgGb2tcYUrxiLFiHJiQXhsziegtwBc",
+      },
+    };
+    expect(utils.encodeTransaction(unsignedTx)).toEqual(
+      "53545800120014210000535963D5038D7EA4C6800000000000000000000000000000000000000000001A1FE3983C300D142EC2CF154C8A6BBB275875D2"
+    );
+  });
+
+  it("encodeTransaction - unsigned, secp256k1 - Xahau + Non-Native Asset", () => {
+    const unsignedTx = {
+      TransactionType: "TrustSet",
+      NetworkID: 21337,
+      LimitAmount: {
+        currency: "XRP",
+        value: "100",
+        issuer: "rsP3mgGb2tcYUrxiLFiHJiQXhsziegtwBc",
+      },
+    };
+    expect(utils.encodeTransaction(unsignedTx)).toEqual(
+      "53545800120014210000535963D5038D7EA4C6800000000000000000000000000058525000000000001A1FE3983C300D142EC2CF154C8A6BBB275875D2"
+    );
+  });
+
   it("secp256k1_p1363ToFullyCanonicalDerSignature", () => {
     expect(
       utils.secp256k1_p1363ToFullyCanonicalDerSignature(

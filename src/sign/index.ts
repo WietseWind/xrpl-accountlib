@@ -7,6 +7,7 @@ import Account from "../schema/Account";
 import { combine, networkTxFee, networkInfo } from "../utils";
 import { XrplClient } from "xrpl-client";
 import assert from "assert";
+import { nativeAsset } from "..";
 
 type SignOptions = {
   [key: string]: any;
@@ -20,6 +21,15 @@ type SignedObject = {
   signers: string[];
 };
 
+const setNativeAsset = (Tx: any): void => {
+  nativeAsset.set("XRP");
+
+  // Xahau Mainnet, Xahau Testnet
+  if ([21337, 21338].indexOf(Tx?.NetworkID) > -1) {
+    nativeAsset.set("XAH");
+  }
+};
+
 const sign = (
   transaction: Object,
   account?: Account | Account[],
@@ -27,6 +37,8 @@ const sign = (
 ): SignedObject => {
   let accounts = [];
   const Tx: any = Object.assign({}, transaction);
+
+  setNativeAsset(Tx);
 
   if (Object.keys(Tx).indexOf("TransactionType") > -1) {
     if (Tx?.TransactionType?.toLowerCase() === "signin") {
@@ -234,7 +246,7 @@ const signAndSubmit = async (
   };
 };
 
-export { sign, signAndSubmit };
+export { sign, signAndSubmit, setNativeAsset };
 
 export type { SignedObject };
 

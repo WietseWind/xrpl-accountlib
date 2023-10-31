@@ -24,6 +24,7 @@ import type Account from "../schema/Account";
 import { passphrase } from "../derive";
 import { sign } from "../sign";
 import { XrplClient } from "xrpl-client";
+import { setNativeAsset } from "../sign";
 
 // Ugly, but no definitions when directly loading the lib file, and Signature() not exported in lib
 const Signature = require("elliptic/lib/elliptic/ec/signature");
@@ -140,6 +141,8 @@ function encodeTransaction(
   definitions?: XrplDefinitions
 ): string {
   const Transaction = Object.assign({}, TxJson);
+  setNativeAsset(Transaction);
+
   if (typeof MultiSignAccount !== "undefined") {
     Object.assign(Transaction, { SigningPubKey: "" });
     return encodeForMultisigning(Transaction, MultiSignAccount, definitions);
@@ -253,7 +256,9 @@ const networkInfo = async (
 
   const endpoint = connection.getState().server.uri;
   const networkId = connection.getState().server.networkId;
-  const ledgerSequence = Number(connection.getState().ledger?.last || ledger?.closed?.ledger?.seqNum || 0);
+  const ledgerSequence = Number(
+    connection.getState().ledger?.last || ledger?.closed?.ledger?.seqNum || 0
+  );
 
   return {
     endpoint,

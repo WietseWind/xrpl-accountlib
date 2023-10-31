@@ -1,6 +1,7 @@
 "use strict";
 
 import * as Utils from "../utils";
+import { setNativeAsset } from "../sign";
 import assert from "assert";
 import { decode, type XrplDefinitions } from "ripple-binary-codec";
 
@@ -63,8 +64,10 @@ const prepare = (
   assertValidPubkey(pubkey);
 
   const signingPubKey = Utils.compressPubKey(pubkey);
-
   const transaction = Object.assign({}, { ...txJson });
+
+  setNativeAsset(transaction);
+
   assert(
     typeof transaction === "object" && transaction !== null,
     "Transaction: Object expected"
@@ -143,6 +146,8 @@ const complete = (
 
   Object.assign(txJson, Prepared.transaction);
 
+  setNativeAsset(txJson);
+
   if (signatureVerifies) {
     Object.assign(txJson, { TxnSignature: txnSignature });
 
@@ -185,6 +190,9 @@ const completeMultiSigned = (
   assert(SignersAndSignatures.length > 0, "SignersAndSignatures empty");
 
   const transaction = Object.assign({}, txJson);
+
+  setNativeAsset(txJson);
+
   Object.assign(transaction, { SigningPubKey: "" });
   // const hashToSign = Utils.bytesToHex(Utils.hash(message))
 

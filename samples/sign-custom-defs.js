@@ -8,7 +8,7 @@ console.log();
 
 /**
  * You can try this at TestNet,
- *    https://developers.ripple.com/xrp-test-net-faucet.html
+ *    https://xrpl.org/xrp-testnet-faucet.html
  * Using:
  *    https://xrp.fans/ (Click the "Switch to TESTNET" button)
  */

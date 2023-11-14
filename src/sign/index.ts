@@ -4,7 +4,7 @@ import { encodeForSigningClaim, XrplDefinitions } from "ripple-binary-codec";
 import { sign as rk_sign } from "ripple-keypairs";
 import Sign from "xrpl-sign-keypairs";
 import Account from "../schema/Account";
-import { combine, networkTxFee, networkInfo } from "../utils";
+import { combine, networkTxFee, networkInfo, txNetworkAndAccountValues } from "../utils";
 import { XrplClient } from "xrpl-client";
 import assert from "assert";
 import { nativeAsset } from "..";
@@ -212,7 +212,16 @@ const signAndSubmit = async (
     typeof client === "string" ? new XrplClient(client) : client;
 
   const definitions = await connection.definitions();
-  const network = await networkInfo(connection, true /** keep alive */);
+
+  // @ts-ignore
+  let txAccount = transaction.Account
+  if (!txAccount &&(account instanceof Account && !Array.isArray(account))) {
+    txAccount = account.address
+  }
+
+  const { networkInfo: network, txValues } = await txNetworkAndAccountValues(connection, txAccount)
+  transaction = { ...txValues, ...transaction }
+  
 
   if (
     network.features.hooks &&

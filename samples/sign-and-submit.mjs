@@ -25,12 +25,10 @@ const tx = {
     HookOn: "F".repeat(58) + "BFFFFE",
   }
   }],
-  // Add: Sequence, Account, LastLedgerSequence, Fee (in case Hooks enabled: autodetect (from ledger))
-  ...networkInfo.txValues,
 };
 
 /**
- * Note: the code above and `signAndSubmit` results in automatically fetching and setting a fee for you.
+ * Note: the code above and `signAndSubmit` results in automatically fetching and setting Sequence, Account, LastLedgerSequence, Fee for you.
  * If you want to check the fee for min/max/..., get your own fee (string in drops) using:
  *    utils.networkTxFee(wss, tx)
  * 

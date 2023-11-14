@@ -5,7 +5,7 @@ console.log();
 
 /**
  * You can try this at TestNet,
- *    https://developers.ripple.com/xrp-test-net-faucet.html
+ *    https://xrpl.org/xrp-testnet-faucet.html
  * Using:
  *    https://xrp.fans/ (Click the "Switch to TESTNET" button)
  */
@@ -22,7 +22,7 @@ const Tx = {
 
 console.log(
   "Sign: one account",
-  lib.sign(Tx, lib.derive.familySeed("shqNUmrgnkBmK9iCijrtid2Ua4uHd"))
+  lib.sign(Tx, lib.XRPL_Account.fromFamilySeed("shqNUmrgnkBmK9iCijrtid2Ua4uHd"))
 );
 console.log();
 
@@ -30,7 +30,7 @@ console.log("Sign: multiSign");
 console.dir(
   lib.sign(Tx, [
     lib.derive.familySeed("sp5mkm12oJj3t8fFRiaMNrDbc73N2"),
-    lib.derive.familySeed("shqNUmrgnkBmK9iCijrtid2Ua4uHd")
+    lib.XRPL_Account.fromFamilySeed("shqNUmrgnkBmK9iCijrtid2Ua4uHd")
   ]),
   { depth: null }
 );

@@ -2,6 +2,7 @@ import { deriveAddress } from "ripple-keypairs";
 import * as AddressCodec from "ripple-address-codec";
 import * as Elliptic from "elliptic";
 import * as Utils from "../utils";
+import { derive } from "..";
 
 const Ed25519 = new Elliptic.eddsa("ed25519");
 const Secp256k1 = new Elliptic.ec("secp256k1");
@@ -172,6 +173,12 @@ export default class XRPL_Account {
 
     return this;
   }
+
+  static fromMnemonic: typeof derive.mnemonic = (...params) => derive.mnemonic(...params)
+  static fromFamilySeed: typeof derive.familySeed = (...params) => derive.familySeed(...params)
+  static fromSecretNumbers: typeof derive.secretNumbers = (...params) => derive.secretNumbers(...params)
+  static fromPrivatekey: typeof derive.privatekey = (...params) => derive.privatekey(...params)
+  static fromPassphrase: typeof derive.passphrase = (...params) => derive.passphrase(...params)
 
   toString() {
     return "XPRL Account" + (this.address ? ": " + this.address : "");

@@ -1,14 +1,14 @@
 import {
-  derive,
   utils,
   signAndSubmit,
+  XRPL_Account,
 } from "../dist/index.js"; // require('xrpl-accountlib') after `npm install xrpl-accountlib` in prod.
 
 console.log("Sign & Submit (Custom Definitions)");
 console.log();
 
 const wss = 'wss://hooks-testnet-v3.xrpl-labs.com/'
-const account = derive.familySeed("ssi4moYHYkWs2RPzRvrXzMrbpxqAJ")
+const account = XRPL_Account.fromFamilySeed("ssi4moYHYkWs2RPzRvrXzMrbpxqAJ")
 
 const networkInfo = await utils.txNetworkAndAccountValues(wss, account)
 

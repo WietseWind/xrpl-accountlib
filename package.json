@@ -1,6 +1,6 @@
 {
   "name": "xrpl-accountlib",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "XRPL Account helper: generation, derivation and signing",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -29,12 +29,12 @@
     "hash.js": "^1.1.7",
     "lodash": "^4.17.21",
     "ripple-address-codec": "^4.2.5",
-    "ripple-binary-codec": "npm:xrpl-binary-codec-prerelease@5.0.2",
+    "ripple-binary-codec": "npm:xrpl-binary-codec-prerelease@6.0.0",
     "ripple-keypairs": "^1.1.4",
     "ripple-secret-codec": "^1.0.3",
     "xrpl-client": "^2.1.0",
     "xrpl-secret-numbers": "^0.3.3",
-    "xrpl-sign-keypairs": "^2.2.1"
+    "xrpl-sign-keypairs": "^2.3.0"
   },
   "devDependencies": {
     "@types/babel__core": "^7.1.19",

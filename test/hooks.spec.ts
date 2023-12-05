@@ -1,6 +1,6 @@
 import fixtures from "./fixtures/api.json";
 import { derive, sign } from "../src";
-import { XrplDefinitions, decode } from "ripple-binary-codec";
+import { XrplDefinitions, decode } from "xrpl-binary-codec-prerelease";
 
 const defs = require("./fixtures/customDefinitions.json");
 

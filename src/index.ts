@@ -20,8 +20,8 @@ import {
   encodeForMultisigning,
   encodeForSigningClaim,
   nativeAsset,
-} from "ripple-binary-codec";
-import { type DefinitionsData } from "ripple-binary-codec/dist/enums/xrpl-definitions-base";
+} from "xrpl-binary-codec-prerelease";
+import { type DefinitionsData } from "xrpl-binary-codec-prerelease/dist/enums/xrpl-definitions-base";
 
 const binary = {
   encode,

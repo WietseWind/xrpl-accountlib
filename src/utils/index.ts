@@ -10,8 +10,8 @@ import * as elliptic from "elliptic";
 import { verify, deriveAddress } from "ripple-keypairs";
 import assert from "assert";
 import hashjs from "hash.js";
-import { HashPrefix } from "ripple-binary-codec/dist/hash-prefixes";
-import { sha512Half } from "ripple-binary-codec/dist/hashes";
+import { HashPrefix } from "xrpl-binary-codec-prerelease/dist/hash-prefixes";
+import { sha512Half } from "xrpl-binary-codec-prerelease/dist/hashes";
 import {
   encode,
   decode,
@@ -19,7 +19,7 @@ import {
   encodeForMultisigning,
   encodeForSigningClaim,
   XrplDefinitions,
-} from "ripple-binary-codec";
+} from "xrpl-binary-codec-prerelease";
 import type Account from "../schema/Account";
 import { passphrase } from "../derive";
 import { sign } from "../sign";

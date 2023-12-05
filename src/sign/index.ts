@@ -1,6 +1,6 @@
 "use strict";
 
-import { encodeForSigningClaim, XrplDefinitions } from "ripple-binary-codec";
+import { encodeForSigningClaim, XrplDefinitions } from "xrpl-binary-codec-prerelease";
 import { sign as rk_sign } from "ripple-keypairs";
 import Sign from "xrpl-sign-keypairs";
 import Account from "../schema/Account";
@@ -28,6 +28,8 @@ const setNativeAsset = (Tx: any): void => {
   if ([21337, 21338].indexOf(Tx?.NetworkID) > -1) {
     nativeAsset.set("XAH");
   }
+
+  // console.log(nativeAsset.get())
 };
 
 const sign = (
@@ -121,7 +123,7 @@ const sign = (
       ],
     };
   } else {
-    const Codec = require("ripple-binary-codec");
+    const Codec = require("xrpl-binary-codec-prerelease");
 
     const MultiSignedTransactionBinary = (() => {
       if (

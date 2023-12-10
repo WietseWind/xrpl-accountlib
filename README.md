@@ -8,6 +8,12 @@
 npm install --save xrpl-accountlib
 ```
 
+### Use in the browser
+
+You can get a [prebuilt](https://cdn.jsdelivr.net/npm/xrpl-accountlib/dist/browser.js) / [prebuilt & minified](https://cdn.jsdelivr.net/npm/xrpl-accountlib/dist/browser.min.js) version from Github / CDNJS [![CDNJS Browserified](https://img.shields.io/badge/cdnjs-browserified-blue)](https://cdn.jsdelivr.net/npm/xrpl-accountlib/dist/browser.js) [![CDNJS Browserified Minified](https://img.shields.io/badge/cdnjs-minified-orange)](https://cdn.jsdelivr.net/npm/xrpl-accountlib/dist/browser.min.js)
+
+Sample: [https://jsfiddle.net/WietseWind/gkefpnu0/](https://jsfiddle.net/WietseWind/gkefpnu0/)
+
 ### A note on signing vs. connectivity
 
 Please note: this lib primarily provides signing and derivation capabilities. To connect to the XRPL and submit transactions, please take a look at `xrpl-client`.

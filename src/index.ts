@@ -1,4 +1,4 @@
-/* Methods  ==================================================================== */
+/* Methods ================================================================== */
 import * as generate from "./generate";
 import * as derive from "./derive";
 import * as utils from "./utils";
@@ -8,10 +8,25 @@ import * as rawSigning from "./rawSigning";
 /* Types ==================================================================== */
 import XRPL_Account from "./schema/Account";
 
-/* Client ==================================================================== */
+/* Client =================================================================== */
 import { XrplClient } from "xrpl-client";
 
-/* Defs ==================================================================== */
+/* All Libs ================================================================= */
+import * as bip32 from "bip32";
+import * as bip39 from "bip39";
+import * as bnJs from "bn.js";
+import * as elliptic from "elliptic";
+import * as hashJs from "hash.js";
+import * as lodash from "lodash";
+import * as rippleAddressCodec from "ripple-address-codec";
+import * as rippleKeypairs from "ripple-keypairs";
+import * as rippleSecretCodec from "ripple-secret-codec";
+import * as xrplBinaryCodecPrerelease from "xrpl-binary-codec-prerelease";
+import * as xrplClient from "xrpl-client";
+import * as xrplSecretNumbers from "xrpl-secret-numbers";
+import * as xrplSign from "xrpl-sign-keypairs";
+
+/* Defs ===================================================================== */
 import {
   XrplDefinitions,
   encode,
@@ -31,6 +46,23 @@ const binary = {
   encodeForSigningClaim,
 };
 
+const libraries = {
+  bip32,
+  bip39,
+  bnJs,
+  elliptic,
+  hashJs,
+  lodash,
+  rippleAddressCodec,
+  rippleKeypairs,
+  rippleSecretCodec,
+  xrplBinaryCodecPrerelease,
+  rippleBinaryCodec: xrplBinaryCodecPrerelease,
+  xrplClient,
+  xrplSecretNumbers,
+  xrplSign,
+};
+
 /* Export ==================================================================== */
 export {
   XRPL_Account,
@@ -44,6 +76,7 @@ export {
   binary,
   XrplClient,
   nativeAsset,
+  libraries,
 };
 
 export type { DefinitionsData };

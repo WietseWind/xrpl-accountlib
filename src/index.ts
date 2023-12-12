@@ -46,9 +46,6 @@ const libraries = {
   rippleSecretCodec,
   xrplBinaryCodecPrerelease,
   rippleBinaryCodec: xrplBinaryCodecPrerelease,
-  xrplClient,
-  xrplSecretNumbers,
-  xrplSign,
 };
 
 /* Export ==================================================================== */

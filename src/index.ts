@@ -16,9 +16,6 @@ import * as rippleAddressCodec from "ripple-address-codec";
 import * as rippleKeypairs from "ripple-keypairs";
 import * as rippleSecretCodec from "ripple-secret-codec";
 import * as xrplBinaryCodecPrerelease from "xrpl-binary-codec-prerelease";
-import * as xrplClient from "xrpl-client";
-import * as xrplSecretNumbers from "xrpl-secret-numbers";
-import * as xrplSign from "xrpl-sign-keypairs";
 
 /* Defs ===================================================================== */
 import {

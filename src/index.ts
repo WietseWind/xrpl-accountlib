@@ -41,12 +41,6 @@ const binary = {
 };
 
 const libraries = {
-  bip32,
-  bip39,
-  bnJs,
-  elliptic,
-  hashJs,
-  lodash,
   rippleAddressCodec,
   rippleKeypairs,
   rippleSecretCodec,

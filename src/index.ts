@@ -39,7 +39,13 @@ const binary = {
   DEFAULT_DEFINITIONS
 };
 
-const libraries = {
+const libraries: {
+      rippleAddressCodec: typeof rippleAddressCodec,
+    rippleKeypairs: typeof rippleKeypairs,
+    rippleSecretCodec: typeof rippleSecretCodec,
+    xrplBinaryCodecPrerelease: typeof xrplBinaryCodecPrerelease
+    rippleBinaryCodec: typeof xrplBinaryCodecPrerelease
+} = {
   rippleAddressCodec,
   rippleKeypairs,
   rippleSecretCodec,

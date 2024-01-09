@@ -27,6 +27,7 @@ import {
   encodeForSigningClaim,
   nativeAsset,
 } from "xrpl-binary-codec-prerelease";
+import DEFAULT_DEFINITIONS from 'xrpl-binary-codec-prerelease/dist/enums/definitions.json';
 import { type DefinitionsData } from "xrpl-binary-codec-prerelease/dist/enums/xrpl-definitions-base";
 
 const binary = {
@@ -35,6 +36,7 @@ const binary = {
   encodeForSigning,
   encodeForMultisigning,
   encodeForSigningClaim,
+  DEFAULT_DEFINITIONS
 };
 
 const libraries = {

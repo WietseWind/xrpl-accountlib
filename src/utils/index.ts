@@ -407,6 +407,22 @@ const accountAndLedgerSequence = async (
   };
 };
 
+const autofill = async (client: XrplClient | string, tx: Object, account: string | Account) => {
+  const { txValues, networkInfo } = await accountAndLedgerSequence(client, account)
+  let transaction = {
+    ...txValues,
+    ...tx, // Prefer tx information in argument
+  }
+  if (!networkInfo.features.hooks) {
+    // @ts-ignore
+    delete transaction.NetworkID
+  }
+  if (transaction.Fee === "0") {
+    transaction.Fee = await networkTxFee(client, transaction)
+  }
+  return transaction
+}
+
 export {
   bytesToHex,
   hexToBytes,
@@ -428,4 +444,5 @@ export {
   accountAndLedgerSequence as txNetworkAndAccountValues,
   networkInfo,
   networkTxFee,
+  autofill,
 };

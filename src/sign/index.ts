@@ -8,7 +8,7 @@ import { XrplClient } from "xrpl-client";
 import Sign from "xrpl-sign-keypairs";
 
 import Account from "../schema/Account";
-import { combine, networkTxFee, networkInfo } from "../utils";
+import { autofill, combine, networkTxFee, networkInfo } from "../utils";
 import { nativeAsset } from "../";
 
 type SignOptions = {
@@ -250,7 +250,26 @@ const signAndSubmit = async (
   };
 };
 
-export { sign, signAndSubmit, setNativeAsset };
+const prefilledSignAndSubmit = async (
+  transaction: Object,
+  client: XrplClient | string,
+  account: Account | Account[]
+) => {
+  let tx: Object
+  if (Array.isArray(account)) {
+    // @ts-ignore
+    const Account = transaction["Account"];
+    if (!Account || typeof Account !== "string") {
+      throw new Error("Account field should be specified in transaction when using multisigning");
+    }
+    tx = await autofill(client, transaction, Account);
+  } else {
+    tx = await autofill(client, transaction, account);
+  }
+  return signAndSubmit(tx, client, account)
+}
+
+export { sign, signAndSubmit, prefilledSignAndSubmit, setNativeAsset };
 
 export type { SignedObject };
 

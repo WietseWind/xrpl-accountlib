@@ -2,7 +2,7 @@
 import * as generate from "./generate";
 import * as derive from "./derive";
 import * as utils from "./utils";
-import { sign, signAndSubmit } from "./sign";
+import { sign, signAndSubmit, prefilledSignAndSubmit } from "./sign";
 import * as rawSigning from "./rawSigning";
 
 /* Types ==================================================================== */
@@ -60,6 +60,7 @@ export {
   derive,
   sign,
   signAndSubmit,
+  prefilledSignAndSubmit,
   utils,
   rawSigning,
   XrplDefinitions,

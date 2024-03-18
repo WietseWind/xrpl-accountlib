@@ -8,7 +8,7 @@ import { XrplClient } from "xrpl-client";
 import Sign from "xrpl-sign-keypairs";
 
 import Account from "../schema/Account";
-import { combine, networkTxFee, networkInfo } from "../utils";
+import { combine, networkTxFee, networkInfo, accountAndLedgerSequence } from "../utils";
 import { nativeAsset } from "../";
 
 type SignOptions = {
@@ -250,7 +250,39 @@ const signAndSubmit = async (
   };
 };
 
-export { sign, signAndSubmit, setNativeAsset };
+const prefilledSignAndSubmit = async (
+  transaction: Object,
+  client: XrplClient | string,
+  account: Account | Account[]
+) => {
+  let tx: Object
+
+  if (Array.isArray(account)) {
+    if (!(transaction as any)?.["Account"] || typeof (transaction as any)?.["Account"] !== "string") {
+      throw new Error("Account field should be specified in transaction when using multisigning");
+    }
+  }
+
+  const { txValues, networkInfo } = await accountAndLedgerSequence(
+    client,
+    Array.isArray(account)
+      ? (transaction as any)?.["Account"]
+      : account
+  )
+
+  let filledTx = { ...txValues, ...transaction, /* Prefer tx information in argument */ }
+  if (!networkInfo.features.hooks) {
+    Object.assign(filledTx, { NetworkID: undefined })
+  }
+  // This Unless if B2M
+  if (filledTx.Fee === "0" && (filledTx as any).TransactionType !== "Import") {
+    filledTx.Fee = await networkTxFee(client, filledTx)
+  }
+
+  return signAndSubmit(filledTx, client, account)
+}
+
+export { sign, signAndSubmit, prefilledSignAndSubmit, setNativeAsset };
 
 export type { SignedObject };
 

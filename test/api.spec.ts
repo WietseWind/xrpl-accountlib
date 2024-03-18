@@ -1,5 +1,5 @@
 import fixtures from "./fixtures/api.json";
-import { derive, generate, sign, rawSigning, utils } from "../src";
+import { derive, generate, sign, rawSigning, utils, prefilledSignAndSubmit } from "../src";
 // import { XrplDefinitions } from "xrpl-binary-codec-prerelease";
 
 describe("Api", () => {

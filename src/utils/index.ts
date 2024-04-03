@@ -284,7 +284,7 @@ const networkTxFee = async (
   /**
    * TX can be string (expect BLOB) or TX Object
    */
-  const { features, connection } = await networkInfo(
+  const { features, connection, networkId } = await networkInfo(
     client,
     true // keep alive
   );
@@ -309,6 +309,16 @@ const networkTxFee = async (
         SigningPubKey: "",
       }
     );
+
+    if (typeof (transaction as any).Sequence === "undefined") {
+      // Fee detection requires Sequence, mock it, make it not zero because that could trick Import logic
+      Object.assign(transaction, { Sequence: 1, })
+    }
+
+    if (typeof networkId === "number" && networkId > 1024 && typeof (transaction as any).NetworkID === "undefined") {
+      // Network requires NetworkID and it isn't set on the TX, add it for fee detecftion
+      Object.assign(transaction, { NetworkID: networkId, })
+    }
 
     if (
       (transaction as any)?.TransactionType === "Import" &&

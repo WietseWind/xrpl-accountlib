@@ -34,7 +34,7 @@
     "xrpl-binary-codec-prerelease": "^8.0.0",
     "xrpl-client": "^2.3.0",
     "xrpl-secret-numbers": "^0.3.3",
-    "xrpl-sign-keypairs": "^2.5.0"
+    "xrpl-sign-keypairs": "^2.6.0"
   },
   "devDependencies": {
     "@types/babel__core": "^7.1.19",

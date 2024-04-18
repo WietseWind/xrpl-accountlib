@@ -31,10 +31,10 @@
     "ripple-address-codec": "^4.2.5",
     "ripple-keypairs": "^1.1.4",
     "ripple-secret-codec": "^1.0.3",
-    "xrpl-binary-codec-prerelease": "^8.0.0",
+    "xrpl-binary-codec-prerelease": "^8.0.1",
     "xrpl-client": "^2.3.0",
     "xrpl-secret-numbers": "^0.3.3",
-    "xrpl-sign-keypairs": "^2.6.0"
+    "xrpl-sign-keypairs": "^2.6.1"
   },
   "devDependencies": {
     "@types/babel__core": "^7.1.19",

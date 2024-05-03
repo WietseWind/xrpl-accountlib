@@ -22,7 +22,7 @@ Please note: this lib primarily provides signing and derivation capabilities. To
 
 #### 🎉 **HOWEVER**... Since version 2.1.0 this lib. bundles `xrpl-client` as well, and comes with helpers to prepare transactions & submit transactions 🎉
 
-The bundled `xrpl-client` instance & behaviour is **network definitions aware**, meaning it will dynamically load definitions from supporting networks, like [Hooks](https://hooks.xrpl.org) enabled networks.
+The bundled `xrpl-client` instance & behaviour is **network definitions aware**, meaning it will dynamically load definitions from supporting networks, like [Hooks](https://hooks.xrpl.org) enabled networks. An example how to load definitions dynamically can be found [Here's an example](https://devnet.xrpl.org/transactions/CE42C2E5D55ED5B8CCF3ED737EF34C07214A4D58A290EA9BA425F1BB7081C22C/raw)
 
 - `utils.accountAndLedgerSequence(wss, account)` (async) can be used to get values required to prepare a transaction:
   - The first param. takes either an instance of `xrpl-client` or a string containing a WebSocket node endpoint. In case of a string (endpoint) a connection will be created & closed automatically.

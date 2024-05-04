@@ -22,7 +22,7 @@ Please note: this lib primarily provides signing and derivation capabilities. To
 
 #### 🎉 **HOWEVER**... Since version 2.1.0 this lib. bundles `xrpl-client` as well, and comes with helpers to prepare transactions & submit transactions 🎉
 
-The bundled `xrpl-client` instance & behaviour is **network definitions aware**, meaning it will dynamically load definitions from supporting networks, like [Hooks](https://hooks.xrpl.org) enabled networks. An example how to load definitions dynamically can be found [Here's an example](https://gist.github.com/WietseWind/97cebb375c3bc423cde65184fcacfaf1)
+The bundled `xrpl-client` instance & behaviour is **network definitions aware**, meaning it will dynamically load definitions from supporting networks, like [Hooks](https://hooks.xrpl.org) enabled networks. An example how to load definitions dynamically can be found [Here's an example](https://github.com/WietseWind/xrpl-accountlib/blob/master/samples/sign-custom-defs.js)
 
 - `utils.accountAndLedgerSequence(wss, account)` (async) can be used to get values required to prepare a transaction:
   - The first param. takes either an instance of `xrpl-client` or a string containing a WebSocket node endpoint. In case of a string (endpoint) a connection will be created & closed automatically.

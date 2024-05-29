@@ -409,7 +409,7 @@ const accountAndLedgerSequence = async (
     },
     txValues: {
       Account: accountAddress,
-      NetworkID: networkId,
+      NetworkID: networkId > 1024 ? networkId : undefined,
       Sequence: accountSequence,
       LastLedgerSequence: ledgerSequence > 0 ? ledgerSequence + 20 : undefined,
       Fee: String(Number(fee)),

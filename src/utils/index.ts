@@ -30,9 +30,9 @@ import { setNativeAsset } from "../sign";
 const Signature = require("elliptic/lib/elliptic/ec/signature");
 
 function computeBinaryTransactionHash(txBlobHex: string) {
-  const prefix = HashPrefix.transactionID.toString("hex").toUpperCase();
+  const prefix = HashPrefix.transactionID.toString().toUpperCase();
   const input = BufferPf.from(prefix + txBlobHex, "hex");
-  return sha512Half(input).toString("hex").toUpperCase();
+  return sha512Half(input).toString().toUpperCase();
 }
 
 function bytesToHex(a: number[]): string {

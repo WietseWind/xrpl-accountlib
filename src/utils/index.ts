@@ -3,7 +3,7 @@
 import BN from "bn.js";
 import { flatMap } from "lodash";
 import { decodeAccountID } from "ripple-address-codec";
-import { Buffer as BufferPf } from "buffer/";
+// import { Buffer as BufferPf } from "buffer/";
 import * as AddressCodec from "ripple-address-codec";
 import { validateMnemonic } from "bip39";
 import * as elliptic from "elliptic";
@@ -31,7 +31,8 @@ const Signature = require("elliptic/lib/elliptic/ec/signature");
 
 function computeBinaryTransactionHash(txBlobHex: string) {
   const prefix = HashPrefix.transactionID.toString().toUpperCase();
-  const input = BufferPf.from(prefix + txBlobHex, "hex");
+  // const input = BufferPf.from(prefix + txBlobHex, "hex");
+  const input = Buffer.from(prefix + txBlobHex, "hex");
   return sha512Half(input).toString().toUpperCase();
 }
 

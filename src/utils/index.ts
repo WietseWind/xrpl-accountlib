@@ -29,11 +29,20 @@ import { setNativeAsset } from "../sign";
 // Ugly, but no definitions when directly loading the lib file, and Signature() not exported in lib
 const Signature = require("elliptic/lib/elliptic/ec/signature");
 
+function ifUint8ToHex(data: string) {
+  if (typeof data === "string" && data.match(",")) {
+    data = Buffer.from(data.split(",").map(n => Number(n)))
+      .toString('hex')
+      .toUpperCase()
+  }
+
+  return data;
+}
+
 function computeBinaryTransactionHash(txBlobHex: string) {
-  const prefix = HashPrefix.transactionID.toString().toUpperCase();
-  // const input = BufferPf.from(prefix + txBlobHex, "hex");
+  const prefix = ifUint8ToHex(HashPrefix.transactionID.toString().toUpperCase());
   const input = Buffer.from(prefix + txBlobHex, "hex");
-  return sha512Half(input).toString().toUpperCase();
+  return ifUint8ToHex(sha512Half(input).toString().toUpperCase());
 }
 
 function bytesToHex(a: number[]): string {

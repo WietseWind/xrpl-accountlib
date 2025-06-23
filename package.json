@@ -1,16 +1,18 @@
 {
   "name": "xrpl-accountlib",
-  "version": "8.3.1",
+  "version": "8.5.0",
   "description": "XRPL Account helper: generation, derivation and signing",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "prepublish": "npm run clean && npm run test && npm run build",
+    "prepublish": "npm run clean && npm run test && npm run build && npm run browserify && npm run browserify-class",
     "clean": "rm -rf dist",
     "build": "tsc",
     "test": "jest --verbose",
     "browserify": "browserify -r ./dist/index.js:xrpl-accountlib -o dist/browser.js && npm run minify",
-    "minify": "cat dist/browser.js | terser --compress --mangle > dist/browser.min.js"
+    "browserify-class": "browserify -r ./dist/index.js --standalone XrplAccountLib -o dist/browser-class.js && npm run minify-class",
+    "minify": "cat dist/browser.js | terser --compress --mangle > dist/browser.min.js",
+    "minify-class": "cat dist/browser-class.js | terser --compress --mangle > dist/browser-class.min.js"
   },
   "files": [
     "dist/**/*.js",
@@ -32,10 +34,10 @@
     "ripple-keypairs": "^2.0.0",
     "ripple-secret-codec": "^1.0.3",
     "verify-xrpl-signature": "^8.2.0",
-    "xrpl-binary-codec-prerelease": "^8.3.0",
+    "xrpl-binary-codec-prerelease": "^8.4.0",
     "xrpl-client": "^2.3.0",
     "xrpl-secret-numbers": "^0.3.5",
-    "xrpl-sign-keypairs": "^8.2.0"
+    "xrpl-sign-keypairs": "^8.4.0"
   },
   "devDependencies": {
     "@types/babel__core": "^7.1.19",

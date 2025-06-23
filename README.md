@@ -10,9 +10,29 @@ npm install --save xrpl-accountlib
 
 ### Use in the browser
 
+Sample: [https://jsfiddle.net/WietseWind/gkefpnu0/](https://jsfiddle.net/WietseWind/gkefpnu0/)
+
 You can get a [prebuilt](https://cdn.jsdelivr.net/npm/xrpl-accountlib/dist/browser.js) / [prebuilt & minified](https://cdn.jsdelivr.net/npm/xrpl-accountlib/dist/browser.min.js) version from Github / CDNJS [![CDNJS Browserified](https://img.shields.io/badge/cdnjs-browserified-blue)](https://cdn.jsdelivr.net/npm/xrpl-accountlib/dist/browser.js) [![CDNJS Browserified Minified](https://img.shields.io/badge/cdnjs-minified-orange)](https://cdn.jsdelivr.net/npm/xrpl-accountlib/dist/browser.min.js)
 
-Sample: [https://jsfiddle.net/WietseWind/gkefpnu0/](https://jsfiddle.net/WietseWind/gkefpnu0/)
+##### Sample:
+
+```javascript
+const {generate} = require('xrpl-accountlib')
+const account = generate.familySeed()
+console.log(account.address)
+```
+
+#### Alternatively, you can use the Object instead of `require` version:
+
+You can get a [prebuilt](https://cdn.jsdelivr.net/npm/xrpl-accountlib/dist/browser-class.js) / [prebuilt & minified](https://cdn.jsdelivr.net/npm/xrpl-accountlib/dist/browser-class.min.js) version from Github / CDNJS [![CDNJS Browserified](https://img.shields.io/badge/cdnjs-browserified-blue)](https://cdn.jsdelivr.net/npm/xrpl-accountlib/dist/browser-class.js) [![CDNJS Browserified Minified](https://img.shields.io/badge/cdnjs-minified-orange)](https://cdn.jsdelivr.net/npm/xrpl-accountlib/dist/browser-class.min.js)
+
+##### Sample:
+
+```javascript
+const {generate} = XrplAccountLib
+const account = generate.familySeed()
+console.log(account.address)
+```
 
 ### A note on signing vs. connectivity
 

@@ -33,11 +33,11 @@
     "ripple-address-codec": "^4.2.5",
     "ripple-keypairs": "^2.0.0",
     "ripple-secret-codec": "^1.0.3",
-    "verify-xrpl-signature": "^8.2.0",
-    "xrpl-binary-codec-prerelease": "^8.4.0",
+    "verify-xrpl-signature": "^9.0.0",
+    "xrpl-binary-codec-prerelease": "^9.0.0",
     "xrpl-client": "^2.3.0",
     "xrpl-secret-numbers": "^0.3.5",
-    "xrpl-sign-keypairs": "^8.4.0"
+    "xrpl-sign-keypairs": "^9.0.0"
   },
   "devDependencies": {
     "@types/babel__core": "^7.1.19",

@@ -31,16 +31,18 @@ const Signature = require("elliptic/lib/elliptic/ec/signature");
 
 function ifUint8ToHex(data: string) {
   if (typeof data === "string" && data.match(",")) {
-    data = Buffer.from(data.split(",").map(n => Number(n)))
-      .toString('hex')
-      .toUpperCase()
+    data = Buffer.from(data.split(",").map((n) => Number(n)))
+      .toString("hex")
+      .toUpperCase();
   }
 
   return data;
 }
 
 function computeBinaryTransactionHash(txBlobHex: string) {
-  const prefix = ifUint8ToHex(HashPrefix.transactionID.toString().toUpperCase());
+  const prefix = ifUint8ToHex(
+    HashPrefix.transactionID.toString().toUpperCase()
+  );
   const input = Buffer.from(prefix + txBlobHex, "hex");
   return ifUint8ToHex(sha512Half(input).toString().toUpperCase());
 }
@@ -322,12 +324,16 @@ const networkTxFee = async (
 
     if (typeof (transaction as any).Sequence === "undefined") {
       // Fee detection requires Sequence, mock it, make it not zero because that could trick Import logic
-      Object.assign(transaction, { Sequence: 1, })
+      Object.assign(transaction, { Sequence: 1 });
     }
 
-    if (typeof networkId === "number" && networkId > 1024 && typeof (transaction as any).NetworkID === "undefined") {
+    if (
+      typeof networkId === "number" &&
+      networkId > 1024 &&
+      typeof (transaction as any).NetworkID === "undefined"
+    ) {
       // Network requires NetworkID and it isn't set on the TX, add it for fee detecftion
-      Object.assign(transaction, { NetworkID: networkId, })
+      Object.assign(transaction, { NetworkID: networkId });
     }
 
     if (
@@ -359,9 +365,11 @@ const networkTxFee = async (
       ? await getHooksTxFee(tx)
       : null
     : Math.min(
-        (connection?.getState().fee.avg ||
-          connection?.getState().fee.last ||
-          50_000) + 8, // Beat the queue.
+        Math.ceil(
+          connection?.getState().fee.avg ||
+            connection?.getState().fee.last ||
+            50_000
+        ) + 8, // Beat the queue.
         50_000 // Absurd.
       );
 

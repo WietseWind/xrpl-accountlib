@@ -39,6 +39,30 @@ function ifUint8ToHex(data: string) {
   return data;
 }
 
+function hashBatchInnerTxn(
+  TxJson: Record<string, unknown>,
+  definitions?: XrplDefinitions
+): string {
+  const enc = encode(TxJson, definitions);
+  return computeBinaryTransactionHash(enc);
+}
+
+function createBatchInnerTxnBlob(
+  flags: number,
+  innerTxnHashes: string[]
+): string {
+  return [
+    // hash prefix
+    "42434800",
+    // flags
+    ("0".repeat(8) + Number(flags).toString(16)).slice(-8),
+    // txIds length
+    ("0".repeat(8) + Number(innerTxnHashes.length).toString(16)).slice(-8),
+    // txIds
+    ...innerTxnHashes,
+  ].join("");
+}
+
 function computeBinaryTransactionHash(txBlobHex: string) {
   const prefix = ifUint8ToHex(
     HashPrefix.transactionID.toString().toUpperCase()
@@ -456,4 +480,6 @@ export {
   accountAndLedgerSequence as txNetworkAndAccountValues,
   networkInfo,
   networkTxFee,
+  hashBatchInnerTxn,
+  createBatchInnerTxnBlob,
 };

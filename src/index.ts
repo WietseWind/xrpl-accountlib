@@ -2,7 +2,12 @@
 import * as generate from "./generate";
 import * as derive from "./derive";
 import * as utils from "./utils";
-import { sign, signAndSubmit, prefilledSignAndSubmit } from "./sign";
+import {
+  sign,
+  signAndSubmit,
+  prefilledSignAndSubmit,
+  signInnerBatch,
+} from "./sign";
 import * as rawSigning from "./rawSigning";
 
 /* Types ==================================================================== */
@@ -27,7 +32,7 @@ import {
   encodeForSigningClaim,
   nativeAsset,
 } from "xrpl-binary-codec-prerelease";
-import DEFAULT_DEFINITIONS from 'xrpl-binary-codec-prerelease/dist/enums/definitions.json';
+import DEFAULT_DEFINITIONS from "xrpl-binary-codec-prerelease/dist/enums/definitions.json";
 import { type DefinitionsData } from "xrpl-binary-codec-prerelease/dist/enums/xrpl-definitions-base";
 
 const binary = {
@@ -36,15 +41,15 @@ const binary = {
   encodeForSigning,
   encodeForMultisigning,
   encodeForSigningClaim,
-  DEFAULT_DEFINITIONS
+  DEFAULT_DEFINITIONS,
 };
 
 const libraries: {
-      rippleAddressCodec: typeof rippleAddressCodec,
-    rippleKeypairs: typeof rippleKeypairs,
-    rippleSecretCodec: typeof rippleSecretCodec,
-    xrplBinaryCodecPrerelease: typeof xrplBinaryCodecPrerelease
-    rippleBinaryCodec: typeof xrplBinaryCodecPrerelease
+  rippleAddressCodec: typeof rippleAddressCodec;
+  rippleKeypairs: typeof rippleKeypairs;
+  rippleSecretCodec: typeof rippleSecretCodec;
+  xrplBinaryCodecPrerelease: typeof xrplBinaryCodecPrerelease;
+  rippleBinaryCodec: typeof xrplBinaryCodecPrerelease;
 } = {
   rippleAddressCodec,
   rippleKeypairs,
@@ -59,6 +64,7 @@ export {
   generate,
   derive,
   sign,
+  signInnerBatch,
   signAndSubmit,
   prefilledSignAndSubmit,
   utils,

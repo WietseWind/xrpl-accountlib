@@ -2,17 +2,35 @@
 
 import assert from "assert";
 
-import { encodeForSigningClaim, XrplDefinitions } from "xrpl-binary-codec-prerelease";
+import {
+  encodeForSigningClaim,
+  XrplDefinitions,
+} from "xrpl-binary-codec-prerelease";
 import { sign as rk_sign } from "ripple-keypairs";
 import { XrplClient } from "xrpl-client";
 import Sign from "xrpl-sign-keypairs";
 
 import Account from "../schema/Account";
-import { combine, networkTxFee, networkInfo, accountAndLedgerSequence } from "../utils";
+import {
+  combine,
+  networkTxFee,
+  networkInfo,
+  accountAndLedgerSequence,
+  hashBatchInnerTxn,
+  createBatchInnerTxnBlob,
+} from "../utils";
 import { nativeAsset } from "../";
 
 type SignOptions = {
   [key: string]: any;
+};
+
+type InnerBatchSignature = {
+  BatchSigner: {
+    Account: string;
+    SigningPubKey: string;
+    TxnSignature: string;
+  };
 };
 
 type SignedObject = {
@@ -30,8 +48,31 @@ const setNativeAsset = (Tx: any): void => {
   if ([21337, 21338].indexOf(Tx?.NetworkID) > -1) {
     nativeAsset.set("XAH");
   }
+};
 
-  // console.log(nativeAsset.get())
+const signInnerBatch = (
+  transaction: Object,
+  account: Account,
+  definitions?: XrplDefinitions
+): InnerBatchSignature => {
+  const BatchInnerHashes = (transaction as any)?.RawTransactions.map(
+    (t: Object) => hashBatchInnerTxn((t as any)?.RawTransaction, definitions)
+  );
+
+  const batchSignerPayload = createBatchInnerTxnBlob(
+    Number((transaction as any)?.Flags),
+    BatchInnerHashes
+  );
+
+  const sig = rk_sign(batchSignerPayload, account.keypair.privateKey);
+
+  return {
+    BatchSigner: {
+      Account: String(account.address),
+      SigningPubKey: String(account.keypair.publicKey),
+      TxnSignature: sig,
+    },
+  };
 };
 
 const sign = (
@@ -255,35 +296,47 @@ const prefilledSignAndSubmit = async (
   client: XrplClient | string,
   account: Account | Account[]
 ) => {
-  let tx: Object
+  let tx: Object;
 
   if (Array.isArray(account)) {
-    if (!(transaction as any)?.["Account"] || typeof (transaction as any)?.["Account"] !== "string") {
-      throw new Error("Account field should be specified in transaction when using multisigning");
+    if (
+      !(transaction as any)?.["Account"] ||
+      typeof (transaction as any)?.["Account"] !== "string"
+    ) {
+      throw new Error(
+        "Account field should be specified in transaction when using multisigning"
+      );
     }
   }
 
   const { txValues, networkInfo } = await accountAndLedgerSequence(
     client,
-    Array.isArray(account)
-      ? (transaction as any)?.["Account"]
-      : account
-  )
+    Array.isArray(account) ? (transaction as any)?.["Account"] : account
+  );
 
-  let filledTx = { ...txValues, ...transaction, /* Prefer tx information in argument */ }
+  let filledTx = {
+    ...txValues,
+    ...transaction /* Prefer tx information in argument */,
+  };
   if (!networkInfo.features.hooks) {
-    Object.assign(filledTx, { NetworkID: undefined })
+    Object.assign(filledTx, { NetworkID: undefined });
   }
   // This Unless if B2M
   if (filledTx.Fee === "0" && (filledTx as any).TransactionType !== "Import") {
-    filledTx.Fee = await networkTxFee(client, filledTx)
+    filledTx.Fee = await networkTxFee(client, filledTx);
   }
 
-  return signAndSubmit(filledTx, client, account)
-}
+  return signAndSubmit(filledTx, client, account);
+};
 
-export { sign, signAndSubmit, prefilledSignAndSubmit, setNativeAsset };
+export {
+  sign,
+  signAndSubmit,
+  prefilledSignAndSubmit,
+  setNativeAsset,
+  signInnerBatch,
+};
 
-export type { SignedObject };
+export type { SignedObject, InnerBatchSignature };
 
 export default sign;

@@ -53,15 +53,15 @@ const setNativeAsset = (Tx: any): void => {
 const signInnerBatch = (
   transaction: Object,
   account: Account,
-  definitions?: XrplDefinitions
+  definitions?: XrplDefinitions,
 ): InnerBatchSignature => {
   const BatchInnerHashes = (transaction as any)?.RawTransactions.map(
-    (t: Object) => hashBatchInnerTxn((t as any)?.RawTransaction, definitions)
+    (t: Object) => hashBatchInnerTxn((t as any)?.RawTransaction, definitions),
   );
 
   const batchSignerPayload = createBatchInnerTxnBlob(
     Number((transaction as any)?.Flags),
-    BatchInnerHashes
+    BatchInnerHashes,
   );
 
   const sig = rk_sign(batchSignerPayload, account.keypair.privateKey);
@@ -78,7 +78,7 @@ const signInnerBatch = (
 const sign = (
   transaction: Object,
   account?: Account | Account[],
-  definitions?: XrplDefinitions
+  definitions?: XrplDefinitions,
 ): SignedObject => {
   let accounts = [];
   const Tx: any = Object.assign({}, transaction);
@@ -88,7 +88,7 @@ const sign = (
   if (Object.keys(Tx).indexOf("TransactionType") > -1) {
     if (Tx?.TransactionType?.toLowerCase() === "signin") {
       Object.assign(Tx, {
-        TransactionType: undefined,
+        TransactionType: "SignIn",
         SignIn: true,
       });
     }
@@ -141,7 +141,7 @@ const sign = (
       };
     } else {
       throw new Error(
-        "Payment channel authorization: multi-signing not supported"
+        "Payment channel authorization: multi-signing not supported",
       );
     }
   }
@@ -190,7 +190,7 @@ const sign = (
             transaction.map((t) => {
               return t.signedTransaction.toUpperCase();
             }),
-            definitions
+            definitions,
           );
         } else if (
           transaction.length ===
@@ -205,11 +205,11 @@ const sign = (
             transaction.map((t) => {
               return t.toUpperCase();
             }),
-            definitions
+            definitions,
           );
         } else {
           throw new Error(
-            "TX Blob for multiSign not an array of { signedTransaction: ... } objects or blob strings"
+            "TX Blob for multiSign not an array of { signedTransaction: ... } objects or blob strings",
           );
         }
       } else {
@@ -224,14 +224,14 @@ const sign = (
               definitions,
             }).signedTransaction;
           }),
-          definitions
+          definitions,
         );
       }
     })();
 
     const txJson = Codec.decode(
       MultiSignedTransactionBinary.signedTransaction,
-      definitions
+      definitions,
     );
     return {
       type: "MultiSignedTx",
@@ -246,11 +246,11 @@ const sign = (
 const signAndSubmit = async (
   transaction: Object,
   client: XrplClient | string,
-  account: Account | Account[]
+  account: Account | Account[],
 ) => {
   assert(
     typeof client !== "undefined",
-    "First param. must be XrplClient (npm: xrpl-client) or wss:// node endpoint"
+    "First param. must be XrplClient (npm: xrpl-client) or wss:// node endpoint",
   );
 
   const connection =
@@ -271,7 +271,7 @@ const signAndSubmit = async (
   const { signedTransaction, id } = sign(
     transaction,
     account,
-    definitions ? new XrplDefinitions(definitions as any) : undefined
+    definitions ? new XrplDefinitions(definitions as any) : undefined,
   );
 
   const submitResponse = await connection.send({
@@ -294,7 +294,7 @@ const signAndSubmit = async (
 const prefilledSignAndSubmit = async (
   transaction: Object,
   client: XrplClient | string,
-  account: Account | Account[]
+  account: Account | Account[],
 ) => {
   let tx: Object;
 
@@ -304,14 +304,14 @@ const prefilledSignAndSubmit = async (
       typeof (transaction as any)?.["Account"] !== "string"
     ) {
       throw new Error(
-        "Account field should be specified in transaction when using multisigning"
+        "Account field should be specified in transaction when using multisigning",
       );
     }
   }
 
   const { txValues, networkInfo } = await accountAndLedgerSequence(
     client,
-    Array.isArray(account) ? (transaction as any)?.["Account"] : account
+    Array.isArray(account) ? (transaction as any)?.["Account"] : account,
   );
 
   let filledTx = {

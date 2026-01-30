@@ -1,5 +1,12 @@
 import fixtures from "./fixtures/api.json";
-import { derive, generate, sign, rawSigning, utils, prefilledSignAndSubmit } from "../src";
+import {
+  derive,
+  generate,
+  sign,
+  rawSigning,
+  utils,
+  prefilledSignAndSubmit,
+} from "../src";
 // import { XrplDefinitions } from "xrpl-binary-codec-prerelease";
 
 describe("Api", () => {
@@ -31,7 +38,7 @@ describe("Api", () => {
     test("Secret Numbers without checksum", () => {
       const account = derive.secretNumbers(
         fixtures.secretNumbers.seedNoChecksum,
-        true
+        true,
       );
       expect(account.accountType).toBe("secretNumbers");
       expect(account.address).toBe(fixtures.secretNumbers.address);
@@ -147,7 +154,7 @@ describe("Api", () => {
     test("One account using secp256k1", () => {
       const result = sign(
         fixtures.tx,
-        derive.familySeed(fixtures.familySeed.secp256k1.seed)
+        derive.familySeed(fixtures.familySeed.secp256k1.seed),
       );
       expect(result.type).toBe("SignedTx");
       expect(result.id).toBeDefined();
@@ -157,7 +164,7 @@ describe("Api", () => {
     test("One account using mnemonic", () => {
       const result = sign(
         fixtures.tx,
-        derive.familySeed(fixtures.familySeed.secp256k1.seed)
+        derive.familySeed(fixtures.familySeed.secp256k1.seed),
       );
       expect(result.type).toBe("SignedTx");
       expect(result.id).toBeDefined();
@@ -167,7 +174,7 @@ describe("Api", () => {
     test("SignIn PseudoTransaction using secp256k1", () => {
       const result = sign(
         fixtures.txPseudo,
-        derive.mnemonic(fixtures.mnemonic.mnemonic)
+        derive.mnemonic(fixtures.mnemonic.mnemonic),
       );
       expect(result.type).toBe("SignedTx");
       expect(result.id).toBeDefined();
@@ -177,7 +184,7 @@ describe("Api", () => {
     test("SignIn PseudoTransaction using mnemonic", () => {
       const result = sign(
         fixtures.txPseudo,
-        derive.familySeed(fixtures.familySeed.secp256k1.seed)
+        derive.familySeed(fixtures.familySeed.secp256k1.seed),
       );
       expect(result.type).toBe("SignedTx");
       expect(result.id).toBeDefined();
@@ -187,7 +194,7 @@ describe("Api", () => {
     test("NFT tx using mnemonic", () => {
       const result = sign(
         fixtures.txNft,
-        derive.familySeed(fixtures.familySeed.secp256k1.seed)
+        derive.familySeed(fixtures.familySeed.secp256k1.seed),
       );
       expect(result.type).toBe("SignedTx");
       expect(result.id).toBeDefined();
@@ -199,7 +206,7 @@ describe("Api", () => {
         fixtures.tx,
         derive
           .familySeed(fixtures.familySeed.secp256k1.seed)
-          .signAs("rPEPPER7kfTD9w2To4CQk6UCfuHM9c6GDY")
+          .signAs("rPEPPER7kfTD9w2To4CQk6UCfuHM9c6GDY"),
       );
       expect(result.type).toBe("SignedTx");
       expect(result.id).toBeDefined();
@@ -253,14 +260,14 @@ describe("Api", () => {
     test("Basic secp256k1 - uncompressed", () => {
       const preparedTx = rawSigning.prepare(
         fixtures.rawSigning.tx,
-        fixtures.rawSigning.accounts.ali.uncompressedPubKey
+        fixtures.rawSigning.accounts.ali.uncompressedPubKey,
       );
 
       expect(preparedTx.multiSign).toBe(false);
       expect(preparedTx.hashToSign).toBeDefined();
       expect(preparedTx.message).toBeDefined();
       expect(preparedTx.signingPubKey).toBe(
-        fixtures.rawSigning.accounts.ali.pubKeyCompressed
+        fixtures.rawSigning.accounts.ali.pubKeyCompressed,
       );
       expect(preparedTx.transaction).toMatchObject(
         Object.assign(
@@ -268,13 +275,13 @@ describe("Api", () => {
           {
             ...fixtures.rawSigning.tx,
             SigningPubKey: fixtures.rawSigning.accounts.ali.pubKeyCompressed,
-          }
-        )
+          },
+        ),
       );
 
       const signedObject = rawSigning.complete(
         preparedTx,
-        fixtures.rawSigning.accounts.ali.signature
+        fixtures.rawSigning.accounts.ali.signature,
       );
 
       expect(signedObject.type).toBe("SignedTx");
@@ -287,8 +294,8 @@ describe("Api", () => {
             ...fixtures.rawSigning.tx,
             SigningPubKey: fixtures.rawSigning.accounts.ali.pubKeyCompressed,
             TxnSignature: signedObject.txnSignature,
-          }
-        )
+          },
+        ),
       );
       expect(signedObject.signedTransaction).not.toBe("");
       expect(signedObject.id).not.toBe("");
@@ -297,14 +304,14 @@ describe("Api", () => {
     test("Basic secp256k1 - compressed", () => {
       const preparedTx = rawSigning.prepare(
         fixtures.rawSigning.tx,
-        fixtures.rawSigning.accounts.ali.pubKeyCompressed
+        fixtures.rawSigning.accounts.ali.pubKeyCompressed,
       );
 
       expect(preparedTx.multiSign).toBe(false);
       expect(preparedTx.hashToSign).toBeDefined();
       expect(preparedTx.message).toBeDefined();
       expect(preparedTx.signingPubKey).toBe(
-        fixtures.rawSigning.accounts.ali.pubKeyCompressed
+        fixtures.rawSigning.accounts.ali.pubKeyCompressed,
       );
       expect(preparedTx.transaction).toMatchObject(
         Object.assign(
@@ -312,13 +319,13 @@ describe("Api", () => {
           {
             ...fixtures.rawSigning.tx,
             SigningPubKey: fixtures.rawSigning.accounts.ali.pubKeyCompressed,
-          }
-        )
+          },
+        ),
       );
 
       const signedObject = rawSigning.complete(
         preparedTx,
-        fixtures.rawSigning.accounts.ali.signature
+        fixtures.rawSigning.accounts.ali.signature,
       );
 
       expect(signedObject.type).toBe("SignedTx");
@@ -331,8 +338,8 @@ describe("Api", () => {
             ...fixtures.rawSigning.tx,
             SigningPubKey: fixtures.rawSigning.accounts.ali.pubKeyCompressed,
             TxnSignature: signedObject.txnSignature,
-          }
-        )
+          },
+        ),
       );
       expect(signedObject.signedTransaction).not.toBe("");
       expect(signedObject.id).not.toBe("");
@@ -342,32 +349,32 @@ describe("Api", () => {
       const signedByTristan = rawSigning.prepare(
         fixtures.rawSigning.tx,
         fixtures.rawSigning.accounts.tristan.uncompressedPubKey,
-        true
+        true,
       );
       const signedByAli = rawSigning.prepare(
         fixtures.rawSigning.tx,
         fixtures.rawSigning.accounts.ali.uncompressedPubKey,
-        true
+        true,
       );
 
       expect(signedByTristan.multiSign).toBe(true);
       expect(signedByTristan.hashToSign).toBeDefined();
       expect(signedByTristan.message).toBeDefined();
       expect(signedByTristan.signingPubKey).toBe(
-        fixtures.rawSigning.accounts.tristan.pubKeyCompressed
+        fixtures.rawSigning.accounts.tristan.pubKeyCompressed,
       );
       expect(signedByTristan.transaction).toMatchObject(
-        Object.assign(fixtures.rawSigning.tx, { SigningPubKey: "" })
+        Object.assign(fixtures.rawSigning.tx, { SigningPubKey: "" }),
       );
 
       expect(signedByAli.multiSign).toBe(true);
       expect(signedByAli.hashToSign).toBeDefined();
       expect(signedByAli.message).toBeDefined();
       expect(signedByAli.signingPubKey).toBe(
-        fixtures.rawSigning.accounts.ali.pubKeyCompressed
+        fixtures.rawSigning.accounts.ali.pubKeyCompressed,
       );
       expect(signedByAli.transaction).toMatchObject(
-        Object.assign(fixtures.rawSigning.tx, { SigningPubKey: "" })
+        Object.assign(fixtures.rawSigning.tx, { SigningPubKey: "" }),
       );
 
       const signatures = [
@@ -383,7 +390,7 @@ describe("Api", () => {
 
       const signedObject = rawSigning.completeMultiSigned(
         fixtures.rawSigning.tx,
-        signatures
+        signatures,
       );
 
       expect(signedObject.type).toBe("MultiSignedTx");
@@ -399,32 +406,32 @@ describe("Api", () => {
       const signedByTristan = rawSigning.prepare(
         fixtures.rawSigning.tx,
         fixtures.rawSigning.accounts.tristan.pubKeyCompressed,
-        true
+        true,
       );
       const signedByAli = rawSigning.prepare(
         fixtures.rawSigning.tx,
         fixtures.rawSigning.accounts.ali.pubKeyCompressed,
-        true
+        true,
       );
 
       expect(signedByTristan.multiSign).toBe(true);
       expect(signedByTristan.hashToSign).toBeDefined();
       expect(signedByTristan.message).toBeDefined();
       expect(signedByTristan.signingPubKey).toBe(
-        fixtures.rawSigning.accounts.tristan.pubKeyCompressed
+        fixtures.rawSigning.accounts.tristan.pubKeyCompressed,
       );
       expect(signedByTristan.transaction).toMatchObject(
-        Object.assign(fixtures.rawSigning.tx, { SigningPubKey: "" })
+        Object.assign(fixtures.rawSigning.tx, { SigningPubKey: "" }),
       );
 
       expect(signedByAli.multiSign).toBe(true);
       expect(signedByAli.hashToSign).toBeDefined();
       expect(signedByAli.message).toBeDefined();
       expect(signedByAli.signingPubKey).toBe(
-        fixtures.rawSigning.accounts.ali.pubKeyCompressed
+        fixtures.rawSigning.accounts.ali.pubKeyCompressed,
       );
       expect(signedByAli.transaction).toMatchObject(
-        Object.assign(fixtures.rawSigning.tx, { SigningPubKey: "" })
+        Object.assign(fixtures.rawSigning.tx, { SigningPubKey: "" }),
       );
 
       const signatures = [
@@ -440,7 +447,7 @@ describe("Api", () => {
 
       const signedObject = rawSigning.completeMultiSigned(
         fixtures.rawSigning.tx,
-        signatures
+        signatures,
       );
 
       expect(signedObject.type).toBe("MultiSignedTx");
@@ -463,7 +470,7 @@ describe("Api", () => {
       };
       expect(
         rawSigning.prepare(unsignedTx, fixtures.utils.edPubKeyCompressed)
-          .hashToSign
+          .hashToSign,
       ).toEqual(fixtures.rawSigning.edMessageToSign);
     });
 
@@ -471,32 +478,32 @@ describe("Api", () => {
       const signedByTristan = rawSigning.prepare(
         fixtures.rawSigning.txEd,
         fixtures.rawSigning.accounts.tristan.uncompressedPubKeyEd,
-        true
+        true,
       );
       const signedByAli = rawSigning.prepare(
         fixtures.rawSigning.txEd,
         fixtures.rawSigning.accounts.ali.uncompressedPubKeyEd,
-        true
+        true,
       );
 
       expect(signedByTristan.multiSign).toBe(true);
       expect(signedByTristan.hashToSign).toBeDefined();
       expect(signedByTristan.message).toBeDefined();
       expect(signedByTristan.signingPubKey).toBe(
-        fixtures.rawSigning.accounts.tristan.pubKeyCompressedEd
+        fixtures.rawSigning.accounts.tristan.pubKeyCompressedEd,
       );
       expect(signedByTristan.transaction).toMatchObject(
-        Object.assign(fixtures.rawSigning.txEd, { SigningPubKey: "" })
+        Object.assign(fixtures.rawSigning.txEd, { SigningPubKey: "" }),
       );
 
       expect(signedByAli.multiSign).toBe(true);
       expect(signedByAli.hashToSign).toBeDefined();
       expect(signedByAli.message).toBeDefined();
       expect(signedByAli.signingPubKey).toBe(
-        fixtures.rawSigning.accounts.ali.pubKeyCompressedEd
+        fixtures.rawSigning.accounts.ali.pubKeyCompressedEd,
       );
       expect(signedByAli.transaction).toMatchObject(
-        Object.assign(fixtures.rawSigning.txEd, { SigningPubKey: "" })
+        Object.assign(fixtures.rawSigning.txEd, { SigningPubKey: "" }),
       );
 
       const signatures = [
@@ -512,7 +519,7 @@ describe("Api", () => {
 
       const signedObject = rawSigning.completeMultiSigned(
         fixtures.rawSigning.txEd,
-        signatures
+        signatures,
       );
 
       expect(signedObject.type).toBe("MultiSignedTx");
@@ -528,32 +535,32 @@ describe("Api", () => {
       const signedByTristan = rawSigning.prepare(
         fixtures.rawSigning.txEd,
         fixtures.rawSigning.accounts.tristan.pubKeyCompressedEd,
-        true
+        true,
       );
       const signedByAli = rawSigning.prepare(
         fixtures.rawSigning.txEd,
         fixtures.rawSigning.accounts.ali.pubKeyCompressedEd,
-        true
+        true,
       );
 
       expect(signedByTristan.multiSign).toBe(true);
       expect(signedByTristan.hashToSign).toBeDefined();
       expect(signedByTristan.message).toBeDefined();
       expect(signedByTristan.signingPubKey).toBe(
-        fixtures.rawSigning.accounts.tristan.pubKeyCompressedEd
+        fixtures.rawSigning.accounts.tristan.pubKeyCompressedEd,
       );
       expect(signedByTristan.transaction).toMatchObject(
-        Object.assign(fixtures.rawSigning.txEd, { SigningPubKey: "" })
+        Object.assign(fixtures.rawSigning.txEd, { SigningPubKey: "" }),
       );
 
       expect(signedByAli.multiSign).toBe(true);
       expect(signedByAli.hashToSign).toBeDefined();
       expect(signedByAli.message).toBeDefined();
       expect(signedByAli.signingPubKey).toBe(
-        fixtures.rawSigning.accounts.ali.pubKeyCompressedEd
+        fixtures.rawSigning.accounts.ali.pubKeyCompressedEd,
       );
       expect(signedByAli.transaction).toMatchObject(
-        Object.assign(fixtures.rawSigning.txEd, { SigningPubKey: "" })
+        Object.assign(fixtures.rawSigning.txEd, { SigningPubKey: "" }),
       );
 
       const signatures = [
@@ -569,7 +576,7 @@ describe("Api", () => {
 
       const signedObject = rawSigning.completeMultiSigned(
         fixtures.rawSigning.txEd,
-        signatures
+        signatures,
       );
 
       expect(signedObject.type).toBe("MultiSignedTx");
@@ -596,7 +603,7 @@ describe("Api", () => {
       const result = sign(
         fixtures.multisignedHex.map((r: string) => {
           return { signedTransaction: r };
-        })
+        }),
       );
       expect(result.type).toBe("MultiSignedTx");
       expect(result.id).toBeDefined();

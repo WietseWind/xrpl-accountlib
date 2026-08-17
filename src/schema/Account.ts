@@ -2,6 +2,7 @@ import { deriveAddress } from "ripple-keypairs";
 import * as AddressCodec from "ripple-address-codec";
 import * as Elliptic from "elliptic";
 import * as Utils from "../utils";
+import { normalizeAlgorithm } from "../utils/algorithm";
 
 const Ed25519 = new Elliptic.eddsa("ed25519");
 const Secp256k1 = new Elliptic.ec("secp256k1");
@@ -52,6 +53,12 @@ export default class XRPL_Account {
   public _signAs?: any;
 
   constructor(options: AccountOptions = {}) {
+    /**
+     * Check the requested algorithm (case insensitive) before anything else:
+     * deriving with another algorithm than asked for yields another account
+     */
+    const algorithm = normalizeAlgorithm(options.algorithm);
+
     /**
      * Define object struct
      */
@@ -123,7 +130,7 @@ export default class XRPL_Account {
         if (
           // @ts-ignore
           options.keypair.privateKey.slice(0, 2) === "ED" ||
-          (options.algorithm && options.algorithm === "ed25519")
+          algorithm === "ed25519"
         ) {
           const priv = this.keypair.privateKey.slice(2);
           // @ts-ignore
@@ -143,8 +150,8 @@ export default class XRPL_Account {
     /**
      * Check & apply algorithm, or retrieve from private key
      */
-    if (options.algorithm) {
-      this.keypair.algorithm = options.algorithm;
+    if (algorithm) {
+      this.keypair.algorithm = algorithm;
     } else {
       if (this.keypair.privateKey) {
         this.keypair.algorithm = Utils.getAlgorithmFromKey(

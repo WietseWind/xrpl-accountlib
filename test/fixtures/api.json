@@ -54,6 +54,34 @@
       "algorithm": "secp256k1",
       "publicKey": "0211D6E17A2BC4D0D61AEACA9FD05AD1DAC57A6395F57EA3E8198CA3F01A66D93F",
       "privateKey": "00693AEC2D99E7124DBEE2E28B033621EC459D0253C169558E5CFFE568287399A7"
+    },
+    "path": "m/44'/144'/0'/0/0",
+    "ed25519": {
+      "address": "rp2h4C9g7TmbhDkuPnyRcxcigfJRp52BWG",
+      "path": "m/44'/144'/0'/0'/0'",
+      "keypair": {
+        "algorithm": "ed25519",
+        "publicKey": "ED71EC5876E66ABC173EBAE1C85F8D09744F691956F73F1A11C4F5C73E52454F93",
+        "privateKey": "EDB61D3563A8565767AF51DBD560609CC7559CE7C93E8316665A3EFB9E36BB0292"
+      },
+      "noPassphrase": {
+        "address": "r4wtygUBUyzLiibEwwKsA1YA9CKoWjUujS",
+        "keypair": {
+          "algorithm": "ed25519",
+          "publicKey": "ED8C69441B4B50E6264C6B3D95F93E74ED70A3661B04F52934199D881B803438A5",
+          "privateKey": "ED5681931C32E562203F8F9E814A46F82349FB4655695159E834352B428E9D1E22"
+        }
+      },
+      "customPath": {
+        "options": { "accountPath": "1", "changePath": "2", "addressIndex": 3 },
+        "path": "m/44'/144'/1'/2'/3'",
+        "address": "rKhm7wSbYwFirckqjDH64aqezSdXYJG8C8",
+        "keypair": {
+          "algorithm": "ed25519",
+          "publicKey": "EDD49D91042C314F974561B08EB7A54B9457857A51AC969368615C7FE96E048024",
+          "privateKey": "ED9E6AC7E446DA65F96692E35661330316C1096D216DD0D878527BFD59071FD0F0"
+        }
+      }
     }
   },
   "privatekey": {

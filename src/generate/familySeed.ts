@@ -3,6 +3,7 @@
 import { generateSeed, deriveKeypair, deriveAddress, } from "ripple-keypairs";
 
 import Account, { Algorithms } from "../schema/Account";
+import { normalizeAlgorithm } from "../utils/algorithm";
 
 type Options = {
   algorithm?: Algorithms;
@@ -11,7 +12,7 @@ type Options = {
 
 const familySeed = (options: Options = {}): Account => {
   options = Object.assign(options, {
-    algorithm: options.algorithm === "ed25519" ? "ed25519" : "secp256k1"
+    algorithm: normalizeAlgorithm(options.algorithm, "secp256k1")
   })
   const Familyseed = generateSeed(options);
   const Keypair = deriveKeypair(Familyseed);

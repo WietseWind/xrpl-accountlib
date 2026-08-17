@@ -1,4 +1,5 @@
 import fixtures from "./fixtures/api.json";
+import { verifySignature } from "verify-xrpl-signature";
 import {
   derive,
   generate,
@@ -69,6 +70,54 @@ describe("Api", () => {
       expect(account.keypair).toEqual(fixtures.mnemonic.keypairUpper);
     });
 
+    test("Mnemonic (explicit algorithm: secp256k1 matches default)", () => {
+      const account = derive.mnemonic(fixtures.mnemonic.mnemonic, {
+        passphrase: fixtures.mnemonic.passphrase,
+        algorithm: "secp256k1",
+      });
+      expect(account.accountType).toBe("mnemonic");
+      expect(account.address).toBe(fixtures.mnemonic.address);
+      expect(account.keypair).toEqual(fixtures.mnemonic.keypair);
+      expect(account.secret.path).toBe(fixtures.mnemonic.path);
+    });
+
+    test("Mnemonic (algorithm: ed25519)", () => {
+      const account = derive.mnemonic(fixtures.mnemonic.mnemonic, {
+        passphrase: fixtures.mnemonic.passphrase,
+        algorithm: "ed25519",
+      });
+      expect(account.accountType).toBe("mnemonic");
+      expect(account.address).toBe(fixtures.mnemonic.ed25519.address);
+      expect(account.keypair).toEqual(fixtures.mnemonic.ed25519.keypair);
+      expect(account.secret.path).toBe(fixtures.mnemonic.ed25519.path);
+    });
+
+    test("Mnemonic (algorithm: ed25519, no passphrase)", () => {
+      const account = derive.mnemonic(fixtures.mnemonic.mnemonic, {
+        algorithm: "ed25519",
+      });
+      expect(account.accountType).toBe("mnemonic");
+      expect(account.address).toBe(fixtures.mnemonic.ed25519.noPassphrase.address);
+      expect(account.keypair).toEqual(
+        fixtures.mnemonic.ed25519.noPassphrase.keypair,
+      );
+    });
+
+    test("Mnemonic (algorithm: ed25519, custom path is fully hardened)", () => {
+      const account = derive.mnemonic(fixtures.mnemonic.mnemonic, {
+        algorithm: "ed25519",
+        accountPath: fixtures.mnemonic.ed25519.customPath.options.accountPath,
+        changePath: fixtures.mnemonic.ed25519.customPath.options.changePath,
+        addressIndex: fixtures.mnemonic.ed25519.customPath.options.addressIndex,
+      });
+      expect(account.accountType).toBe("mnemonic");
+      expect(account.secret.path).toBe(fixtures.mnemonic.ed25519.customPath.path);
+      expect(account.address).toBe(fixtures.mnemonic.ed25519.customPath.address);
+      expect(account.keypair).toEqual(
+        fixtures.mnemonic.ed25519.customPath.keypair,
+      );
+    });
+
     test("PrivateKey (HEX)", () => {
       const account = derive.privatekey(fixtures.privatekey.privatekey);
       expect(account.accountType).toBe("hex");
@@ -110,6 +159,118 @@ describe("Api", () => {
       expect(account.accountType).toBe("mnemonic");
       expect(account.secret.familySeed).toBe(null);
       expect(account.secret.mnemonic).toBeDefined();
+      expect(account.keypair.algorithm).toBe("secp256k1");
+    });
+
+    test("Mnemonic (algorithm: ed25519)", () => {
+      const account = generate.mnemonic({
+        wordlist: "english",
+        passphrase: "Hello World!",
+        algorithm: "ed25519",
+      });
+      expect(account.accountType).toBe("mnemonic");
+      expect(account.secret.familySeed).toBe(null);
+      expect(account.secret.mnemonic).toBeDefined();
+      expect(account.secret.path).toBe("m/44'/144'/0'/0'/0'");
+      expect(account.keypair.algorithm).toBe("ed25519");
+      expect(account.keypair.publicKey).toMatch(/^ED[A-F0-9]{64}$/);
+      expect(account.keypair.privateKey).toMatch(/^ED[A-F0-9]{64}$/);
+    });
+
+    test("Mnemonic generate/derive roundtrip (ed25519)", () => {
+      const generated = generate.mnemonic({
+        algorithm: "ed25519",
+        passphrase: "Hello World!",
+        accountPath: "2",
+        changePath: "3",
+        addressIndex: 1,
+      });
+      const derived = derive.mnemonic(generated.secret.mnemonic || "", {
+        algorithm: "ed25519",
+        passphrase: "Hello World!",
+        accountPath: "2",
+        changePath: "3",
+        addressIndex: 1,
+      });
+      expect(generated.secret.path).toBe("m/44'/144'/2'/3'/1'");
+      expect(derived.address).toBe(generated.address);
+      expect(derived.keypair).toEqual(generated.keypair);
+      expect(derived.secret.path).toBe(generated.secret.path);
+    });
+
+    test("Mnemonic generate/derive roundtrip (secp256k1)", () => {
+      const generated = generate.mnemonic({
+        accountPath: "2",
+        changePath: "3",
+        addressIndex: 1,
+      });
+      const derived = derive.mnemonic(generated.secret.mnemonic || "", {
+        accountPath: "2",
+        changePath: "3",
+        addressIndex: 1,
+      });
+      expect(generated.secret.path).toBe("m/44'/144'/2'/3/1");
+      expect(derived.address).toBe(generated.address);
+      expect(derived.keypair).toEqual(generated.keypair);
+      expect(derived.secret.path).toBe(generated.secret.path);
+    });
+
+    test("Algorithm is case insensitive (mnemonic)", () => {
+      const account = derive.mnemonic(fixtures.mnemonic.mnemonic, {
+        passphrase: fixtures.mnemonic.passphrase,
+        // @ts-ignore
+        algorithm: " Ed25519 ",
+      });
+      expect(account.address).toBe(fixtures.mnemonic.ed25519.address);
+      expect(account.keypair).toEqual(fixtures.mnemonic.ed25519.keypair);
+
+      const secpAccount = derive.mnemonic(fixtures.mnemonic.mnemonic, {
+        passphrase: fixtures.mnemonic.passphrase,
+        // @ts-ignore
+        algorithm: "SECP256K1",
+      });
+      expect(secpAccount.address).toBe(fixtures.mnemonic.address);
+      expect(secpAccount.keypair).toEqual(fixtures.mnemonic.keypair);
+
+      // @ts-ignore
+      const generated = generate.mnemonic({ algorithm: "ED25519" });
+      expect(generated.keypair.algorithm).toBe("ed25519");
+      expect(generated.keypair.publicKey).toMatch(/^ED[A-F0-9]{64}$/);
+    });
+
+    test("Algorithm is case insensitive (familySeed)", () => {
+      // @ts-ignore
+      const generated = generate.familySeed({ algorithm: "ED25519" });
+      expect(generated.keypair.algorithm).toBe("ed25519");
+      expect(generated.secret.familySeed).toMatch(/^sEd/);
+
+      const account = derive.familySeed(fixtures.familySeed.ed25519.seed, {
+        algorithm: "Ed25519",
+      });
+      expect(account.address).toBe(fixtures.familySeed.ed25519.address);
+      expect(account.keypair).toEqual(fixtures.familySeed.ed25519.keypair);
+    });
+
+    test("Really invalid algorithm throws (never fall back silently)", () => {
+      const invalid = ["Ed25519!", "sec256k1", "ecdsa", "foo", 25519];
+      invalid.forEach((algorithm) => {
+        expect(() =>
+          // @ts-ignore
+          generate.mnemonic({ algorithm }),
+        ).toThrow("Invalid algorithm");
+        expect(() =>
+          // @ts-ignore
+          derive.mnemonic(fixtures.mnemonic.mnemonic, { algorithm }),
+        ).toThrow("Invalid algorithm");
+        expect(() =>
+          // @ts-ignore
+          generate.familySeed({ algorithm }),
+        ).toThrow("Invalid algorithm");
+        expect(() =>
+          // @ts-ignore
+          derive.familySeed(fixtures.familySeed.secp256k1.seed, { algorithm }),
+        ).toThrow("Invalid algorithm");
+      });
     });
   });
 
@@ -135,6 +296,14 @@ describe("Api", () => {
       const account = generate.mnemonic({
         wordlist: "english",
         passphrase: "Hello World!",
+      });
+      expect(utils.isValidMnemnic(account.secret.mnemonic || "")).toBeTruthy();
+    });
+
+    test("Mnemonic (algorithm: ed25519) valid", () => {
+      const account = generate.mnemonic({
+        wordlist: "english",
+        algorithm: "ed25519",
       });
       expect(utils.isValidMnemnic(account.secret.mnemonic || "")).toBeTruthy();
     });
@@ -169,6 +338,39 @@ describe("Api", () => {
       expect(result.type).toBe("SignedTx");
       expect(result.id).toBeDefined();
       expect(result.signedTransaction).toBeDefined();
+    });
+
+    test("One account using mnemonic (algorithm: ed25519)", () => {
+      const account = derive.mnemonic(fixtures.mnemonic.mnemonic, {
+        algorithm: "ed25519",
+      });
+      const result = sign(fixtures.tx, account);
+      expect(result.type).toBe("SignedTx");
+      expect(result.id).toBeDefined();
+      expect(result.signedTransaction).toBeDefined();
+      expect(verifySignature(result.signedTransaction).signatureValid).toBe(
+        true,
+      );
+    });
+
+    test("MultiSign including ed25519 mnemonic account", () => {
+      const secpAccount = derive.familySeed(fixtures.familySeed.secp256k1.seed);
+      const edAccount = derive.mnemonic(fixtures.mnemonic.mnemonic, {
+        algorithm: "ed25519",
+      });
+      const result = sign(fixtures.tx, [secpAccount, edAccount]);
+      expect(result.type).toBe("MultiSignedTx");
+      expect(result.id).toBeDefined();
+      expect(result.signedTransaction).toBeDefined();
+      expect(result.signers.length).toBe(2);
+      expect(
+        verifySignature(result.signedTransaction, edAccount.address || "")
+          .signatureValid,
+      ).toBe(true);
+      expect(
+        verifySignature(result.signedTransaction, secpAccount.address || "")
+          .signatureValid,
+      ).toBe(true);
     });
 
     test("SignIn PseudoTransaction using secp256k1", () => {

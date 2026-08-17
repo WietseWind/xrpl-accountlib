@@ -1,13 +1,12 @@
 "use strict";
 
-import { wordlists, mnemonicToSeedSync, generateMnemonic } from "bip39";
-import * as Bip32 from "bip32";
+import { wordlists, generateMnemonic } from "bip39";
 import { deriveAddress } from "ripple-keypairs";
 import { randomBytes } from "crypto";
 
-import Account from "../schema/Account";
+import Account, { Algorithms } from "../schema/Account";
 
-import * as Utils from "../utils";
+import mnemonicKeypair from "../utils/mnemonicKeypair";
 
 type Options = {
   passphrase?: string;
@@ -16,6 +15,7 @@ type Options = {
   accountPath?: string;
   changePath?: string;
   addressIndex?: number;
+  algorithm?: Algorithms;
 };
 
 const mnemonic = (options: Options = {}): Account => {
@@ -32,39 +32,22 @@ const mnemonic = (options: Options = {}): Account => {
     Wordlist
   );
 
-  const accountPath =
-    options.accountPath && !isNaN(parseInt(options.accountPath))
-      ? options.accountPath
-      : 0;
-  const changePath =
-    options.changePath && !isNaN(parseInt(options.changePath))
-      ? options.changePath
-      : 0;
-  const addressIndex =
-    options.addressIndex && !isNaN(options.addressIndex)
-      ? options.addressIndex
-      : 0;
-
-  const Path = `m/44'/144'/${accountPath}'/${changePath}/${addressIndex}`;
-
-  const Seed = mnemonicToSeedSync(words, passphrase);
-  const m = Bip32.fromSeed(Seed);
-  const Node = m.derivePath(Path);
-  const publicKey = Utils.bufferToHext(Node.publicKey);
-  // @ts-ignore
-  const privateKey = Utils.bufferToHext(Node.privateKey);
-  const Keypair = {
-    publicKey: publicKey,
-    privateKey: "00" + privateKey,
-  };
-  const Address = deriveAddress(Keypair.publicKey);
+  const { algorithm, path, keypair } = mnemonicKeypair(words, {
+    passphrase: options.passphrase,
+    accountPath: options.accountPath,
+    changePath: options.changePath,
+    addressIndex: options.addressIndex,
+    algorithm: options.algorithm,
+  });
+  const Address = deriveAddress(keypair.publicKey);
 
   return new Account({
+    algorithm,
     address: Address,
     mnemonic: words,
     passphrase: passphrase,
-    keypair: Keypair,
-    path: Path,
+    keypair: keypair,
+    path: path,
   });
 };
 

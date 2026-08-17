@@ -43,6 +43,15 @@ console.log(
 console.log();
 
 console.log(
+  "Derive: mnemonic (algorithm: ed25519)",
+  lib.derive.mnemonic(
+    "lamp elevator orchard music glare night upper race mixture bullet property nasty agent sword blind dynamic gossip life series shrug day ice control reunion",
+    { passphrase: "Hello World!", algorithm: "ed25519" }
+  )
+);
+console.log();
+
+console.log(
   "Derive: privatekey (HEX)",
   lib.derive.privatekey(
     "B4A2DDB056187E34C8FDA56C78EFE2212D01AD0D6D62D8DF90873708457A152E"

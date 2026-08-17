@@ -23,3 +23,13 @@ console.log(
   lib.generate.mnemonic({ wordlist: "english", passphrase: "Hello World!" })
 );
 console.log();
+
+console.log(
+  "Generate: mnemonic (algorithm: ed25519)",
+  lib.generate.mnemonic({
+    wordlist: "english",
+    passphrase: "Hello World!",
+    algorithm: "ed25519",
+  })
+);
+console.log();

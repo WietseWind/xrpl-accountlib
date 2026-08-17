@@ -97,7 +97,8 @@ Samples: https://github.com/WietseWind/xrpl-accountlib/blob/master/samples/gener
 Options:
 
 - **algorithm**  
-  Default: 'secp256k1', alternatively: 'ed25519'
+  Default: 'secp256k1', alternatively: 'ed25519' (case insensitive,
+  any other value throws)
 
 ### Secret Numbers `lib.generate.secretNumbers()`
 
@@ -110,6 +111,10 @@ See:
 
 Options:
 
+- **algorithm**  
+  Default: 'secp256k1' (BIP32), alternatively: 'ed25519' (SLIP-0010). As SLIP-0010
+  only supports hardened derivation, the 'ed25519' derivation path is fully
+  hardened: m/44'/144'/X'/Y'/Z'. Case insensitive, any other value throws.
 - **passphrase**  
   Default: (none), alternatively: 'my secret passsword'
 - **strength**  
@@ -151,6 +156,10 @@ The _ mnemonic_ argument is required, and should contain a string with a valid w
 
 Options:
 
+- **algorithm**  
+  Default: 'secp256k1' (BIP32), alternatively: 'ed25519' (SLIP-0010). As SLIP-0010
+  only supports hardened derivation, the 'ed25519' derivation path is fully
+  hardened: m/44'/144'/X'/Y'/Z'. Case insensitive, any other value throws.
 - **passphrase**  
   Default: (none), alternatively: 'my secret passsword'
 - **accountPath**  

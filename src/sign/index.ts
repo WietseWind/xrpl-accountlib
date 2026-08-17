@@ -5,6 +5,9 @@ import assert from "assert";
 import {
   encodeForSigningClaim,
   XrplDefinitions,
+  // Same object the package root re-exports: importing it from "../" instead
+  // would create a require cycle (root -> sign -> root)
+  nativeAsset,
 } from "xrpl-binary-codec-prerelease";
 import { sign as rk_sign } from "ripple-keypairs";
 import { XrplClient } from "xrpl-client";
@@ -19,7 +22,6 @@ import {
   hashBatchInnerTxn,
   createBatchInnerTxnBlob,
 } from "../utils";
-import { nativeAsset } from "../";
 
 type SignOptions = {
   [key: string]: any;

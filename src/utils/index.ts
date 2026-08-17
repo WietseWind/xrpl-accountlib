@@ -21,13 +21,28 @@ import {
   XrplDefinitions,
 } from "xrpl-binary-codec-prerelease";
 import type Account from "../schema/Account";
-import { passphrase } from "../derive";
-import { sign } from "../sign";
 import { XrplClient } from "xrpl-client";
-import { setNativeAsset } from "../sign";
+
+import { normalizeAlgorithm } from "./algorithm";
 
 // Ugly, but no definitions when directly loading the lib file, and Signature() not exported in lib
 const Signature = require("elliptic/lib/elliptic/ec/signature");
+
+/**
+ * ../sign and ../derive require ../utils, so importing them at the top level
+ * creates a require cycle: a partially initialized module then yields
+ * undefined exports, depending on which file is required first. That breaks
+ * deep imports, eg. require("xrpl-accountlib/dist/derive/mnemonic").
+ *
+ * Required (and cached) on first use instead: by then every module is loaded.
+ */
+let signModuleCache: typeof import("../sign") | undefined;
+const signModule = (): typeof import("../sign") =>
+  (signModuleCache = signModuleCache || require("../sign"));
+
+let deriveModuleCache: typeof import("../derive") | undefined;
+const deriveModule = (): typeof import("../derive") =>
+  (deriveModuleCache = deriveModuleCache || require("../derive"));
 
 function ifUint8ToHex(data: string) {
   if (typeof data === "string" && data.match(",")) {
@@ -177,7 +192,7 @@ function encodeTransaction(
   definitions?: XrplDefinitions
 ): string {
   const Transaction = Object.assign({}, TxJson);
-  setNativeAsset(Transaction);
+  signModule().setNativeAsset(Transaction);
 
   if (typeof MultiSignAccount !== "undefined") {
     Object.assign(Transaction, { SigningPubKey: "" });
@@ -368,9 +383,9 @@ const networkTxFee = async (
       return "0";
     }
 
-    const tx_blob = sign(
+    const tx_blob = signModule().sign(
       transaction,
-      passphrase(""),
+      deriveModule().passphrase(""),
       definitions
     ).signedTransaction;
 
@@ -464,6 +479,7 @@ export {
   hexToBytes,
   bufferToHext,
   getAlgorithmFromKey,
+  normalizeAlgorithm,
   isValidAddress,
   isValidClassicAddress,
   isValidSeed,

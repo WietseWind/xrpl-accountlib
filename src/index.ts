@@ -27,13 +27,27 @@ import {
   XrplDefinitions,
   encode,
   decode,
-  encodeForSigning,
+  encodeForSigning as codecEncodeForSigning,
   encodeForMultisigning,
   encodeForSigningClaim,
 } from "xrpl-binary-codec-prerelease";
 import { nativeAsset } from "./nativeAsset";
 import DEFAULT_DEFINITIONS from "xrpl-binary-codec-prerelease/dist/enums/definitions.json";
 import { type DefinitionsData } from "xrpl-binary-codec-prerelease/dist/enums/xrpl-definitions-base";
+
+/**
+ * Signing hash must not include TxnSignature / Signers. Consumers (e.g. Xaman
+ * Tangem import) re-encode the completed txJson which already has TxnSignature.
+ */
+const encodeForSigning = (
+  json: object,
+  definitions?: XrplDefinitions,
+): string => {
+  const tx = { ...(json as Record<string, unknown>) };
+  delete tx.TxnSignature;
+  delete tx.Signers;
+  return codecEncodeForSigning(tx, definitions);
+};
 
 const binary = {
   encode,

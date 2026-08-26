@@ -119,6 +119,18 @@ const prepare = (
   };
 };
 
+const normalizeRawCardSignature = (signature: string): string => {
+  let hex = String(signature).trim();
+  if (/^0x/i.test(hex)) {
+    hex = hex.slice(2);
+  }
+  if (hex.indexOf(",") >= 0) {
+    hex = Buffer.from(hex.split(",").map((n) => Number(n.trim())))
+      .toString("hex");
+  }
+  return hex.toUpperCase();
+};
+
 const complete = (
   Prepared: PreparedRawTransaction,
   signature: string,
@@ -126,12 +138,13 @@ const complete = (
 ): SignedRawObject => {
   assertValidPubkey(Prepared.pubkey);
   assert(typeof signature === "string", "signature: string expected");
-  assert(signature.length === 128, "signature: incorrect length");
+  const rawSignature = normalizeRawCardSignature(signature);
+  assert(rawSignature.length === 128, "signature: incorrect length");
 
   const txnSignature =
     Utils.getAlgorithmFromKey(Prepared.signingPubKey) === "ed25519"
-      ? signature
-      : Utils.secp256k1_p1363ToFullyCanonicalDerSignature(signature);
+      ? rawSignature
+      : Utils.secp256k1_p1363ToFullyCanonicalDerSignature(rawSignature);
 
   const signatureVerifies = Utils.verifySignature(
     Prepared.message,

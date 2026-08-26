@@ -3,10 +3,12 @@
  * getter. Metro/Hermes CJS interop can leave that getter returning undefined,
  * so sign() / rawSigning.prepare() crash on nativeAsset.set().
  *
- * Resolve the real singleton (same object the codec uses for Amount encoding)
- * and re-attach it onto the package root so both internal signing and the
- * public nativeAsset.set() API work.
+ * Load the codec's nativeasset module with a static import so Metro bundles
+ * the same singleton encode() uses, then re-attach it onto the package root.
  */
+
+import * as Codec from "xrpl-binary-codec-prerelease";
+import * as CodecNative from "xrpl-binary-codec-prerelease/dist/nativeasset";
 
 type NativeAssetHandle = {
   set: (asset: string) => void;
@@ -22,14 +24,6 @@ const asHandle = (value: unknown): NativeAssetHandle | undefined => {
     return value as NativeAssetHandle;
   }
   return undefined;
-};
-
-const tryRequire = (specifier: string): any => {
-  try {
-    return require(specifier);
-  } catch {
-    return undefined;
-  }
 };
 
 const attachNativeAsset = (mod: any, instance: NativeAssetHandle): void => {
@@ -57,30 +51,51 @@ const attachNativeAsset = (mod: any, instance: NativeAssetHandle): void => {
   }
 };
 
+const readFromNamespace = (mod: any): NativeAssetHandle | undefined => {
+  return asHandle(mod?.nativeAsset) || asHandle(mod?.default?.nativeAsset);
+};
+
 export const getNativeAsset = (): NativeAssetHandle => {
-  const codec = tryRequire("xrpl-binary-codec-prerelease");
-  const fromCodec =
-    asHandle(codec?.nativeAsset) || asHandle(codec?.default?.nativeAsset);
-  if (fromCodec) {
-    return fromCodec;
+  let instance =
+    readFromNamespace(CodecNative) || readFromNamespace(Codec);
+
+  if (!instance) {
+    try {
+      instance = readFromNamespace(require("xrpl-binary-codec-prerelease"));
+    } catch {
+      //
+    }
   }
 
-  const nativeMod =
-    tryRequire("xrpl-binary-codec-prerelease/dist/nativeasset.js") ||
-    tryRequire("xrpl-binary-codec-prerelease/dist/nativeasset");
-  const fromFile =
-    asHandle(nativeMod?.nativeAsset) ||
-    asHandle(nativeMod?.default?.nativeAsset);
+  if (!instance) {
+    try {
+      instance =
+        readFromNamespace(
+          require("xrpl-binary-codec-prerelease/dist/nativeasset.js"),
+        ) ||
+        readFromNamespace(
+          require("xrpl-binary-codec-prerelease/dist/nativeasset"),
+        );
+    } catch {
+      //
+    }
+  }
 
-  if (!fromFile) {
+  if (!instance) {
     throw new Error(
       "xrpl-accountlib: xrpl-binary-codec-prerelease nativeAsset is unavailable",
     );
   }
 
-  attachNativeAsset(codec, fromFile);
-  attachNativeAsset(nativeMod, fromFile);
-  return fromFile;
+  attachNativeAsset(Codec, instance);
+  attachNativeAsset(CodecNative, instance);
+  try {
+    attachNativeAsset(require("xrpl-binary-codec-prerelease"), instance);
+  } catch {
+    //
+  }
+
+  return instance;
 };
 
 /**

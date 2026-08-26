@@ -30,8 +30,8 @@ import {
   encodeForSigning,
   encodeForMultisigning,
   encodeForSigningClaim,
-  nativeAsset,
 } from "xrpl-binary-codec-prerelease";
+import { nativeAsset } from "./nativeAsset";
 import DEFAULT_DEFINITIONS from "xrpl-binary-codec-prerelease/dist/enums/definitions.json";
 import { type DefinitionsData } from "xrpl-binary-codec-prerelease/dist/enums/xrpl-definitions-base";
 

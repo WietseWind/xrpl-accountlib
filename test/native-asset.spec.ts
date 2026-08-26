@@ -64,4 +64,39 @@ describe("Native asset encoding", function () {
       ).signedTransaction.slice(34, 74)
     ).toEqual("0000000000000000000000005841480000000000");
   });
+
+  it("signs when the codec package-root nativeAsset getter is missing (Metro/Hermes)", function () {
+    const codec = require("xrpl-binary-codec-prerelease");
+    const original = Object.getOwnPropertyDescriptor(codec, "nativeAsset");
+    Object.defineProperty(codec, "nativeAsset", {
+      configurable: true,
+      enumerable: true,
+      get: () => undefined,
+    });
+
+    try {
+      expect(codec.nativeAsset).toBeUndefined();
+      const signed = sign(
+        Object.assign({}, { ...baseTxXah, NetworkID: 21337 }),
+        derive.familySeed(fixtures.familySeed.secp256k1.seed),
+        definitions
+      );
+      expect(signed.signedTransaction).toBeTruthy();
+      expect(signed.signedTransaction.slice(34, 74)).toEqual(
+        "0000000000000000000000000000000000000000"
+      );
+    } finally {
+      if (original) {
+        Object.defineProperty(codec, "nativeAsset", original);
+      }
+    }
+  });
+
+  it("public nativeAsset.set still drives encoding after a broken codec export", function () {
+    const { nativeAsset } = require("../src");
+    nativeAsset.set("XAH");
+    expect(nativeAsset.get()).toBe("XAH");
+    nativeAsset.set("XRP");
+    expect(nativeAsset.get()).toBe("XRP");
+  });
 });

@@ -5,10 +5,8 @@ import assert from "assert";
 import {
   encodeForSigningClaim,
   XrplDefinitions,
-  // Same object the package root re-exports: importing it from "../" instead
-  // would create a require cycle (root -> sign -> root)
-  nativeAsset,
 } from "xrpl-binary-codec-prerelease";
+import { setNativeAsset } from "../nativeAsset";
 import { sign as rk_sign } from "ripple-keypairs";
 import { XrplClient } from "xrpl-client";
 import Sign from "xrpl-sign-keypairs";
@@ -41,15 +39,6 @@ type SignedObject = {
   signedTransaction: string;
   txJson: Record<string, unknown>;
   signers: string[];
-};
-
-const setNativeAsset = (Tx: any): void => {
-  nativeAsset.set("XRP");
-
-  // Xahau Mainnet, Xahau Testnet
-  if ([21337, 21338].indexOf(Tx?.NetworkID) > -1) {
-    nativeAsset.set("XAH");
-  }
 };
 
 const signInnerBatch = (

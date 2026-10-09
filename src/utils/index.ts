@@ -24,6 +24,7 @@ import type Account from "../schema/Account";
 import { XrplClient } from "xrpl-client";
 
 import { normalizeAlgorithm } from "./algorithm";
+import { setNativeAsset } from "../nativeAsset";
 
 // Ugly, but no definitions when directly loading the lib file, and Signature() not exported in lib
 const Signature = require("elliptic/lib/elliptic/ec/signature");
@@ -62,20 +63,88 @@ function hashBatchInnerTxn(
   return computeBinaryTransactionHash(enc);
 }
 
+/**
+ * BatchSigner signing data, BatchV1_1 (XLS-56, rippled 3.3.0+):
+ *   HashPrefix.batch || outer Account || outer Sequence (or TicketSequence)
+ *   || Flags || txIDs length || txIDs || BatchSigner Account
+ * The original Batch data (prefix || Flags || length || txIDs) is not accepted
+ * by any network anymore, so the outer Account, Sequence and the BatchSigner
+ * Account are required.
+ * https://github.com/XRPL-Labs/Xaman-Issue-Tracker/issues/520
+ */
 function createBatchInnerTxnBlob(
   flags: number,
-  innerTxnHashes: string[]
+  innerTxnHashes: string[],
+  outerAccount: string,
+  outerSequence: number,
+  batchSignerAccount: string
 ): string {
+  assert(
+    typeof outerAccount === "string" && isValidClassicAddress(outerAccount),
+    "Batch signing: the outer (Batch) Account is required"
+  );
+  assert(
+    Number.isInteger(Number(outerSequence)) && Number(outerSequence) > 0,
+    "Batch signing: the outer (Batch) Sequence or TicketSequence is required"
+  );
+  assert(
+    typeof batchSignerAccount === "string" &&
+      isValidClassicAddress(batchSignerAccount),
+    "Batch signing: the BatchSigner Account is required"
+  );
+
+  const uint32 = (n: number) =>
+    ("0".repeat(8) + (Number(n) >>> 0).toString(16)).slice(-8);
+  const accountId = (address: string) =>
+    Buffer.from(decodeAccountID(address)).toString("hex");
+
   return [
     // hash prefix
     "42434800",
+    // outer Account
+    accountId(outerAccount),
+    // outer Sequence (or TicketSequence)
+    uint32(outerSequence),
     // flags
-    ("0".repeat(8) + Number(flags).toString(16)).slice(-8),
+    uint32(flags),
     // txIds length
-    ("0".repeat(8) + Number(innerTxnHashes.length).toString(16)).slice(-8),
+    uint32(innerTxnHashes.length),
     // txIds
     ...innerTxnHashes,
-  ].join("");
+    // BatchSigner Account
+    accountId(batchSignerAccount),
+  ]
+    .join("")
+    .toUpperCase();
+}
+
+/**
+ * The BatchSigner signing data for a (prepared) Batch transaction:
+ * outer Sequence, or TicketSequence when Sequence is 0 or not set
+ */
+function batchSignerSigningData(
+  transaction: Record<string, unknown>,
+  batchSignerAccount: string,
+  definitions?: XrplDefinitions
+): string {
+  const tx = transaction as any;
+
+  // The inner txIDs depend on the native asset (e.g. an XRP Issue): set it for this transaction,
+  // not the one left behind by an earlier (e.g. Xahau) signature
+  setNativeAsset(tx);
+
+  const outerSequence =
+    Number(tx?.Sequence) > 0 ? Number(tx?.Sequence) : Number(tx?.TicketSequence);
+
+  return createBatchInnerTxnBlob(
+    Number(tx?.Flags || 0),
+    (tx?.RawTransactions || []).map((t: any) =>
+      hashBatchInnerTxn(t?.RawTransaction, definitions)
+    ),
+    String(tx?.Account || ""),
+    outerSequence,
+    batchSignerAccount
+  );
 }
 
 function computeBinaryTransactionHash(txBlobHex: string) {
@@ -498,4 +567,5 @@ export {
   networkTxFee,
   hashBatchInnerTxn,
   createBatchInnerTxnBlob,
+  batchSignerSigningData,
 };

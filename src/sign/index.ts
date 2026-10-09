@@ -17,8 +17,7 @@ import {
   networkTxFee,
   networkInfo,
   accountAndLedgerSequence,
-  hashBatchInnerTxn,
-  createBatchInnerTxnBlob,
+  batchSignerSigningData,
 } from "../utils";
 
 type SignOptions = {
@@ -46,20 +45,24 @@ const signInnerBatch = (
   account: Account,
   definitions?: XrplDefinitions,
 ): InnerBatchSignature => {
-  const BatchInnerHashes = (transaction as any)?.RawTransactions.map(
-    (t: Object) => hashBatchInnerTxn((t as any)?.RawTransaction, definitions),
-  );
+  // The BatchSigner is the inner account: the signAs account when signing with a regular key
+  const batchSignerAccount =
+    typeof account._signAs === "string" && account._signAs !== ""
+      ? account._signAs
+      : String(account.address);
 
-  const batchSignerPayload = createBatchInnerTxnBlob(
-    Number((transaction as any)?.Flags),
-    BatchInnerHashes,
+  // BatchV1_1: binds the outer Account + Sequence and the BatchSigner Account
+  const batchSignerPayload = batchSignerSigningData(
+    transaction as Record<string, unknown>,
+    batchSignerAccount,
+    definitions,
   );
 
   const sig = rk_sign(batchSignerPayload, account.keypair.privateKey);
 
   return {
     BatchSigner: {
-      Account: String(account.address),
+      Account: batchSignerAccount,
       SigningPubKey: String(account.keypair.publicKey),
       TxnSignature: sig,
     },

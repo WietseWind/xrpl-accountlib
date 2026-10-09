@@ -1,0 +1,96 @@
+{
+  "note": "XRPL Devnet Batch C27EDCE2A393D1E0EAC0D99681628406A017FDE61EF278643BBB95B3435E9D6A, tesSUCCESS, validated, ledger 5911444 (BatchV1_1 enabled)",
+  "hash": "C27EDCE2A393D1E0EAC0D99681628406A017FDE61EF278643BBB95B3435E9D6A",
+  "tx": {
+    "Account": "r9QUHHpQcSHJ71dYYFNtb9Com71cm8NsjC",
+    "BatchSigners": [
+      {
+        "BatchSigner": {
+          "Account": "rwu2j5RgfiiN2LANn3khFtZWsoUkkjcVjC",
+          "SigningPubKey": "EDC2F7ED38252E3682C410E05391DA65DB2B13B08B992C9A5F3035949270CC427C",
+          "TxnSignature": "7EC2BB97ADEDAD7D7F045B6C98103C3F541F71D4CAC62654D62B62F69757F19788846AD0DCE8E0C3824F2C738F06A65AF028D8689BBF7D5CCC10FF6162A4D80D"
+        }
+      }
+    ],
+    "Fee": "30",
+    "Flags": 65536,
+    "RawTransactions": [
+      {
+        "RawTransaction": {
+          "Account": "r9QUHHpQcSHJ71dYYFNtb9Com71cm8NsjC",
+          "Amount": "0",
+          "Destination": "rwu2j5RgfiiN2LANn3khFtZWsoUkkjcVjC",
+          "Fee": "0",
+          "Flags": 1073741825,
+          "NFTokenID": "00080000033EF5AECB9651ACA0AACB8733B0B12C623E046A316FEB6F005A23AB",
+          "Sequence": 5907376,
+          "SigningPubKey": "",
+          "TransactionType": "NFTokenCreateOffer"
+        }
+      },
+      {
+        "RawTransaction": {
+          "Account": "rwu2j5RgfiiN2LANn3khFtZWsoUkkjcVjC",
+          "Amount": "0",
+          "Destination": "r9QUHHpQcSHJ71dYYFNtb9Com71cm8NsjC",
+          "Fee": "0",
+          "Flags": 1073741825,
+          "NFTokenID": "00080000033EF5AECB9651ACA0AACB8733B0B12C623E046A5F3B4961005A23AD",
+          "Sequence": 5907377,
+          "SigningPubKey": "",
+          "TransactionType": "NFTokenCreateOffer"
+        }
+      },
+      {
+        "RawTransaction": {
+          "Account": "rwu2j5RgfiiN2LANn3khFtZWsoUkkjcVjC",
+          "Amount": "0",
+          "Destination": "r9QUHHpQcSHJ71dYYFNtb9Com71cm8NsjC",
+          "Fee": "0",
+          "Flags": 1073741825,
+          "NFTokenID": "00080000033EF5AECB9651ACA0AACB8733B0B12C623E046A76211860005A23AE",
+          "Sequence": 5907378,
+          "SigningPubKey": "",
+          "TransactionType": "NFTokenCreateOffer"
+        }
+      },
+      {
+        "RawTransaction": {
+          "Account": "rwu2j5RgfiiN2LANn3khFtZWsoUkkjcVjC",
+          "Fee": "0",
+          "Flags": 1073741824,
+          "NFTokenSellOffer": "4778D4D052F6A7FA7AE8BAF982AEF7F3690A2A02CA3F2E86F07C276FDD21FFA2",
+          "Sequence": 5907379,
+          "SigningPubKey": "",
+          "TransactionType": "NFTokenAcceptOffer"
+        }
+      },
+      {
+        "RawTransaction": {
+          "Account": "r9QUHHpQcSHJ71dYYFNtb9Com71cm8NsjC",
+          "Fee": "0",
+          "Flags": 1073741824,
+          "NFTokenSellOffer": "EE7C34B5CA25E55A5742D1C66660B1DF84E8DFE35BFC995A355ADAFF937058A9",
+          "Sequence": 5907377,
+          "SigningPubKey": "",
+          "TransactionType": "NFTokenAcceptOffer"
+        }
+      },
+      {
+        "RawTransaction": {
+          "Account": "r9QUHHpQcSHJ71dYYFNtb9Com71cm8NsjC",
+          "Fee": "0",
+          "Flags": 1073741824,
+          "NFTokenSellOffer": "34F64E6AD9186DD1FB5880D9A46B6A7571852AF586C562C40500827E370F96AE",
+          "Sequence": 5907378,
+          "SigningPubKey": "",
+          "TransactionType": "NFTokenAcceptOffer"
+        }
+      }
+    ],
+    "Sequence": 5907375,
+    "SigningPubKey": "ED96D6E61CC083DEB57552F1DA60BB68B9BCDB96B4DFB7AE056D6923B9E09366A9",
+    "TransactionType": "Batch",
+    "TxnSignature": "492CE78068CE9B7957E18E9858D8F9A5BF8CFCB4E2542A30EF51681B8754CFD69A10B3B2780EB347B18EAF21BBEBCDA2FF9BC50CC0873750865216AF7081B200"
+  }
+}
